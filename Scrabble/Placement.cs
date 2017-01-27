@@ -56,7 +56,23 @@ namespace Scrabble
         }
 
         public bool IsOnBoard(Game game)
-        {
+        {            
+            Space[,] board = game.GetBoard();
+            foreach (Space placementSpace in _spaceList)
+            {
+                bool onBoard = false;
+                foreach (Space boardSpace in board)
+                {
+                    if (placementSpace.GetCoordsString() == boardSpace.GetCoordsString())
+                    {
+                        onBoard = true;
+                    }                 
+                }
+                if (!onBoard)
+                {
+                    return false;
+                }
+            }
             return true;
         }
 

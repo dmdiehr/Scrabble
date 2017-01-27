@@ -49,6 +49,10 @@ namespace Scrabble
         private string[] _dictionary;
 
         //METHODS
+        public Space[,] GetBoard()
+        {
+            return _board;
+        }
         public List<Placement> PossiblePlacements()
         {
             throw new NotImplementedException();
