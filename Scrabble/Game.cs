@@ -25,7 +25,7 @@ namespace Scrabble
                 throw new Exception("Something's up with your dictionary file");
             }
         }
-        public Game(string tray, List<Tuple<Space, Tile>> startingBoard = null)
+        public Game(string tray = "abcdefg", List<Tuple<Space, Tile>> startingBoard = null)
         {
 
             _board = EmptyBoard();
