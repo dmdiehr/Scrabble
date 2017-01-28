@@ -67,6 +67,6 @@ namespace Scrabble
         public void RemoveTile()
         {
             _tile = null;
-        }
+        }       
     }
 }

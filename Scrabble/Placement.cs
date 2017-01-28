@@ -20,10 +20,16 @@ namespace Scrabble
             _spaceList = spaceList;
         }
 
+
         //FIELDS
         private List<Space> _spaceList;
 
         //METHODS
+
+       public List<Space> GetSpaceList()
+        {
+            return _spaceList;
+        }
 
         public bool IsSingle(Game game)
         {
@@ -79,6 +85,11 @@ namespace Scrabble
         public bool IsLegal(Game game)
         {
             return (this.IsUnique(game) && this.IsStraight(game) && this.IsContiguous(game));
+        }
+
+        public void PlacementSort()
+        {
+            _spaceList.Sort(new SpaceComparer());           
         }
 
     }

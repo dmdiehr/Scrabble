@@ -83,9 +83,9 @@ namespace Scrabble
         }
         public void DisplayBoard()
         {
-            for (int x = _board.GetLength(0) - 1; x >= 0; x--)
+            for (int x = 0; x < _board.GetLength(0); x++)
             {
-                for (int y = _board.GetLength(1) - 1; y >= 0; y--)
+                for (int y = 0; y < _board.GetLength(0); y++)
                 {
                     Space thisSpace = _board[x, y];
                     if (thisSpace.IsOccupied())
@@ -101,5 +101,34 @@ namespace Scrabble
             }
         }
 
+
+        public void SortDisplay()
+        {
+            Space space1 = new Space(7, 7);
+            Space space2 = new Space(7, 7);
+            Space space3 = new Space(1, 7);
+            Space space4 = new Space(2, 3);
+            Space space5 = new Space(3, 8);
+            Space space6 = new Space(3, 9);
+            Space space7 = new Space(4, 12);
+            Space space8 = new Space(5, 1);
+            Space space9 = new Space(6, 7);
+
+            Placement newPlacement = new Placement(new List<Space> { space1, space2, space3, space4, space5, space6, space7, space8, space9});
+
+            Console.WriteLine("Placement Before Sorting: ");
+            foreach (Space space in newPlacement.GetSpaceList())
+            {
+                Console.WriteLine(space.GetCoordsString());
+            }
+
+            Console.WriteLine("Placement After Sorting: ");
+            newPlacement.PlacementSort();
+            foreach (Space space in newPlacement.GetSpaceList())
+            {
+                Console.WriteLine(space.GetCoordsString());
+            }
+
+        }
     }
 }

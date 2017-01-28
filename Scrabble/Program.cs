@@ -28,6 +28,11 @@ namespace Scrabble
                 {
                     newGame.DisplayBoard();
                 }
+
+                if (input  == "test")
+                {
+                    newGame.SortDisplay();
+                }
             } while (input != "exit");
 
             Console.WriteLine();
