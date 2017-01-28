@@ -2,8 +2,15 @@
 
 namespace Scrabble
 {
-    public class Space
+    public sealed class Space
     {
+        //FIELDS
+
+        private Tuple<int, int> _coords;
+        public Tile _tile { get; set; }
+        public int WordMultiplier { get; set; }
+        public int LetterMultiplier { get; set; }
+        
         //CONTRUCTOR
 
         public Space(int x, int y)
@@ -14,15 +21,7 @@ namespace Scrabble
             LetterMultiplier = 1;
         }
 
-        //FIELDS
-
-        private Tuple<int, int> _coords;
-        private Tile _tile;
-        public int WordMultiplier { get; set; }
-        public int LetterMultiplier { get; set; }
-
-
-        //METHODS
+        //ACCESSORS
 
         public Tuple<int, int> GetCoords()
         {
@@ -34,9 +33,14 @@ namespace Scrabble
             return "(" + _coords.Item1 + "X, " + _coords.Item2 + "Y)";
         }
 
-        public bool IsOccupied()
+        public int GetX()
         {
-            return (_tile != null);
+            return _coords.Item1;
+        }
+        
+        public int GetY()
+        {
+            return _coords.Item2;
         }
 
         public void SetTile(Tile tile)
@@ -67,6 +71,13 @@ namespace Scrabble
         public void RemoveTile()
         {
             _tile = null;
-        }       
+        }
+
+        //METHODS
+
+        public bool IsOccupied()
+        {
+            return (_tile != null);
+        }      
     }
 }

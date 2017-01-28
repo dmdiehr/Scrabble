@@ -13,8 +13,12 @@ namespace Scrabble
         public Game(Tray tray, List<Tuple<Space, Tile>> startingBoard = null)
         {
 
-            _board = EmptyBoard();
             _tray = tray;
+            _board = EmptyBoard();
+
+            if (startingBoard != null)
+                SetBoard(startingBoard);
+            
             try
             {
                 _dictionary = File.ReadAllText("C:\\Users\\David\\Desktop\\Code\\C#-VS\\ScrabbleCore\\ScrabbleCore\\Dictionary\\dictionary.txt").Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
@@ -22,8 +26,9 @@ namespace Scrabble
             catch (Exception)
             {
 
-                throw new Exception("Something's up with your dictionary file");
-            }
+                Console.WriteLine("**********Something is up with your Dictionary file*******");
+                _dictionary = new string[] { "this", "is", "just", "a", "test" };
+            }         
         }
         public Game(string tray = "abcdefg", List<Tuple<Space, Tile>> startingBoard = null)
         {
@@ -53,6 +58,36 @@ namespace Scrabble
         {
             return _board;
         }
+
+        public Space GetSpace(int x, int y)
+        {
+            return _board[x, y];          
+        }
+        public Space GetSpace(Space otherSpace)
+        {
+            return _board[otherSpace.GetX(), otherSpace.GetY()];
+        }
+
+        public void SetBoard(List<Tuple<Space, Tile>> pairs)
+        {
+            foreach (var item in pairs)
+            {
+                GetSpace(item.Item1).SetTile(item.Item2);
+            }
+        }
+        public void SetBoard(List<Space> spaces, List<Tile> tiles)
+        {
+            if (spaces.Count != tiles.Count)
+                throw new ArgumentException("The number of spaces must match the number of tiles when setting the board.");
+
+            List<Tuple<Space, Tile>> pairs = new List<Tuple<Space, Tile>>();
+            for (int i = 0; i < spaces.Count; i++)
+            {
+                pairs.Add(Tuple.Create(spaces[i], tiles[i]));
+            }
+            SetBoard(pairs);
+        }
+
         public List<Placement> PossiblePlacements()
         {
             throw new NotImplementedException();
@@ -100,34 +135,53 @@ namespace Scrabble
                 Console.WriteLine();
             }
         }
+        public void SortTest()
+        {            
+            List<Space> spaces = new List<Space>();
+            Random rdm = new Random();
 
+            for (int i = 0; i < 10; i++)
+            {
+                Space newSpace = new Space(rdm.Next(0, 15), rdm.Next(0, 15));
+                spaces.Add(newSpace);
+            }
+            Placement testPlacement = new Placement(spaces);
 
-        public void SortDisplay()
-        {
-            Space space1 = new Space(7, 7);
-            Space space2 = new Space(7, 7);
-            Space space3 = new Space(1, 7);
-            Space space4 = new Space(2, 3);
-            Space space5 = new Space(3, 8);
-            Space space6 = new Space(3, 9);
-            Space space7 = new Space(4, 12);
-            Space space8 = new Space(5, 1);
-            Space space9 = new Space(6, 7);
-
-            Placement newPlacement = new Placement(new List<Space> { space1, space2, space3, space4, space5, space6, space7, space8, space9});
 
             Console.WriteLine("Placement Before Sorting: ");
-            foreach (Space space in newPlacement.GetSpaceList())
+            foreach (Space space in testPlacement.GetSpaceList())
             {
                 Console.WriteLine(space.GetCoordsString());
             }
 
             Console.WriteLine("Placement After Sorting: ");
-            newPlacement.PlacementSort();
-            foreach (Space space in newPlacement.GetSpaceList())
+            testPlacement.PlacementSort();
+            foreach (Space space in testPlacement.GetSpaceList())
             {
                 Console.WriteLine(space.GetCoordsString());
             }
+
+        }
+        public void RandomBoard()
+        {
+
+            Random rdm = new Random();
+
+            List<Space> spaces = new List<Space>();
+            for (int i = 0; i < 50; i++)
+            {
+                Space newSpace = new Space(rdm.Next(0, 15), rdm.Next(0, 15));
+                spaces.Add(newSpace);
+            }
+
+            List<Tile> tiles = new List<Tile>();
+            for (int i = 0; i < 50; i++)
+            {
+                Tile newTile = new Tile((char)('a' + rdm.Next(0, 26)));
+                tiles.Add(newTile);
+            }
+            _board = EmptyBoard();
+            SetBoard(spaces, tiles);
 
         }
     }

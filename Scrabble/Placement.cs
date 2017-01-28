@@ -3,10 +3,14 @@ using System.Collections.Generic;
 
 namespace Scrabble
 {
+
     public class Placement
     {
+        //FIELDS
+        private List<Space> _spaceList;
+        
         //CONSTRUCTOR
-        public Placement(List<Space> spaceList)
+        public Placement(List<Space> spaceList = null)
         {
             _spaceList = spaceList;
         }
@@ -19,10 +23,6 @@ namespace Scrabble
 
             _spaceList = spaceList;
         }
-
-
-        //FIELDS
-        private List<Space> _spaceList;
 
         //METHODS
 

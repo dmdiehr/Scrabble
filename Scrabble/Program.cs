@@ -19,19 +19,24 @@ namespace Scrabble
                 Console.WriteLine("Enter 'words', 'board', or 'exit'");
                 input = Console.ReadLine();
 
-                if (input == "words")
+                if (input.ToLower() == "words")
                 {
                     newGame.DisplayDictionary();
                 }
 
-                if (input == "board")
+                if (input.ToLower() == "board")
                 {
                     newGame.DisplayBoard();
                 }
 
-                if (input  == "test")
+                if (input.ToLower()  == "test")
                 {
-                    newGame.SortDisplay();
+                    newGame.SortTest();
+                }
+
+                if (input.ToLower() == "random")
+                {
+                    newGame.RandomBoard();
                 }
             } while (input != "exit");
 
