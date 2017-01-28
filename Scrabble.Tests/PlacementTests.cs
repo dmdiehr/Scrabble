@@ -232,6 +232,63 @@ namespace Scrabble.Tests
             Assert.That(result, Is.False);
         }
 
-        //
+        //IsSingle Tests
+        [Test]
+        public void IsSingle_OneSpace()
+        {
+            Placement sut;
+            var result = false;
+
+            //Arrange
+
+            Space space = new Space(7,7);            
+
+            sut = new Placement(space);
+            //Act
+            result = sut.IsSingle(new Game());
+
+            //Assert
+            Assert.That(result, Is.True);
+
+        }
+
+        [Test]
+        public void IsSingle_TwoSpaces()
+        {
+            Placement sut;
+            var result = true;
+
+            //Arrange
+
+            Space space1 = new Space(7, 7);
+            Space space2 = new Space(7, 8);
+
+            sut = new Placement(new List<Space>() {space1, space2});
+            //Act
+            result = sut.IsSingle(new Game());
+
+            //Assert
+            Assert.That(result, Is.False);
+
+        }
+
+        [Test]
+        public void IsSingle_NoSpace()
+        {
+            Placement sut;
+            var result = true;
+
+            //Arrange
+            sut = new Placement();
+            
+            //Act
+            result = sut.IsSingle(new Game());
+
+            //Assert
+            Assert.That(result, Is.False);
+
+        }
+
+
     }
 }

@@ -43,11 +43,24 @@ namespace Scrabble
             return returnString;
         }
 
+        public void SetSpaceList(List<Space> spaceList)
+        {
+            _spaceList = spaceList;
+        }
+        public void SetSpaceList(Space space)
+        {
+            _spaceList = new List<Space>() {space};
+        }
+
+
         //METHODS
 
         public bool IsSingle(Game game)
         {
-            return true;
+            if (_spaceList == null)
+               return false;
+            else
+               return (_spaceList.Count == 1);
         }
 
         public bool IsHorizontal(Game game)
