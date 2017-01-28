@@ -55,6 +55,37 @@ namespace Scrabble
 
         //METHODS
 
+        public bool IsOnBoard(Game game)
+        {
+            Space[,] board = game.GetBoard();
+            foreach (Space placementSpace in _spaceList)
+            {
+                bool onBoard = false;
+                foreach (Space boardSpace in board)
+                {
+                    if (placementSpace.GetCoordsString() == boardSpace.GetCoordsString())
+                    {
+                        onBoard = true;
+                    }
+                }
+                if (!onBoard)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        public bool IsUnique(Game game)
+        {
+            foreach (var item in _spaceList)
+            {
+                if (game.GetSpace(item).GetTile() != null)
+                    return false;
+            }
+            return true;
+        }
+
         public bool IsSingle(Game game)
         {
             if (_spaceList == null)
@@ -80,32 +111,6 @@ namespace Scrabble
 
         public bool IsContiguous(Game game)
         {
-            return true;
-        }
-
-        public bool IsUnique(Game game)
-        {
-            return true;
-        }
-
-        public bool IsOnBoard(Game game)
-        {            
-            Space[,] board = game.GetBoard();
-            foreach (Space placementSpace in _spaceList)
-            {
-                bool onBoard = false;
-                foreach (Space boardSpace in board)
-                {
-                    if (placementSpace.GetCoordsString() == boardSpace.GetCoordsString())
-                    {
-                        onBoard = true;
-                    }                 
-                }
-                if (!onBoard)
-                {
-                    return false;
-                }
-            }
             return true;
         }
 

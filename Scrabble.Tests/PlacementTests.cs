@@ -289,6 +289,217 @@ namespace Scrabble.Tests
 
         }
 
+        //IsUnique Tests
+
+        [Test]
+        public void IsUnique_EmtpyBoard()
+        {
+            Placement sut;
+            bool result = false;
+
+            //Arrange          
+            Game newGame = new Game();
+            sut = new Placement(new Space(7,7));
+            
+            //Act
+            result = sut.IsUnique(newGame);
+
+            //Assert
+            Assert.That(result, Is.True);
+        }
+
+        [Test]
+        public void IsUnique_SingleOccupiedSpace()
+        {
+            Placement sut;
+            bool result = true;
+
+            //Arrange
+            List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>();
+            Tuple<Space, Tile> newTuple = Tuple.Create(new Space(7, 7), new Tile('a'));
+            tupleList.Add(newTuple);
+                                     
+            Game newGame = new Game();
+            newGame.SetBoard(tupleList);
+            sut = new Placement(new Space(7, 7));
+
+            //Act
+            result = sut.IsUnique(newGame);
+
+            //Assert
+            Assert.That(result, Is.False);
+        }
+
+        [Test]
+        public void IsUnique_TwoOccupiedSpace()
+        {
+            Placement sut;
+            bool result = true;
+
+            //Arrange
+            List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>();           
+            tupleList.Add(Tuple.Create(new Space(7, 7), new Tile('a')));
+            tupleList.Add(Tuple.Create(new Space(7, 8), new Tile('b')));
+
+            Game newGame = new Game();
+            newGame.SetBoard(tupleList);
+
+            List<Space> spaceList = new List<Space>();
+            spaceList.Add(new Space(7, 7));
+            spaceList.Add(new Space(7, 8));
+
+            sut = new Placement(spaceList);
+
+            //Act
+            result = sut.IsUnique(newGame);
+
+            //Assert
+            Assert.That(result, Is.False);
+        }
+
+        [Test]
+        public void IsUnique_OneOccupiedMultipleNot()
+        {
+            Placement sut;
+            bool result = true;
+
+            //Arrange
+            List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>();
+            tupleList.Add(Tuple.Create(new Space(7, 7), new Tile('a')));
+            tupleList.Add(Tuple.Create(new Space(7, 8), new Tile('b')));
+            tupleList.Add(Tuple.Create(new Space(7, 9), new Tile('c')));
+            tupleList.Add(Tuple.Create(new Space(7, 10), new Tile('d')));
+            tupleList.Add(Tuple.Create(new Space(7, 11), new Tile('e')));
+            tupleList.Add(Tuple.Create(new Space(7, 12), new Tile('f')));
+            tupleList.Add(Tuple.Create(new Space(7, 13), new Tile('g')));
+
+            Game newGame = new Game();
+            newGame.SetBoard(tupleList);
+
+            List<Space> spaceList = new List<Space>();
+            spaceList.Add(new Space(7, 7));
+            spaceList.Add(new Space(6, 7));
+            spaceList.Add(new Space(5, 7));
+            spaceList.Add(new Space(3, 7));
+            spaceList.Add(new Space(1, 7));
+
+            sut = new Placement(spaceList);
+
+            //Act
+            result = sut.IsUnique(newGame);
+
+            //Assert
+            Assert.That(result, Is.False);
+        }
+
+        [Test]
+        public void IsUnique_MultipleOccupiedMultipleNot()
+        {
+            Placement sut;
+            bool result = true;
+
+            //Arrange
+            List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>();
+            tupleList.Add(Tuple.Create(new Space(7, 7), new Tile('a')));
+            tupleList.Add(Tuple.Create(new Space(7, 8), new Tile('b')));
+            tupleList.Add(Tuple.Create(new Space(7, 9), new Tile('c')));
+            tupleList.Add(Tuple.Create(new Space(7, 10), new Tile('d')));
+            tupleList.Add(Tuple.Create(new Space(7, 11), new Tile('e')));
+            tupleList.Add(Tuple.Create(new Space(7, 12), new Tile('f')));
+            tupleList.Add(Tuple.Create(new Space(7, 13), new Tile('g')));
+
+            Game newGame = new Game();
+            newGame.SetBoard(tupleList);
+
+            List<Space> spaceList = new List<Space>();
+            spaceList.Add(new Space(7, 7));
+            spaceList.Add(new Space(7, 8));
+            spaceList.Add(new Space(7, 9));
+            spaceList.Add(new Space(7, 6));
+            spaceList.Add(new Space(7, 5));
+
+            sut = new Placement(spaceList);
+
+            //Act
+            result = sut.IsUnique(newGame);
+
+            //Assert
+            Assert.That(result, Is.False);
+        }
+
+        [Test]
+        public void IsUnique_MultipleClear()
+        {
+            Placement sut;
+            bool result = false;
+
+            //Arrange
+            List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>();
+            tupleList.Add(Tuple.Create(new Space(7, 7), new Tile('a')));
+            tupleList.Add(Tuple.Create(new Space(7, 8), new Tile('b')));
+            tupleList.Add(Tuple.Create(new Space(7, 9), new Tile('c')));
+            tupleList.Add(Tuple.Create(new Space(7, 10), new Tile('d')));
+            tupleList.Add(Tuple.Create(new Space(7, 11), new Tile('e')));
+            tupleList.Add(Tuple.Create(new Space(7, 12), new Tile('f')));
+            tupleList.Add(Tuple.Create(new Space(7, 13), new Tile('g')));
+
+            Game newGame = new Game();
+            newGame.SetBoard(tupleList);
+
+            List<Space> spaceList = new List<Space>();
+            spaceList.Add(new Space(5, 1));
+            spaceList.Add(new Space(5, 2));
+            spaceList.Add(new Space(5, 3));
+            spaceList.Add(new Space(5, 4));
+            spaceList.Add(new Space(5, 5));
+
+            sut = new Placement(spaceList);
+
+            //Act
+            result = sut.IsUnique(newGame);
+
+            //Assert
+            Assert.That(result, Is.True);
+        }
+
+        [Test]
+        public void IsUnique_MultipleAdjacent()
+        {
+            Placement sut;
+            bool result = false;
+
+            //Arrange
+            List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>();
+            tupleList.Add(Tuple.Create(new Space(7, 7), new Tile('a')));
+            tupleList.Add(Tuple.Create(new Space(7, 8), new Tile('b')));
+            tupleList.Add(Tuple.Create(new Space(7, 9), new Tile('c')));
+            tupleList.Add(Tuple.Create(new Space(7, 10), new Tile('d')));
+            tupleList.Add(Tuple.Create(new Space(7, 11), new Tile('e')));
+            tupleList.Add(Tuple.Create(new Space(7, 12), new Tile('f')));
+            tupleList.Add(Tuple.Create(new Space(7, 13), new Tile('g')));
+
+            Game newGame = new Game();
+            newGame.SetBoard(tupleList);
+
+            List<Space> spaceList = new List<Space>();
+            spaceList.Add(new Space(6, 7));
+            spaceList.Add(new Space(6, 8));
+            spaceList.Add(new Space(6, 6));
+            spaceList.Add(new Space(6, 5));
+            spaceList.Add(new Space(6, 4));
+
+            sut = new Placement(spaceList);
+
+            //Act
+            result = sut.IsUnique(newGame);
+
+            //Assert
+            Assert.That(result, Is.True);
+        }
+
+
+
+
 
     }
 }
