@@ -24,12 +24,26 @@ namespace Scrabble
             _spaceList = spaceList;
         }
 
-        //METHODS
+        //ACCESSORS
 
-       public List<Space> GetSpaceList()
+        public List<Space> GetSpaceList()
         {
             return _spaceList;
         }
+
+        public string GetSpaceListString()
+        {
+            string returnString = "";
+
+            foreach (var item in _spaceList)
+            {
+                returnString += item.GetCoordsString() + "\n"; 
+            }
+
+            return returnString;
+        }
+
+        //METHODS
 
         public bool IsSingle(Game game)
         {

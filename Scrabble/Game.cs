@@ -149,17 +149,11 @@ namespace Scrabble
 
 
             Console.WriteLine("Placement Before Sorting: ");
-            foreach (Space space in testPlacement.GetSpaceList())
-            {
-                Console.WriteLine(space.GetCoordsString());
-            }
-
-            Console.WriteLine("Placement After Sorting: ");
+            Console.WriteLine(testPlacement.GetSpaceListString());
+            
             testPlacement.PlacementSort();
-            foreach (Space space in testPlacement.GetSpaceList())
-            {
-                Console.WriteLine(space.GetCoordsString());
-            }
+            Console.WriteLine("Placement After Sorting: ");
+            Console.WriteLine(testPlacement.GetSpaceListString());
 
         }
         public void RandomBoard()
