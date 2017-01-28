@@ -86,7 +86,7 @@ namespace Scrabble
             return true;
         }
 
-        public bool IsSingle(Game game)
+        public bool IsSingle()
         {
             if (_spaceList == null)
                return false;
@@ -94,19 +94,33 @@ namespace Scrabble
                return (_spaceList.Count == 1);
         }
 
-        public bool IsHorizontal(Game game)
+        public bool IsHorizontal()
         {
+            if (IsSingle() || (_spaceList == null))
+                return false;
+            for (int i = 1; i < _spaceList.Count; i++)
+            {
+                if (_spaceList[0].GetY() != _spaceList[i].GetY())
+                    return false;
+            }
             return true;
         }
 
-        public bool IsVertical(Game game)
+        public bool IsVertical()
         {
+            if (IsSingle() || (_spaceList == null))
+                return false;
+            for (int i = 1; i < _spaceList.Count; i++)
+            {
+                if (_spaceList[0].GetX() != _spaceList[i].GetX())
+                    return false;
+            }
             return true;
         }
 
-        public bool IsStraight(Game game)
+        public bool IsStraight()
         {
-            return true;
+            return IsSingle() || IsHorizontal() || IsVertical();
         }
 
         public bool IsContiguous(Game game)
@@ -116,7 +130,7 @@ namespace Scrabble
 
         public bool IsLegal(Game game)
         {
-            return (this.IsAvailable(game) && this.IsStraight(game) && this.IsContiguous(game));
+            return IsAvailable(game) && IsStraight() && IsContiguous(game) && IsOnBoard(game);
         }
 
         public void PlacementSort()

@@ -166,7 +166,7 @@ namespace Scrabble.Tests
 
             //Arrange
             Space spaceOne = new Space(15, 7);
-            Space spaceTwo = new Space(7, 15);            
+            Space spaceTwo = new Space(7, 15);
 
             sut1 = new Placement(spaceOne);
             sut2 = new Placement(spaceTwo);
@@ -198,7 +198,7 @@ namespace Scrabble.Tests
             List<Space> newList = new List<Space> { spaceOne, spaceTwo, spaceThree, spaceFour, spaceFive, spaceSix, spaceSeven };
             sut = new Placement(newList);
             Game newGame = new Game();
-            
+
             //Act
             result = sut.IsOnBoard(newGame);
 
@@ -241,15 +241,14 @@ namespace Scrabble.Tests
 
             //Arrange
 
-            Space space = new Space(7,7);            
+            Space space = new Space(7, 7);
 
             sut = new Placement(space);
             //Act
-            result = sut.IsSingle(new Game());
+            result = sut.IsSingle();
 
             //Assert
             Assert.That(result, Is.True);
-
         }
 
         [Test]
@@ -263,13 +262,12 @@ namespace Scrabble.Tests
             Space space1 = new Space(7, 7);
             Space space2 = new Space(7, 8);
 
-            sut = new Placement(new List<Space>() {space1, space2});
+            sut = new Placement(new List<Space>() { space1, space2 });
             //Act
-            result = sut.IsSingle(new Game());
+            result = sut.IsSingle();
 
             //Assert
             Assert.That(result, Is.False);
-
         }
 
         [Test]
@@ -280,13 +278,12 @@ namespace Scrabble.Tests
 
             //Arrange
             sut = new Placement();
-            
+
             //Act
-            result = sut.IsSingle(new Game());
+            result = sut.IsSingle();
 
             //Assert
             Assert.That(result, Is.False);
-
         }
 
         //IsAvailable Tests
@@ -299,8 +296,8 @@ namespace Scrabble.Tests
 
             //Arrange          
             Game newGame = new Game();
-            sut = new Placement(new Space(7,7));
-            
+            sut = new Placement(new Space(7, 7));
+
             //Act
             result = sut.IsAvailable(newGame);
 
@@ -318,7 +315,7 @@ namespace Scrabble.Tests
             List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>();
             Tuple<Space, Tile> newTuple = Tuple.Create(new Space(7, 7), new Tile('a'));
             tupleList.Add(newTuple);
-                                     
+
             Game newGame = new Game();
             newGame.SetBoard(tupleList);
             sut = new Placement(new Space(7, 7));
@@ -337,7 +334,7 @@ namespace Scrabble.Tests
             bool result = true;
 
             //Arrange
-            List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>();           
+            List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>();
             tupleList.Add(Tuple.Create(new Space(7, 7), new Tile('a')));
             tupleList.Add(Tuple.Create(new Space(7, 8), new Tile('b')));
 
@@ -497,9 +494,279 @@ namespace Scrabble.Tests
             Assert.That(result, Is.True);
         }
 
+        //IsHorizontal
 
+        [Test]
+        public void IsHorizontal_True()
+        {
+            Placement sut;
+            var result = false;
 
+            //Arrange
 
+            List<Space> spaceList = new List<Space>();
+            spaceList.Add(new Space(6, 7));
+            spaceList.Add(new Space(1, 7));
+            spaceList.Add(new Space(2, 7));
+            spaceList.Add(new Space(5, 7));
+            spaceList.Add(new Space(14, 7));
+
+            sut = new Placement(spaceList);
+
+            //Act
+            result = sut.IsHorizontal();
+
+            //Assert
+            Assert.That(result, Is.True);
+        }
+
+        [Test]
+        public void IsHorizontal_OneOff()
+        {
+            Placement sut;
+            var result = true;
+
+            //Arrange
+
+            List<Space> spaceList = new List<Space>();
+            spaceList.Add(new Space(6, 7));
+            spaceList.Add(new Space(1, 7));
+            spaceList.Add(new Space(2, 7));
+            spaceList.Add(new Space(5, 7));
+            spaceList.Add(new Space(14, 6));
+
+            sut = new Placement(spaceList);
+
+            //Act
+            result = sut.IsHorizontal();
+
+            //Assert
+            Assert.That(result, Is.False);
+        }
+
+        [Test]
+        public void IsHorizontal_WayOff()
+        {
+            Placement sut;
+            var result = true;
+
+            //Arrange
+
+            List<Space> spaceList = new List<Space>();
+            spaceList.Add(new Space(6, 9));
+            spaceList.Add(new Space(1, 1));
+            spaceList.Add(new Space(2, 77));
+            spaceList.Add(new Space(5, 7));
+            spaceList.Add(new Space(14, 6));
+
+            sut = new Placement(spaceList);
+
+            //Act
+            result = sut.IsHorizontal();
+
+            //Assert
+            Assert.That(result, Is.False);
+        }
+
+        [Test]
+        public void IsHorizontal_Single()
+        {
+            Placement sut;
+            var result = true;
+
+            //Arrange
+
+            Space space = new Space(7, 7);
+
+            sut = new Placement(space);
+            //Act
+            result = sut.IsHorizontal();
+
+            //Assert
+            Assert.That(result, Is.False);
+        }
+
+        [Test]
+        public void IsHorizontal_Empty()
+        {
+            Placement sut;
+            var result = true;
+
+            //Arrange         
+
+            sut = new Placement();
+            
+            //Act
+            result = sut.IsHorizontal();
+
+            //Assert
+            Assert.That(result, Is.False);
+
+        }
+
+        [Test]
+        public void IsHorizontal_Vertical()
+        {
+            Placement sut;
+            var result = true;
+
+            //Arrange
+
+            List<Space> spaceList = new List<Space>();
+            spaceList.Add(new Space(6, 9));
+            spaceList.Add(new Space(6, 1));
+            spaceList.Add(new Space(6, 2));
+            spaceList.Add(new Space(6, 7));
+            spaceList.Add(new Space(6, 6));
+
+            sut = new Placement(spaceList);
+
+            //Act
+            result = sut.IsHorizontal();
+
+            //Assert
+            Assert.That(result, Is.False);
+
+        }
+        
+        //IsVertical
+
+        [Test]
+        public void IsVertical_True()
+        {
+            Placement sut;
+            var result = false;
+
+            //Arrange
+
+            List<Space> spaceList = new List<Space>();
+            spaceList.Add(new Space(6, 1));
+            spaceList.Add(new Space(6, 2));
+            spaceList.Add(new Space(6, 0));
+            spaceList.Add(new Space(6, 4));
+            spaceList.Add(new Space(6, 15));
+
+            sut = new Placement(spaceList);
+
+            //Act
+            result = sut.IsVertical();
+
+            //Assert
+            Assert.That(result, Is.True);
+
+        }
+
+        [Test]
+        public void IsVertical_OneOff()
+        {
+            Placement sut;
+            var result = true;
+
+            //Arrange
+
+            List<Space> spaceList = new List<Space>();
+            spaceList.Add(new Space(6, 7));
+            spaceList.Add(new Space(6, 8));
+            spaceList.Add(new Space(6, 9));
+            spaceList.Add(new Space(6, 10));
+            spaceList.Add(new Space(7, 11));
+
+            sut = new Placement(spaceList);
+
+            //Act
+            result = sut.IsVertical();
+
+            //Assert
+            Assert.That(result, Is.False);
+
+        }
+
+        [Test]
+        public void IsVertial_WayOff()
+        {
+            Placement sut;
+            var result = true;
+
+            //Arrange
+
+            List<Space> spaceList = new List<Space>();
+            spaceList.Add(new Space(6, 9));
+            spaceList.Add(new Space(1, 1));
+            spaceList.Add(new Space(2, 0));
+            spaceList.Add(new Space(5, 7));
+            spaceList.Add(new Space(14, 6));
+
+            sut = new Placement(spaceList);
+
+            //Act
+            result = sut.IsVertical();
+
+            //Assert
+            Assert.That(result, Is.False);
+
+        }
+
+        [Test]
+        public void IsVertical_Single()
+        {
+            Placement sut;
+            var result = true;
+
+            //Arrange
+
+            Space space = new Space(7, 7);
+
+            sut = new Placement(space);
+            //Act
+            result = sut.IsVertical();
+
+            //Assert
+            Assert.That(result, Is.False);
+
+        }
+
+        [Test]
+        public void IsVertical_Empty()
+        {
+            Placement sut;
+            var result = true;
+
+            //Arrange         
+
+            sut = new Placement();
+
+            //Act
+            result = sut.IsVertical();
+
+            //Assert
+            Assert.That(result, Is.False);
+
+        }
+
+        [Test]
+        public void IsVertical_Horizontal()
+        {
+            Placement sut;
+            var result = true;
+
+            //Arrange
+
+            List<Space> spaceList = new List<Space>();
+            spaceList.Add(new Space(12, 9));
+            spaceList.Add(new Space(0, 9));
+            spaceList.Add(new Space(3, 9));
+            spaceList.Add(new Space(4, 9));
+            spaceList.Add(new Space(10, 9));
+
+            sut = new Placement(spaceList);
+
+            //Act
+            result = sut.IsVertical();
+
+            //Assert
+            Assert.That(result, Is.False);
+
+        }
 
     }
 }
