@@ -289,10 +289,10 @@ namespace Scrabble.Tests
 
         }
 
-        //IsUnique Tests
+        //IsAvailable Tests
 
         [Test]
-        public void IsUnique_EmtpyBoard()
+        public void IsAvailable_EmtpyBoard()
         {
             Placement sut;
             bool result = false;
@@ -302,14 +302,14 @@ namespace Scrabble.Tests
             sut = new Placement(new Space(7,7));
             
             //Act
-            result = sut.IsUnique(newGame);
+            result = sut.IsAvailable(newGame);
 
             //Assert
             Assert.That(result, Is.True);
         }
 
         [Test]
-        public void IsUnique_SingleOccupiedSpace()
+        public void IsAvailable_SingleOccupiedSpace()
         {
             Placement sut;
             bool result = true;
@@ -324,14 +324,14 @@ namespace Scrabble.Tests
             sut = new Placement(new Space(7, 7));
 
             //Act
-            result = sut.IsUnique(newGame);
+            result = sut.IsAvailable(newGame);
 
             //Assert
             Assert.That(result, Is.False);
         }
 
         [Test]
-        public void IsUnique_TwoOccupiedSpace()
+        public void IsAvailable_TwoOccupiedSpace()
         {
             Placement sut;
             bool result = true;
@@ -351,14 +351,14 @@ namespace Scrabble.Tests
             sut = new Placement(spaceList);
 
             //Act
-            result = sut.IsUnique(newGame);
+            result = sut.IsAvailable(newGame);
 
             //Assert
             Assert.That(result, Is.False);
         }
 
         [Test]
-        public void IsUnique_OneOccupiedMultipleNot()
+        public void IsAvailable_OneOccupiedMultipleNot()
         {
             Placement sut;
             bool result = true;
@@ -386,14 +386,14 @@ namespace Scrabble.Tests
             sut = new Placement(spaceList);
 
             //Act
-            result = sut.IsUnique(newGame);
+            result = sut.IsAvailable(newGame);
 
             //Assert
             Assert.That(result, Is.False);
         }
 
         [Test]
-        public void IsUnique_MultipleOccupiedMultipleNot()
+        public void IsAvailable_MultipleOccupiedMultipleNot()
         {
             Placement sut;
             bool result = true;
@@ -421,14 +421,14 @@ namespace Scrabble.Tests
             sut = new Placement(spaceList);
 
             //Act
-            result = sut.IsUnique(newGame);
+            result = sut.IsAvailable(newGame);
 
             //Assert
             Assert.That(result, Is.False);
         }
 
         [Test]
-        public void IsUnique_MultipleClear()
+        public void IsAvailable_MultipleClear()
         {
             Placement sut;
             bool result = false;
@@ -456,14 +456,14 @@ namespace Scrabble.Tests
             sut = new Placement(spaceList);
 
             //Act
-            result = sut.IsUnique(newGame);
+            result = sut.IsAvailable(newGame);
 
             //Assert
             Assert.That(result, Is.True);
         }
 
         [Test]
-        public void IsUnique_MultipleAdjacent()
+        public void IsAvailable_MultipleAdjacent()
         {
             Placement sut;
             bool result = false;
@@ -491,7 +491,7 @@ namespace Scrabble.Tests
             sut = new Placement(spaceList);
 
             //Act
-            result = sut.IsUnique(newGame);
+            result = sut.IsAvailable(newGame);
 
             //Assert
             Assert.That(result, Is.True);

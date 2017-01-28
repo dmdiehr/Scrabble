@@ -76,7 +76,7 @@ namespace Scrabble
             return true;
         }
 
-        public bool IsUnique(Game game)
+        public bool IsAvailable(Game game)
         {
             foreach (var item in _spaceList)
             {
@@ -116,7 +116,7 @@ namespace Scrabble
 
         public bool IsLegal(Game game)
         {
-            return (this.IsUnique(game) && this.IsStraight(game) && this.IsContiguous(game));
+            return (this.IsAvailable(game) && this.IsStraight(game) && this.IsContiguous(game));
         }
 
         public void PlacementSort()
