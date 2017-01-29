@@ -78,6 +78,24 @@ namespace Scrabble
         public bool IsOccupied()
         {
             return (_tile != null);
-        }      
+        }
+
+        public Space GetAdjacentNorth()
+        {
+            return new Space(GetX(), GetY() - 1);
+        }
+        public Space GetAdjacentSouth()
+        {
+            return new Space(GetX(), GetY() + 1);
+        }
+        public Space GetAdjacentEast()
+        {
+            return new Space(GetX() - 1, GetY());
+        }
+        public Space GetAdjacentWest()
+        {
+            return new Space(GetX() + 1, GetY());
+        }
+
     }
 }

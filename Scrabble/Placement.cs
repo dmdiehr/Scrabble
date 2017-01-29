@@ -80,7 +80,7 @@ namespace Scrabble
         {
             foreach (var item in _spaceList)
             {
-                if (game.GetSpace(item).GetTile() != null)
+                if (game.GetSpace(item).IsOccupied())
                     return false;
             }
             return true;
