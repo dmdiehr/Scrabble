@@ -86,6 +86,23 @@ namespace Scrabble
             return true;
         }
 
+        public bool HasNoDuplicates()
+        {
+            if (_spaceList == null || IsSingle())
+                return true;
+
+            for (int i = 0; i < _spaceList.Count; i++)
+            {
+                for (int j = i+1; j < _spaceList.Count; j++)
+                {
+                    if (_spaceList[i].GetCoordsString() == _spaceList[j].GetCoordsString())
+                        return false;
+                }
+            }
+
+            return true;
+        }
+
         public bool IsSingle()
         {
             if (_spaceList == null)
