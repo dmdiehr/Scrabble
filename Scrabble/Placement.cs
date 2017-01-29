@@ -140,14 +140,24 @@ namespace Scrabble
             return IsSingle() || IsHorizontal() || IsVertical();
         }
 
+        public bool IsFirstMove(Game game)
+        {
+            return false;
+        }
+
+        public bool IsAdjacent(Game game)
+        {
+            return false;
+        }
+
         public bool IsContiguous(Game game)
         {
-            return true;
+            return false;
         }
 
         public bool IsLegal(Game game)
         {
-            return IsAvailable(game) && IsStraight() && IsContiguous(game) && IsOnBoard(game);
+            return IsAvailable(game) && IsStraight() && IsContiguous(game) && IsOnBoard(game) && IsAdjacent(game);
         }
 
         public void PlacementSort()

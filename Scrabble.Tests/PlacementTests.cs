@@ -441,6 +441,7 @@ namespace Scrabble.Tests
         }
 
         //HasNoDuplicates Test
+
         [Test]
         public void HasNoDuplicates_Single()
         {
@@ -512,7 +513,7 @@ namespace Scrabble.Tests
         }
 
         [Test]
-        public void HasNoDuplicates_OneDupe()
+        public void HasNoDuplicates_MultiDifferentOneDupe()
         {
             Placement sut;
             var result = true;
@@ -529,7 +530,321 @@ namespace Scrabble.Tests
 
         }
 
+        [Test]
+        public void HasNoDuplicates_MultiDifferent()
+        {
+            Placement sut;
+            var result = false;
+
+            //Arrange
+
+            List<Space> spaceList = new List<Space>() { new Space(1, 1), new Space(6, 7), new Space(1, 7), new Space(7, 13), new Space(7, 8), new Space(7, 7), new Space(7, 9) };
+            sut = new Placement(spaceList);
+            //Act
+            result = sut.HasNoDuplicates();
+
+            //Assert
+            Assert.That(result, Is.True);
+
+        }
+
+        //IsAdjacent
+
+        [Test]
+        public void IsAdjacent_SingleAdjacentTop()
+        {
+            Placement sut;
+            bool result = false;
+
+            //Arrange
+            List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>();
+            tupleList.Add(Tuple.Create(new Space(7, 7), new Tile('a')));
+            tupleList.Add(Tuple.Create(new Space(7, 8), new Tile('b')));
+            tupleList.Add(Tuple.Create(new Space(7, 9), new Tile('c')));
+            tupleList.Add(Tuple.Create(new Space(7, 10), new Tile('d')));
+            tupleList.Add(Tuple.Create(new Space(7, 11), new Tile('e')));
+            tupleList.Add(Tuple.Create(new Space(7, 12), new Tile('f')));
+            tupleList.Add(Tuple.Create(new Space(7, 13), new Tile('g')));
+
+            Game newGame = new Game();
+            newGame.SetBoard(tupleList);
+
+            List<Space> spaceList = new List<Space>();
+            spaceList.Add(new Space(7, 6));
+            sut = new Placement(spaceList);
+
+            //Act
+            result = sut.IsAdjacent(newGame);
+
+            //Assert
+            Assert.That(result, Is.True);
+        }
+
+        [Test]
+        public void IsAdjacent_SingleAdjacentBottom()
+        {
+            Placement sut;
+            bool result = false;
+
+            //Arrange
+            List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>();
+            tupleList.Add(Tuple.Create(new Space(7, 7), new Tile('a')));
+            tupleList.Add(Tuple.Create(new Space(7, 8), new Tile('b')));
+            tupleList.Add(Tuple.Create(new Space(7, 9), new Tile('c')));
+            tupleList.Add(Tuple.Create(new Space(7, 10), new Tile('d')));
+            tupleList.Add(Tuple.Create(new Space(7, 11), new Tile('e')));
+            tupleList.Add(Tuple.Create(new Space(7, 12), new Tile('f')));
+            tupleList.Add(Tuple.Create(new Space(7, 13), new Tile('g')));
+
+            Game newGame = new Game();
+            newGame.SetBoard(tupleList);
+
+            List<Space> spaceList = new List<Space>();
+            spaceList.Add(new Space(7, 14));
+            sut = new Placement(spaceList);
+
+            //Act
+            result = sut.IsAdjacent(newGame);
+
+            //Assert
+            Assert.That(result, Is.True);
+        }
+
+        [Test]
+        public void IsAdjacent_SingleAdjacentLeft()
+        {
+            Placement sut;
+            bool result = false;
+
+            //Arrange
+            List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>();
+            tupleList.Add(Tuple.Create(new Space(7, 7), new Tile('a')));
+            tupleList.Add(Tuple.Create(new Space(7, 8), new Tile('b')));
+            tupleList.Add(Tuple.Create(new Space(7, 9), new Tile('c')));
+            tupleList.Add(Tuple.Create(new Space(7, 10), new Tile('d')));
+            tupleList.Add(Tuple.Create(new Space(7, 11), new Tile('e')));
+            tupleList.Add(Tuple.Create(new Space(7, 12), new Tile('f')));
+            tupleList.Add(Tuple.Create(new Space(7, 13), new Tile('g')));
+
+            Game newGame = new Game();
+            newGame.SetBoard(tupleList);
+
+            List<Space> spaceList = new List<Space>();
+            spaceList.Add(new Space(6, 10));
+            sut = new Placement(spaceList);
+
+            //Act
+            result = sut.IsAdjacent(newGame);
+
+            //Assert
+            Assert.That(result, Is.True);
+
+        }
+
+        [Test]
+        public void IsAdjacent_SingleAdjacentRight()
+        {
+            Placement sut;
+            bool result = false;
+
+            //Arrange
+            List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>();
+            tupleList.Add(Tuple.Create(new Space(7, 7), new Tile('a')));
+            tupleList.Add(Tuple.Create(new Space(7, 8), new Tile('b')));
+            tupleList.Add(Tuple.Create(new Space(7, 9), new Tile('c')));
+            tupleList.Add(Tuple.Create(new Space(7, 10), new Tile('d')));
+            tupleList.Add(Tuple.Create(new Space(7, 11), new Tile('e')));
+            tupleList.Add(Tuple.Create(new Space(7, 12), new Tile('f')));
+            tupleList.Add(Tuple.Create(new Space(7, 13), new Tile('g')));
+
+            Game newGame = new Game();
+            newGame.SetBoard(tupleList);
+
+            List<Space> spaceList = new List<Space>();
+            spaceList.Add(new Space(8, 10));
+            sut = new Placement(spaceList);
+
+            //Act
+            result = sut.IsAdjacent(newGame);
+
+            //Assert
+            Assert.That(result, Is.True);
+        }
+        [Test]
+        public void IsAdjacent_MultipleAdjacent()
+        {
+            Placement sut;
+            bool result = false;
+
+            //Arrange
+            List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>();
+            tupleList.Add(Tuple.Create(new Space(7, 7), new Tile('a')));
+            tupleList.Add(Tuple.Create(new Space(7, 8), new Tile('b')));
+            tupleList.Add(Tuple.Create(new Space(7, 9), new Tile('c')));
+            tupleList.Add(Tuple.Create(new Space(7, 10), new Tile('d')));
+            tupleList.Add(Tuple.Create(new Space(7, 11), new Tile('e')));
+            tupleList.Add(Tuple.Create(new Space(7, 12), new Tile('f')));
+            tupleList.Add(Tuple.Create(new Space(7, 13), new Tile('g')));
+
+            Game newGame = new Game();
+            newGame.SetBoard(tupleList);
+
+            List<Space> spaceList = new List<Space>();
+            spaceList.Add(new Space(8, 10));
+            spaceList.Add(new Space(8, 11));
+            spaceList.Add(new Space(8, 12));
+            spaceList.Add(new Space(8, 13));
+            spaceList.Add(new Space(8, 14));
+
+            sut = new Placement(spaceList);
+
+            //Act
+            result = sut.IsAdjacent(newGame);
+
+            //Assert
+            Assert.That(result, Is.True);
+        }
+
+        [Test]
+        public void IsAdjacent_AdjacentJunction()
+        {
+            Placement sut;
+            bool result = false;
+
+            //Arrange
+            List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>();
+            tupleList.Add(Tuple.Create(new Space(7, 7), new Tile('a')));
+            tupleList.Add(Tuple.Create(new Space(7, 8), new Tile('b')));
+            tupleList.Add(Tuple.Create(new Space(7, 9), new Tile('c')));
+            tupleList.Add(Tuple.Create(new Space(7, 10), new Tile('d')));
+            tupleList.Add(Tuple.Create(new Space(7, 11), new Tile('e')));
+            tupleList.Add(Tuple.Create(new Space(7, 12), new Tile('f')));
+            tupleList.Add(Tuple.Create(new Space(7, 13), new Tile('g')));
+
+            Game newGame = new Game();
+            newGame.SetBoard(tupleList);
+
+            List<Space> spaceList = new List<Space>();
+            spaceList.Add(new Space(7, 6));
+            spaceList.Add(new Space(4, 6));
+            spaceList.Add(new Space(5, 6));
+            spaceList.Add(new Space(6, 6));
+            spaceList.Add(new Space(8, 6));
+
+            sut = new Placement(spaceList);
+
+            //Act
+            result = sut.IsAdjacent(newGame);
+
+            //Assert
+            Assert.That(result, Is.True);
+        }
+
+        [Test]
+        public void IsAdjacent_SingleOff()
+        {
+            Placement sut;
+            bool result = true;
+
+            //Arrange
+            List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>();
+            tupleList.Add(Tuple.Create(new Space(7, 7), new Tile('a')));
+            tupleList.Add(Tuple.Create(new Space(7, 8), new Tile('b')));
+            tupleList.Add(Tuple.Create(new Space(7, 9), new Tile('c')));
+            tupleList.Add(Tuple.Create(new Space(7, 10), new Tile('d')));
+            tupleList.Add(Tuple.Create(new Space(7, 11), new Tile('e')));
+            tupleList.Add(Tuple.Create(new Space(7, 12), new Tile('f')));
+            tupleList.Add(Tuple.Create(new Space(7, 13), new Tile('g')));
+
+            Game newGame = new Game();
+            newGame.SetBoard(tupleList);
+
+            List<Space> spaceList = new List<Space>();
+            spaceList.Add(new Space(10, 12));
+
+            sut = new Placement(spaceList);
+
+            //Act
+            //result = sut.IsAdjacent(newGame);
+
+            //Assert
+            Assert.That(result, Is.False);
+        }
+
+        [Test]
+        public void IsAdjacent_MultipleOff()
+        {
+            Placement sut;
+            bool result = true;
+
+            //Arrange
+            List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>();
+            tupleList.Add(Tuple.Create(new Space(7, 7), new Tile('a')));
+            tupleList.Add(Tuple.Create(new Space(7, 8), new Tile('b')));
+            tupleList.Add(Tuple.Create(new Space(7, 9), new Tile('c')));
+            tupleList.Add(Tuple.Create(new Space(7, 10), new Tile('d')));
+            tupleList.Add(Tuple.Create(new Space(7, 11), new Tile('e')));
+            tupleList.Add(Tuple.Create(new Space(7, 12), new Tile('f')));
+            tupleList.Add(Tuple.Create(new Space(7, 13), new Tile('g')));
+
+            Game newGame = new Game();
+            newGame.SetBoard(tupleList);
+
+            List<Space> spaceList = new List<Space>();
+            spaceList.Add(new Space(2, 6));
+            spaceList.Add(new Space(2, 5));
+            spaceList.Add(new Space(2, 4));
+            spaceList.Add(new Space(2, 3));
+            spaceList.Add(new Space(2, 2));
+
+            sut = new Placement(spaceList);
+
+            //Act
+            //result = sut.IsAdjacent(newGame);
+
+            //Assert
+            Assert.That(result, Is.False);
+        }
+        [Test]
+        public void IsAdjacent_Corners()
+        {          
+            bool result1 = true;
+            bool result2 = true;
+            bool result3 = true;
+            bool result4 = true;
+
+            //Arrange
+            List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>();
+            tupleList.Add(Tuple.Create(new Space(7, 7), new Tile('a')));
+            tupleList.Add(Tuple.Create(new Space(7, 8), new Tile('b')));
+            tupleList.Add(Tuple.Create(new Space(7, 9), new Tile('c')));
+            tupleList.Add(Tuple.Create(new Space(7, 10), new Tile('d')));
+            tupleList.Add(Tuple.Create(new Space(7, 11), new Tile('e')));
+            tupleList.Add(Tuple.Create(new Space(7, 12), new Tile('f')));
+            tupleList.Add(Tuple.Create(new Space(7, 13), new Tile('g')));
+
+            Game newGame = new Game();
+            newGame.SetBoard(tupleList);
+
+            Placement sut1 = new Placement(new Space(0, 0));
+            Placement sut2 = new Placement(new Space(0, 14));
+            Placement sut3 = new Placement(new Space(14, 0));
+            Placement sut4 = new Placement(new Space(0, 14));
+
+            //Act
+            result1 = sut1.IsAdjacent(newGame);
+            result2 = sut2.IsAdjacent(newGame);
+            result3 = sut3.IsAdjacent(newGame);
+            result4 = sut4.IsAdjacent(newGame);
+
+            //Assert
+            Assert.That(result1, Is.False);
+            Assert.That(result2, Is.False);
+            Assert.That(result3, Is.False);
+            Assert.That(result4, Is.False);
+        }
         //IsSingle Tests
+
         [Test]
         public void IsSingle_OneSpace()
         {
@@ -582,7 +897,7 @@ namespace Scrabble.Tests
             //Assert
             Assert.That(result, Is.False);
         }
-        
+
         //IsHorizontal
 
         [Test]
