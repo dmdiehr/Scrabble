@@ -178,5 +178,6 @@ namespace Scrabble
             SetBoard(spaces, tiles);
 
         }
+
     }
 }

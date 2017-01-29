@@ -13,7 +13,9 @@ namespace Scrabble.Tests
     {
 
         //IsOnBoard Tests
+
         [Test]
+        [Category("IsOnBoard")]
         public void IsOnBoard_SingleSpaceInMiddle()
         {
             Placement sut;
@@ -34,6 +36,7 @@ namespace Scrabble.Tests
         }
 
         [Test]
+        [Category("IsOnBoard")]
         public void IsOnBoard_NegativeXValue()
         {
             Placement sut;
@@ -54,6 +57,7 @@ namespace Scrabble.Tests
         }
 
         [Test]
+        [Category("IsOnBoard")]
         public void IsOnBoard_NegativeYValue()
         {
             Placement sut;
@@ -74,6 +78,7 @@ namespace Scrabble.Tests
         }
 
         [Test]
+        [Category("IsOnBoard")]
         public void IsOnBoard_SingleSpaceBothNegativeValues()
         {
             Placement sut;
@@ -94,6 +99,7 @@ namespace Scrabble.Tests
         }
 
         [Test]
+        [Category("IsOnBoard")]
         public void IsOnBoard_TwoSpacesOnBoard()
         {
             Placement sut;
@@ -115,6 +121,7 @@ namespace Scrabble.Tests
         }
 
         [Test]
+        [Category("IsOnBoard")]
         public void IsOnBoard_OneOnOneOff()
         {
             Placement sut;
@@ -135,6 +142,7 @@ namespace Scrabble.Tests
         }
 
         [Test]
+        [Category("IsOnBoard")]
         public void IsOnBoard_OnEdges()
         {
             Placement sut;
@@ -157,6 +165,7 @@ namespace Scrabble.Tests
         }
 
         [Test]
+        [Category("IsOnBoard")]
         public void IsOnBoard_OffEdges()
         {
             Placement sut1;
@@ -181,6 +190,7 @@ namespace Scrabble.Tests
         }
 
         [Test]
+        [Category("IsOnBoard")]
         public void IsOnBoard_7On()
         {
             Placement sut;
@@ -207,6 +217,7 @@ namespace Scrabble.Tests
         }
 
         [Test]
+        [Category("IsOnBoard")]
         public void IsOnBoard_6On1Off()
         {
             Placement sut;
@@ -235,6 +246,7 @@ namespace Scrabble.Tests
         //IsAvailable Tests
 
         [Test]
+        [Category("IsAvailable")]
         public void IsAvailable_EmtpyBoard()
         {
             Placement sut;
@@ -252,6 +264,7 @@ namespace Scrabble.Tests
         }
 
         [Test]
+        [Category("IsAvailable")]
         public void IsAvailable_SingleOccupiedSpace()
         {
             Placement sut;
@@ -274,6 +287,7 @@ namespace Scrabble.Tests
         }
 
         [Test]
+        [Category("IsAvailable")]
         public void IsAvailable_TwoOccupiedSpace()
         {
             Placement sut;
@@ -301,6 +315,7 @@ namespace Scrabble.Tests
         }
 
         [Test]
+        [Category("IsAvailable")]
         public void IsAvailable_OneOccupiedMultipleNot()
         {
             Placement sut;
@@ -336,6 +351,7 @@ namespace Scrabble.Tests
         }
 
         [Test]
+        [Category("IsAvailable")]
         public void IsAvailable_MultipleOccupiedMultipleNot()
         {
             Placement sut;
@@ -371,6 +387,7 @@ namespace Scrabble.Tests
         }
 
         [Test]
+        [Category("IsAvailable")]
         public void IsAvailable_MultipleClear()
         {
             Placement sut;
@@ -406,6 +423,7 @@ namespace Scrabble.Tests
         }
 
         [Test]
+        [Category("IsAvailable")]
         public void IsAvailable_MultipleAdjacent()
         {
             Placement sut;
@@ -443,6 +461,7 @@ namespace Scrabble.Tests
         //HasNoDuplicates Test
 
         [Test]
+        [Category("IsAvailable")]
         public void HasNoDuplicates_Single()
         {
             Placement sut;
@@ -460,6 +479,7 @@ namespace Scrabble.Tests
         }
 
         [Test]
+        [Category("IsAvailable")]
         public void HasNoDuplicates_Empty()
         {
             Placement sut;
@@ -477,6 +497,7 @@ namespace Scrabble.Tests
         }
 
         [Test]
+        [Category("IsAvailable")]
         public void HasNoDuplicates_TwoTheSame()
         {
             Placement sut;
@@ -495,6 +516,7 @@ namespace Scrabble.Tests
         }
 
         [Test]
+        [Category("IsAvailable")]
         public void HasNoDuplicates_TwoDifferent()
         {
             Placement sut;
@@ -513,6 +535,7 @@ namespace Scrabble.Tests
         }
 
         [Test]
+        [Category("IsAvailable")]
         public void HasNoDuplicates_MultiDifferentOneDupe()
         {
             Placement sut;
@@ -531,6 +554,7 @@ namespace Scrabble.Tests
         }
 
         [Test]
+        [Category("IsAvailable")]
         public void HasNoDuplicates_MultiDifferent()
         {
             Placement sut;
@@ -548,9 +572,90 @@ namespace Scrabble.Tests
 
         }
 
+        //IsFirstMove
+
+        [Test]
+        [Category("IsFirstMove")]
+        public void IsFirstMove_SingleMiddleSpaceOnEmtpyBoard()
+        {
+            Placement sut;
+            bool result = false;
+
+            //Arrange          
+            Game newGame = new Game();
+            sut = new Placement(new Space(7, 7));
+
+            //Act
+            result = sut.IsFirstMove(newGame);
+
+            //Assert
+            Assert.That(result, Is.True);
+        }
+
+        [Test]
+        [Category("IsFirstMove")]
+        public void IsFirstMove_MiddleWordOnEmtpyBoard()
+        {
+            Placement sut;
+            bool result = false;
+
+            //Arrange          
+            Game newGame = new Game();
+            sut = new Placement(new List<Space>() { new Space(7, 7), new Space(7, 8), new Space(7, 9), new Space(7, 6)} );
+
+            //Act
+            result = sut.IsFirstMove(newGame);
+
+            //Assert
+            Assert.That(result, Is.True);
+        }
+
+        [Test]
+        [Category("IsFirstMove")]
+        public void IsFirstMove_MiddleSpaceOnBadBoard()
+        {
+            Placement sut;
+            bool result = true;
+
+            //Arrange          
+            List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>();
+            tupleList.Add(Tuple.Create(new Space(10, 7), new Tile('a')));
+            tupleList.Add(Tuple.Create(new Space(10, 8), new Tile('b')));
+
+            Game newGame = new Game();
+            newGame.SetBoard(tupleList);
+
+            sut = new Placement(new Space(7, 7));
+
+            //Act
+            result = sut.IsFirstMove(newGame);
+
+            //Assert
+            Assert.That(result, Is.False);
+        }
+
+        [Test]
+        [Category("IsFirstMove")]
+        public void IsFirstMove_OffWordOnEmtpyBoard()
+        {
+            Placement sut;
+            bool result = true;
+
+            //Arrange          
+            Game newGame = new Game();
+            sut = new Placement(new List<Space>() { new Space(8, 7), new Space(8, 8), new Space(8, 9), new Space(7, 8) });
+
+            //Act
+            result = sut.IsFirstMove(newGame);
+
+            //Assert
+            Assert.That(result, Is.False);
+        }
+
         //IsAdjacent
 
         [Test]
+        [Category("IsAdjacent")]
         public void IsAdjacent_SingleAdjacentTop()
         {
             Placement sut;
@@ -581,6 +686,7 @@ namespace Scrabble.Tests
         }
 
         [Test]
+        [Category("IsAdjacent")]
         public void IsAdjacent_SingleAdjacentBottom()
         {
             Placement sut;
@@ -611,6 +717,7 @@ namespace Scrabble.Tests
         }
 
         [Test]
+        [Category("IsAdjacent")]
         public void IsAdjacent_SingleAdjacentLeft()
         {
             Placement sut;
@@ -642,6 +749,7 @@ namespace Scrabble.Tests
         }
 
         [Test]
+        [Category("IsAdjacent")]
         public void IsAdjacent_SingleAdjacentRight()
         {
             Placement sut;
@@ -670,7 +778,9 @@ namespace Scrabble.Tests
             //Assert
             Assert.That(result, Is.True);
         }
+
         [Test]
+        [Category("IsAdjacent")]
         public void IsAdjacent_MultipleAdjacent()
         {
             Placement sut;
@@ -706,6 +816,7 @@ namespace Scrabble.Tests
         }
 
         [Test]
+        [Category("IsAdjacent")]
         public void IsAdjacent_AdjacentJunction()
         {
             Placement sut;
@@ -741,6 +852,7 @@ namespace Scrabble.Tests
         }
 
         [Test]
+        [Category("IsAdjacent")]
         public void IsAdjacent_SingleOff()
         {
             Placement sut;
@@ -765,13 +877,14 @@ namespace Scrabble.Tests
             sut = new Placement(spaceList);
 
             //Act
-            //result = sut.IsAdjacent(newGame);
+            result = sut.IsAdjacent(newGame);
 
             //Assert
             Assert.That(result, Is.False);
         }
 
         [Test]
+        [Category("IsAdjacent")]
         public void IsAdjacent_MultipleOff()
         {
             Placement sut;
@@ -800,12 +913,13 @@ namespace Scrabble.Tests
             sut = new Placement(spaceList);
 
             //Act
-            //result = sut.IsAdjacent(newGame);
+            result = sut.IsAdjacent(newGame);
 
             //Assert
             Assert.That(result, Is.False);
         }
         [Test]
+        [Category("IsAdjacent")]
         public void IsAdjacent_Corners()
         {          
             bool result1 = true;
@@ -843,9 +957,11 @@ namespace Scrabble.Tests
             Assert.That(result3, Is.False);
             Assert.That(result4, Is.False);
         }
+        
         //IsSingle Tests
 
         [Test]
+        [Category("IsSingle")]
         public void IsSingle_OneSpace()
         {
             Placement sut;
@@ -864,6 +980,7 @@ namespace Scrabble.Tests
         }
 
         [Test]
+        [Category("IsSingle")]
         public void IsSingle_TwoSpaces()
         {
             Placement sut;
@@ -883,6 +1000,7 @@ namespace Scrabble.Tests
         }
 
         [Test]
+        [Category("IsSingle")]
         public void IsSingle_NoSpace()
         {
             Placement sut;
@@ -901,6 +1019,7 @@ namespace Scrabble.Tests
         //IsHorizontal
 
         [Test]
+        [Category("IsHorizontal")]
         public void IsHorizontal_True()
         {
             Placement sut;
@@ -925,6 +1044,7 @@ namespace Scrabble.Tests
         }
 
         [Test]
+        [Category("IsHorizontal")]
         public void IsHorizontal_OneOff()
         {
             Placement sut;
@@ -949,6 +1069,7 @@ namespace Scrabble.Tests
         }
 
         [Test]
+        [Category("IsHorizontal")]
         public void IsHorizontal_WayOff()
         {
             Placement sut;
@@ -973,6 +1094,7 @@ namespace Scrabble.Tests
         }
 
         [Test]
+        [Category("IsHorizontal")]
         public void IsHorizontal_Single()
         {
             Placement sut;
@@ -991,6 +1113,7 @@ namespace Scrabble.Tests
         }
 
         [Test]
+        [Category("IsHorizontal")]
         public void IsHorizontal_Empty()
         {
             Placement sut;
@@ -1009,6 +1132,7 @@ namespace Scrabble.Tests
         }
 
         [Test]
+        [Category("IsHorizontal")]
         public void IsHorizontal_Vertical()
         {
             Placement sut;
@@ -1036,6 +1160,7 @@ namespace Scrabble.Tests
         //IsVertical
 
         [Test]
+        [Category("IsVertical")]
         public void IsVertical_True()
         {
             Placement sut;
@@ -1061,6 +1186,7 @@ namespace Scrabble.Tests
         }
 
         [Test]
+        [Category("IsVertical")]
         public void IsVertical_OneOff()
         {
             Placement sut;
@@ -1086,6 +1212,7 @@ namespace Scrabble.Tests
         }
 
         [Test]
+        [Category("IsVertical")]
         public void IsVertial_WayOff()
         {
             Placement sut;
@@ -1111,6 +1238,7 @@ namespace Scrabble.Tests
         }
 
         [Test]
+        [Category("IsVertical")]
         public void IsVertical_Single()
         {
             Placement sut;
@@ -1130,6 +1258,7 @@ namespace Scrabble.Tests
         }
 
         [Test]
+        [Category("IsVertical")]
         public void IsVertical_Empty()
         {
             Placement sut;
@@ -1148,6 +1277,7 @@ namespace Scrabble.Tests
         }
 
         [Test]
+        [Category("IsVertical")]
         public void IsVertical_Horizontal()
         {
             Placement sut;

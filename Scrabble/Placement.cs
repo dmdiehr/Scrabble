@@ -142,11 +142,53 @@ namespace Scrabble
 
         public bool IsFirstMove(Game game)
         {
+            foreach (Space space in game.GetBoard())
+            {
+                if (space.GetTile() != null)
+                    return false;
+            }
+
+            foreach (Space space in _spaceList)
+            {
+                if (space.GetCoords().Equals(Tuple.Create(7, 7)))
+                    return true;
+            }
             return false;
         }
 
         public bool IsAdjacent(Game game)
         {
+            
+            foreach (Space space in _spaceList)
+            {
+                try
+                {
+                    if (game.GetSpace(space.GetAdjacentNorth()).IsOccupied())
+                        return true;
+                }
+                catch (IndexOutOfRangeException) { }
+
+                try
+                {
+                    if (game.GetSpace(space.GetAdjacentSouth()).IsOccupied())
+                        return true;
+                }
+                catch (IndexOutOfRangeException) { }
+
+                try
+                {
+                    if (game.GetSpace(space.GetAdjacentEast()).IsOccupied())
+                        return true;
+                }
+                catch (IndexOutOfRangeException) { }
+
+                try
+                {
+                    if (game.GetSpace(space.GetAdjacentWest()).IsOccupied())
+                        return true;
+                }
+                catch (IndexOutOfRangeException) { }
+            }
             return false;
         }
 
@@ -157,7 +199,7 @@ namespace Scrabble
 
         public bool IsLegal(Game game)
         {
-            return IsAvailable(game) && IsStraight() && IsContiguous(game) && IsOnBoard(game) && IsAdjacent(game);
+            return IsAvailable(game) && IsStraight() && IsContiguous(game) && IsOnBoard(game) && (IsAdjacent(game) || IsFirstMove(game));
         }
 
         public void PlacementSort()
