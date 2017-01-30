@@ -194,12 +194,17 @@ namespace Scrabble
 
         public bool IsContiguous(Game game)
         {
+            if (!IsStraight() || !HasNoDuplicates() || !IsAvailable(game))
+                return false;
+            if (IsSingle())
+                return true;
+
             return false;
         }
 
         public bool IsLegal(Game game)
         {
-            return IsAvailable(game) && IsStraight() && IsContiguous(game) && IsOnBoard(game) && (IsAdjacent(game) || IsFirstMove(game));
+            return IsContiguous(game) && IsOnBoard(game) && (IsAdjacent(game) || IsFirstMove(game));
         }
 
         public void PlacementSort()

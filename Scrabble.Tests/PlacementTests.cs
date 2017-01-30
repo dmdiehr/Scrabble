@@ -461,7 +461,7 @@ namespace Scrabble.Tests
         //HasNoDuplicates Test
 
         [Test]
-        [Category("IsAvailable")]
+        [Category("HasNoDuplicates")]
         public void HasNoDuplicates_Single()
         {
             Placement sut;
@@ -479,7 +479,7 @@ namespace Scrabble.Tests
         }
 
         [Test]
-        [Category("IsAvailable")]
+        [Category("HasNoDuplicates")]
         public void HasNoDuplicates_Empty()
         {
             Placement sut;
@@ -497,7 +497,7 @@ namespace Scrabble.Tests
         }
 
         [Test]
-        [Category("IsAvailable")]
+        [Category("HasNoDuplicates")]
         public void HasNoDuplicates_TwoTheSame()
         {
             Placement sut;
@@ -516,7 +516,7 @@ namespace Scrabble.Tests
         }
 
         [Test]
-        [Category("IsAvailable")]
+        [Category("HasNoDuplicates")]
         public void HasNoDuplicates_TwoDifferent()
         {
             Placement sut;
@@ -535,7 +535,7 @@ namespace Scrabble.Tests
         }
 
         [Test]
-        [Category("IsAvailable")]
+        [Category("HasNoDuplicates")]
         public void HasNoDuplicates_MultiDifferentOneDupe()
         {
             Placement sut;
@@ -554,7 +554,7 @@ namespace Scrabble.Tests
         }
 
         [Test]
-        [Category("IsAvailable")]
+        [Category("HasNoDuplicates")]
         public void HasNoDuplicates_MultiDifferent()
         {
             Placement sut;
@@ -1300,6 +1300,848 @@ namespace Scrabble.Tests
             //Assert
             Assert.That(result, Is.False);
 
+        }
+
+        //IsContiguous Tests
+
+        [Test]
+        [Category("IsContiguous")]
+        public void IsContiguous_EmptyBoardGoodVertical()
+        {
+            Placement sut;
+            bool result = false;
+
+            //Arrange
+
+            List<Space> spaceList = new List<Space>();
+            spaceList.Add(new Space(6, 1));
+            spaceList.Add(new Space(6, 2));
+            spaceList.Add(new Space(6, 0));
+            spaceList.Add(new Space(6, 4));
+            spaceList.Add(new Space(6, 3));
+
+            sut = new Placement(spaceList);
+            //Act
+            result = sut.IsContiguous(new Game());
+
+            //Assert
+            Assert.That(result, Is.True);
+        }
+
+        [Test]
+        [Category("IsContiguous")]
+        public void IsContiguous_EmptyBoardGoodHorizontal()
+        {
+            Placement sut;
+            bool result = false;
+
+            //Arrange
+
+            List<Space> spaceList = new List<Space>();
+            spaceList.Add(new Space(1, 7));
+            spaceList.Add(new Space(2, 7));
+            spaceList.Add(new Space(3, 7));
+            spaceList.Add(new Space(4, 7));
+            spaceList.Add(new Space(5, 7));
+
+            sut = new Placement(spaceList);
+            //Act
+            result = sut.IsContiguous(new Game());
+
+            //Assert
+            Assert.That(result, Is.True);
+        }
+
+        [Test]
+        [Category("IsContiguous")]
+        public void IsContiguous_EmptyBoardBadVertical()
+        {
+            Placement sut;
+            bool result = true;
+
+            //Arrange
+
+            List<Space> spaceList = new List<Space>();
+            spaceList.Add(new Space(6, 1));
+            spaceList.Add(new Space(6, 2));
+            spaceList.Add(new Space(6, 0));
+            spaceList.Add(new Space(6, 12));
+            spaceList.Add(new Space(6, 3));
+
+            sut = new Placement(spaceList);
+            //Act
+            //result = sut.IsContiguous(new Game());
+
+            //Assert
+            Assert.That(result, Is.False);
+        }
+
+        [Test]
+        [Category("IsContiguous")]
+        public void IsContiguous_EmptyBoardBadHorizontal()
+        {
+            Placement sut;
+            bool result = true;
+
+            //Arrange
+
+            List<Space> spaceList = new List<Space>();
+            spaceList.Add(new Space(1, 7));
+            spaceList.Add(new Space(2, 7));
+            spaceList.Add(new Space(3, 7));
+            spaceList.Add(new Space(4, 7));
+            spaceList.Add(new Space(12, 7));
+
+            sut = new Placement(spaceList);
+            //Act
+            //result = sut.IsContiguous(new Game());
+
+            //Assert
+            Assert.That(result, Is.False);
+        }
+
+        [Test]
+        [Category("IsContiguous")]
+        public void IsContiguous_HorizontalOneGapGood()
+        {
+            Placement sut;
+            bool result = false;
+
+            //Arrange
+            List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>();
+            tupleList.Add(Tuple.Create(new Space(7, 7), new Tile('a')));
+            tupleList.Add(Tuple.Create(new Space(7, 8), new Tile('b')));
+            tupleList.Add(Tuple.Create(new Space(7, 9), new Tile('c')));
+            tupleList.Add(Tuple.Create(new Space(7, 10), new Tile('d')));
+            tupleList.Add(Tuple.Create(new Space(7, 11), new Tile('e')));
+            tupleList.Add(Tuple.Create(new Space(7, 12), new Tile('f')));
+            tupleList.Add(Tuple.Create(new Space(7, 13), new Tile('g')));
+
+            Game newGame = new Game();
+            newGame.SetBoard(tupleList);
+
+            List<Space> spaceList = new List<Space>();
+            spaceList.Add(new Space(5, 7));
+            spaceList.Add(new Space(6, 7));
+            spaceList.Add(new Space(8, 7));
+            spaceList.Add(new Space(9, 7));
+            spaceList.Add(new Space(10, 7));
+
+            sut = new Placement(spaceList);
+            //Act
+            result = sut.IsContiguous(newGame);
+
+            //Assert
+            Assert.That(result, Is.True);
+        }
+
+        [Test]
+        [Category("IsContiguous")]
+        public void IsContiguous_VerticalOneGapGood()
+        {
+            Placement sut;
+            bool result = false;
+
+            //Arrange
+            List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>();
+            tupleList.Add(Tuple.Create(new Space(7, 7), new Tile('a')));
+            tupleList.Add(Tuple.Create(new Space(8, 7), new Tile('b')));
+            tupleList.Add(Tuple.Create(new Space(9, 7), new Tile('c')));
+            tupleList.Add(Tuple.Create(new Space(10, 7), new Tile('d')));
+            tupleList.Add(Tuple.Create(new Space(11, 7), new Tile('e')));
+            tupleList.Add(Tuple.Create(new Space(12, 7), new Tile('f')));
+            tupleList.Add(Tuple.Create(new Space(13, 7), new Tile('g')));
+
+            Game newGame = new Game();
+            newGame.SetBoard(tupleList);
+
+            List<Space> spaceList = new List<Space>();
+            spaceList.Add(new Space(8, 6));
+            spaceList.Add(new Space(8, 10));
+            spaceList.Add(new Space(8, 9));
+            spaceList.Add(new Space(8, 8));
+            spaceList.Add(new Space(8, 11));
+
+            sut = new Placement(spaceList);
+            //Act
+            result = sut.IsContiguous(newGame);
+
+            //Assert
+            Assert.That(result, Is.True);
+        }
+
+        [Test]
+        [Category("IsContiguous")]
+        public void IsContiguous_VerticalDoubleGapGood()
+        {
+            Placement sut;
+            bool result = false;
+
+            //Arrange
+            List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>();
+            tupleList.Add(Tuple.Create(new Space(7, 7), new Tile('a')));
+            tupleList.Add(Tuple.Create(new Space(7, 8), new Tile('b')));         
+
+            Game newGame = new Game();
+            newGame.SetBoard(tupleList);
+
+            List<Space> spaceList = new List<Space>();
+            spaceList.Add(new Space(7, 6));
+            spaceList.Add(new Space(7, 5));
+            spaceList.Add(new Space(7, 9));
+            spaceList.Add(new Space(7, 10));
+            spaceList.Add(new Space(7, 11));
+
+            sut = new Placement(spaceList);
+            //Act
+            result = sut.IsContiguous(newGame);
+
+            //Assert
+            Assert.That(result, Is.True);
+        }
+
+        [Test]
+        [Category("IsContiguous")]
+        public void IsContiguous_HorizontalDoubleGapGood()
+        {
+            Placement sut;
+            bool result = false;
+
+            //Arrange
+            List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>();
+            tupleList.Add(Tuple.Create(new Space(7, 7), new Tile('a')));
+            tupleList.Add(Tuple.Create(new Space(8, 7), new Tile('b')));
+
+            Game newGame = new Game();
+            newGame.SetBoard(tupleList);
+
+            List<Space> spaceList = new List<Space>();
+            spaceList.Add(new Space(6, 7));
+            spaceList.Add(new Space(5, 7));
+            spaceList.Add(new Space(9, 7));
+            spaceList.Add(new Space(10, 7));
+            spaceList.Add(new Space(11, 7));
+
+            sut = new Placement(spaceList);
+            //Act
+            result = sut.IsContiguous(newGame);
+
+            //Assert
+            Assert.That(result, Is.True);
+        }
+        [Test]
+        [Category("IsContiguous")]
+        public void IsContiguous_VerticalTwoSingleGapsGood()
+        {
+            Placement sut;
+            bool result = false;
+
+            //Arrange
+            List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>();
+            tupleList.Add(Tuple.Create(new Space(7, 7), new Tile('a')));
+            tupleList.Add(Tuple.Create(new Space(7, 10), new Tile('b')));
+
+            Game newGame = new Game();
+            newGame.SetBoard(tupleList);
+
+            List<Space> spaceList = new List<Space>();
+            spaceList.Add(new Space(7, 6));
+            spaceList.Add(new Space(7, 5));
+            spaceList.Add(new Space(7, 9));
+            spaceList.Add(new Space(7, 8));
+            spaceList.Add(new Space(7, 11));
+
+            sut = new Placement(spaceList);
+            //Act
+            result = sut.IsContiguous(newGame);
+
+            //Assert
+            Assert.That(result, Is.True);
+        }
+
+        [Test]
+        [Category("IsContiguous")]
+        public void IsContiguous_HorizontalTwoSingleGapsGood()
+        {
+            Placement sut;
+            bool result = false;
+
+            //Arrange
+            List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>();
+            tupleList.Add(Tuple.Create(new Space(7, 7), new Tile('a')));
+            tupleList.Add(Tuple.Create(new Space(10, 7), new Tile('b')));
+
+            Game newGame = new Game();
+            newGame.SetBoard(tupleList);
+
+            List<Space> spaceList = new List<Space>();
+            spaceList.Add(new Space(6, 7));
+            spaceList.Add(new Space(5, 7));
+            spaceList.Add(new Space(9, 7));
+            spaceList.Add(new Space(8, 7));
+            spaceList.Add(new Space(11, 7));
+
+            sut = new Placement(spaceList);
+            //Act
+            result = sut.IsContiguous(newGame);
+
+            //Assert
+            Assert.That(result, Is.True);
+        }
+
+        [Test]
+        [Category("IsContiguous")]
+        public void IsContiguous_VerticalTripleGapGood()
+        {
+            Placement sut;
+            bool result = false;
+
+            //Arrange
+            List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>();
+            tupleList.Add(Tuple.Create(new Space(7, 7), new Tile('a')));
+            tupleList.Add(Tuple.Create(new Space(7, 8), new Tile('b')));
+            tupleList.Add(Tuple.Create(new Space(7, 9), new Tile('c')));
+
+            Game newGame = new Game();
+            newGame.SetBoard(tupleList);
+
+            List<Space> spaceList = new List<Space>();
+            spaceList.Add(new Space(7, 6));
+            spaceList.Add(new Space(7, 5));
+            spaceList.Add(new Space(7, 10));
+            spaceList.Add(new Space(7, 12));
+            spaceList.Add(new Space(7, 11));
+
+            sut = new Placement(spaceList);
+            //Act
+            result = sut.IsContiguous(newGame);
+
+            //Assert
+            Assert.That(result, Is.True);
+        }
+
+        [Test]
+        [Category("IsContiguous")]
+        public void IsContiguous_HorizontalTripleGapGood()
+        {
+            Placement sut;
+            bool result = false;
+
+            //Arrange
+            List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>();
+            tupleList.Add(Tuple.Create(new Space(7, 7), new Tile('a')));
+            tupleList.Add(Tuple.Create(new Space(8, 7), new Tile('b')));
+            tupleList.Add(Tuple.Create(new Space(9, 7), new Tile('c')));
+
+            Game newGame = new Game();
+            newGame.SetBoard(tupleList);
+
+            List<Space> spaceList = new List<Space>();
+            spaceList.Add(new Space(6, 7));
+            spaceList.Add(new Space(5, 7));
+            spaceList.Add(new Space(10, 7));
+            spaceList.Add(new Space(4, 7));
+            spaceList.Add(new Space(11, 7));
+
+            sut = new Placement(spaceList);
+            //Act
+            result = sut.IsContiguous(newGame);
+
+            //Assert
+            Assert.That(result, Is.True);
+        }
+
+        [Test]
+        [Category("IsContiguous")]
+        public void IsContiguous_HorizontalOneGapBad()
+        {
+            Placement sut;
+            bool result = true;
+
+            //Arrange
+            List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>();
+            tupleList.Add(Tuple.Create(new Space(7, 7), new Tile('a')));
+            tupleList.Add(Tuple.Create(new Space(7, 8), new Tile('b')));
+            tupleList.Add(Tuple.Create(new Space(7, 9), new Tile('c')));
+            tupleList.Add(Tuple.Create(new Space(7, 10), new Tile('d')));
+            tupleList.Add(Tuple.Create(new Space(7, 11), new Tile('e')));
+            tupleList.Add(Tuple.Create(new Space(7, 12), new Tile('f')));
+            tupleList.Add(Tuple.Create(new Space(7, 13), new Tile('g')));
+
+            Game newGame = new Game();
+            newGame.SetBoard(tupleList);
+
+            List<Space> spaceList = new List<Space>();
+            spaceList.Add(new Space(1, 7));
+            spaceList.Add(new Space(2, 7));
+            spaceList.Add(new Space(4, 7));
+            spaceList.Add(new Space(5, 7));
+            spaceList.Add(new Space(6, 7));
+
+            sut = new Placement(spaceList);
+            //Act
+            //result = sut.IsContiguous(newGame);
+
+            //Assert
+            Assert.That(result, Is.False);
+        }
+
+        [Test]
+        [Category("IsContiguous")]
+        public void IsContiguous_VerticalOneGapBad()
+        {
+            Placement sut;
+            bool result = true;
+
+            //Arrange
+            List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>();
+            tupleList.Add(Tuple.Create(new Space(7, 7), new Tile('a')));
+            tupleList.Add(Tuple.Create(new Space(8, 7), new Tile('b')));
+            tupleList.Add(Tuple.Create(new Space(9, 7), new Tile('c')));
+            tupleList.Add(Tuple.Create(new Space(10, 7), new Tile('d')));
+            tupleList.Add(Tuple.Create(new Space(11, 7), new Tile('e')));
+            tupleList.Add(Tuple.Create(new Space(12, 7), new Tile('f')));
+            tupleList.Add(Tuple.Create(new Space(13, 7), new Tile('g')));
+
+            Game newGame = new Game();
+            newGame.SetBoard(tupleList);
+
+            List<Space> spaceList = new List<Space>();
+            spaceList.Add(new Space(7, 1));
+            spaceList.Add(new Space(7, 2));
+            spaceList.Add(new Space(7, 4));
+            spaceList.Add(new Space(7, 5));
+            spaceList.Add(new Space(7, 6));
+
+            sut = new Placement(spaceList);
+            //Act
+            //result = sut.IsContiguous(newGame);
+
+            //Assert
+            Assert.That(result, Is.False);
+        }
+
+        [Test]
+        [Category("IsContiguous")]
+        public void IsContiguous_VerticalDoubleGapBad()
+        {
+            Placement sut;
+            bool result = true;
+
+            //Arrange
+            List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>();
+            tupleList.Add(Tuple.Create(new Space(7, 7), new Tile('a')));
+
+            Game newGame = new Game();
+            newGame.SetBoard(tupleList);
+
+            List<Space> spaceList = new List<Space>();
+            spaceList.Add(new Space(7, 6));
+            spaceList.Add(new Space(7, 5));
+            spaceList.Add(new Space(7, 9));
+            spaceList.Add(new Space(7, 10));
+            spaceList.Add(new Space(7, 11));
+
+            sut = new Placement(spaceList);
+            //Act
+            //result = sut.IsContiguous(newGame);
+
+            //Assert
+            Assert.That(result, Is.False);
+        }
+
+        [Test]
+        [Category("IsContiguous")]
+        public void IsContiguous_HorizontalDoubleGapBad()
+        {
+            Placement sut;
+            bool result = true;
+
+            //Arrange
+            List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>();
+            tupleList.Add(Tuple.Create(new Space(7, 7), new Tile('a')));
+
+            Game newGame = new Game();
+            newGame.SetBoard(tupleList);
+
+            List<Space> spaceList = new List<Space>();
+            spaceList.Add(new Space(6, 7));
+            spaceList.Add(new Space(5, 7));
+            spaceList.Add(new Space(9, 7));
+            spaceList.Add(new Space(10, 7));
+            spaceList.Add(new Space(11, 7));
+
+            sut = new Placement(spaceList);
+            //Act
+            //result = sut.IsContiguous(newGame);
+
+            //Assert
+            Assert.That(result, Is.False);
+        }
+
+        [Test]
+        [Category("IsContiguous")]
+        public void IsContiguous_VerticalTwoSingleGapsBad()
+        {
+            Placement sut;
+            bool result = true;
+
+            //Arrange
+            List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>();
+            tupleList.Add(Tuple.Create(new Space(7, 7), new Tile('a')));
+
+            Game newGame = new Game();
+            newGame.SetBoard(tupleList);
+
+            List<Space> spaceList = new List<Space>();
+            spaceList.Add(new Space(7, 6));
+            spaceList.Add(new Space(7, 5));
+            spaceList.Add(new Space(7, 9));
+            spaceList.Add(new Space(7, 8));
+            spaceList.Add(new Space(7, 11));
+
+            sut = new Placement(spaceList);
+            //Act
+            //result = sut.IsContiguous(newGame);
+
+            //Assert
+            Assert.That(result, Is.False);
+        }
+
+        [Test]
+        [Category("IsContiguous")]
+        public void IsContiguous_HorizontalTwoSingleGapsBad()
+        {
+            Placement sut;
+            bool result = true;
+
+            //Arrange
+            List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>();
+            tupleList.Add(Tuple.Create(new Space(7, 7), new Tile('a')));
+
+            Game newGame = new Game();
+            newGame.SetBoard(tupleList);
+
+            List<Space> spaceList = new List<Space>();
+            spaceList.Add(new Space(6, 7));
+            spaceList.Add(new Space(5, 7));
+            spaceList.Add(new Space(9, 7));
+            spaceList.Add(new Space(8, 7));
+            spaceList.Add(new Space(11, 7));
+
+            sut = new Placement(spaceList);
+            //Act
+            //result = sut.IsContiguous(newGame);
+
+            //Assert
+            Assert.That(result, Is.False);
+        }
+
+        [Test]
+        [Category("IsContiguous")]
+        public void IsContiguous_VerticalTripleGapMiddleBad()
+        {
+            Placement sut;
+            bool result = true;
+
+            //Arrange
+            List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>();
+            tupleList.Add(Tuple.Create(new Space(7, 7), new Tile('a')));
+ 
+            tupleList.Add(Tuple.Create(new Space(7, 9), new Tile('c')));
+
+            Game newGame = new Game();
+            newGame.SetBoard(tupleList);
+
+            List<Space> spaceList = new List<Space>();
+            spaceList.Add(new Space(7, 6));
+            spaceList.Add(new Space(7, 5));
+            spaceList.Add(new Space(7, 10));
+            spaceList.Add(new Space(7, 12));
+            spaceList.Add(new Space(7, 11));
+
+            sut = new Placement(spaceList);
+            //Act
+            //result = sut.IsContiguous(newGame);
+
+            //Assert
+            Assert.That(result, Is.False);
+        }
+
+        [Test]
+        [Category("IsContiguous")]
+        public void IsContiguous_VerticalTripleGapOneBad()
+        {
+            Placement sut;
+            bool result = true;
+
+            //Arrange
+            List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>();
+            tupleList.Add(Tuple.Create(new Space(7, 7), new Tile('a')));
+            tupleList.Add(Tuple.Create(new Space(7, 8), new Tile('b')));
+
+            Game newGame = new Game();
+            newGame.SetBoard(tupleList);
+
+            List<Space> spaceList = new List<Space>();
+            spaceList.Add(new Space(7, 6));
+            spaceList.Add(new Space(7, 5));
+            spaceList.Add(new Space(7, 10));
+            spaceList.Add(new Space(7, 12));
+            spaceList.Add(new Space(7, 11));
+
+            sut = new Placement(spaceList);
+            //Act
+            //result = sut.IsContiguous(newGame);
+
+            //Assert
+            Assert.That(result, Is.False);
+        }
+
+        [Test]
+        [Category("IsContiguous")]
+        public void IsContiguous_HorizontalTripleGapOneBad()
+        {
+            Placement sut;
+            bool result = true;
+
+            //Arrange
+            List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>();
+            tupleList.Add(Tuple.Create(new Space(7, 7), new Tile('a')));
+            tupleList.Add(Tuple.Create(new Space(8, 7), new Tile('b')));
+
+            Game newGame = new Game();
+            newGame.SetBoard(tupleList);
+
+            List<Space> spaceList = new List<Space>();
+            spaceList.Add(new Space(6, 7));
+            spaceList.Add(new Space(5, 7));
+            spaceList.Add(new Space(10, 7));
+            spaceList.Add(new Space(4, 7));
+            spaceList.Add(new Space(11, 7));
+
+            sut = new Placement(spaceList);
+            //Act
+            //result = sut.IsContiguous(newGame);
+
+            //Assert
+            Assert.That(result, Is.False);
+        }
+
+        [Test]
+        [Category("IsContiguous")]
+        public void IsContiguous_HorizontalTripleGapMiddleBad()
+        {
+            Placement sut;
+            bool result = true;
+
+            //Arrange
+            List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>();
+            tupleList.Add(Tuple.Create(new Space(7, 7), new Tile('a')));
+            tupleList.Add(Tuple.Create(new Space(9, 7), new Tile('c')));
+
+            Game newGame = new Game();
+            newGame.SetBoard(tupleList);
+
+            List<Space> spaceList = new List<Space>();
+            spaceList.Add(new Space(6, 7));
+            spaceList.Add(new Space(5, 7));
+            spaceList.Add(new Space(10, 7));
+            spaceList.Add(new Space(4, 7));
+            spaceList.Add(new Space(11, 7));
+
+            sut = new Placement(spaceList);
+            //Act
+            //result = sut.IsContiguous(newGame);
+
+            //Assert
+            Assert.That(result, Is.False);
+        }
+
+        [Test]
+        [Category("IsContiguous")]
+        public void IsContiguous_HorizontalTwoPlacementCheat1()
+        {
+            Placement sut;
+            bool result = true;
+
+            //Arrange
+            List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>();
+            tupleList.Add(Tuple.Create(new Space(1, 7), new Tile('a')));
+            tupleList.Add(Tuple.Create(new Space(3, 7), new Tile('c')));
+            tupleList.Add(Tuple.Create(new Space(10, 7), new Tile('j')));
+            tupleList.Add(Tuple.Create(new Space(12, 7), new Tile('l')));
+
+
+            Game newGame = new Game();
+            newGame.SetBoard(tupleList);
+
+            List<Space> spaceList = new List<Space>();
+            spaceList.Add(new Space(2, 7));
+            spaceList.Add(new Space(11, 7));
+
+            sut = new Placement(spaceList);
+            //Act
+            //result = sut.IsContiguous(newGame);
+
+            //Assert
+            Assert.That(result, Is.False);
+        }
+
+        [Test]
+        [Category("IsContiguous")]
+        public void IsContiguous_HorizontalTwoPlacementCheat2()
+        {
+            Placement sut;
+            bool result = true;
+
+            //Arrange
+            List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>();
+            tupleList.Add(Tuple.Create(new Space(1, 7), new Tile('a')));
+            tupleList.Add(Tuple.Create(new Space(3, 7), new Tile('c')));
+            tupleList.Add(Tuple.Create(new Space(10, 7), new Tile('j')));
+            tupleList.Add(Tuple.Create(new Space(12, 7), new Tile('l')));
+
+
+            Game newGame = new Game();
+            newGame.SetBoard(tupleList);
+
+            List<Space> spaceList = new List<Space>();
+            spaceList.Add(new Space(2, 7));
+            spaceList.Add(new Space(4, 7));
+            spaceList.Add(new Space(11, 7));
+
+            sut = new Placement(spaceList);
+            //Act
+            //result = sut.IsContiguous(newGame);
+
+            //Assert
+            Assert.That(result, Is.False);
+        }
+
+        [Test]
+        [Category("IsContiguous")]
+        public void IsContiguous_HorizontalTwoPlacementCheat3()
+        {
+            Placement sut;
+            bool result = true;
+
+            //Arrange
+            List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>();
+            tupleList.Add(Tuple.Create(new Space(1, 7), new Tile('a')));
+            tupleList.Add(Tuple.Create(new Space(3, 7), new Tile('c')));
+            tupleList.Add(Tuple.Create(new Space(10, 7), new Tile('j')));
+            tupleList.Add(Tuple.Create(new Space(12, 7), new Tile('l')));
+
+
+            Game newGame = new Game();
+            newGame.SetBoard(tupleList);
+
+            List<Space> spaceList = new List<Space>();
+            spaceList.Add(new Space(2, 7));
+            spaceList.Add(new Space(4, 7));
+            spaceList.Add(new Space(9, 7));
+            spaceList.Add(new Space(11, 7));
+
+            sut = new Placement(spaceList);
+            //Act
+            //result = sut.IsContiguous(newGame);
+
+            //Assert
+            Assert.That(result, Is.False);
+        }
+
+        [Test]
+        [Category("IsContiguous")]
+        public void IsContiguous_VerticalTwoPlacementCheat1()
+        {
+            Placement sut;
+            bool result = true;
+
+            //Arrange
+            List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>();
+            tupleList.Add(Tuple.Create(new Space(7, 1), new Tile('a')));
+            tupleList.Add(Tuple.Create(new Space(7, 3), new Tile('c')));
+            tupleList.Add(Tuple.Create(new Space(7, 10), new Tile('j')));
+            tupleList.Add(Tuple.Create(new Space(7, 12), new Tile('l')));
+
+
+            Game newGame = new Game();
+            newGame.SetBoard(tupleList);
+
+            List<Space> spaceList = new List<Space>();
+            spaceList.Add(new Space(7, 2));
+            spaceList.Add(new Space(7, 11));
+
+            sut = new Placement(spaceList);
+            //Act
+            //result = sut.IsContiguous(newGame);
+
+            //Assert
+            Assert.That(result, Is.False);
+        }
+
+        [Test]
+        [Category("IsContiguous")]
+        public void IsContiguous_VerticalTwoPlacementCheat2()
+        {
+            Placement sut;
+            bool result = true;
+
+            //Arrange
+            List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>();
+            tupleList.Add(Tuple.Create(new Space(7, 1), new Tile('a')));
+            tupleList.Add(Tuple.Create(new Space(7, 3), new Tile('c')));
+            tupleList.Add(Tuple.Create(new Space(7, 10), new Tile('j')));
+            tupleList.Add(Tuple.Create(new Space(7, 12), new Tile('l')));
+
+
+            Game newGame = new Game();
+            newGame.SetBoard(tupleList);
+
+            List<Space> spaceList = new List<Space>();
+            spaceList.Add(new Space(7, 2));
+            spaceList.Add(new Space(7, 4));
+            spaceList.Add(new Space(7, 11));
+
+            sut = new Placement(spaceList);
+            //Act
+            //result = sut.IsContiguous(newGame);
+
+            //Assert
+            Assert.That(result, Is.False);
+        }
+
+        [Test]
+        [Category("IsContiguous")]
+        public void IsContiguous_VerticalTwoPlacementCheat3()
+        {
+            Placement sut;
+            bool result = true;
+
+            //Arrange
+            List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>();
+            tupleList.Add(Tuple.Create(new Space(7, 1), new Tile('a')));
+            tupleList.Add(Tuple.Create(new Space(7, 2), new Tile('c')));
+            tupleList.Add(Tuple.Create(new Space(7, 10), new Tile('j')));
+            tupleList.Add(Tuple.Create(new Space(7, 12), new Tile('l')));
+
+
+            Game newGame = new Game();
+            newGame.SetBoard(tupleList);
+
+            List<Space> spaceList = new List<Space>();
+            spaceList.Add(new Space(7, 2));
+            spaceList.Add(new Space(7, 4));
+            spaceList.Add(new Space(7, 9));
+            spaceList.Add(new Space(7, 11));
+
+            sut = new Placement(spaceList);
+            //Act
+            //result = sut.IsContiguous(newGame);
+
+            //Assert
+            Assert.That(result, Is.False);
         }
     }
 }
