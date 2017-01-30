@@ -1,10 +1,6 @@
 ﻿using NUnit.Framework;
-using Scrabble;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Scrabble.Tests
 {
@@ -1305,7 +1301,7 @@ namespace Scrabble.Tests
         //IsContiguous Tests
 
         [Test]
-        [Category("IsContiguous")]
+        [Category("IsContiguous Vertical")]
         public void IsContiguous_EmptyBoardGoodVertical()
         {
             Placement sut;
@@ -1329,7 +1325,7 @@ namespace Scrabble.Tests
         }
 
         [Test]
-        [Category("IsContiguous")]
+        [Category("IsContiguous Horizontal")]
         public void IsContiguous_EmptyBoardGoodHorizontal()
         {
             Placement sut;
@@ -1353,7 +1349,7 @@ namespace Scrabble.Tests
         }
 
         [Test]
-        [Category("IsContiguous")]
+        [Category("IsContiguous Vertical")]
         public void IsContiguous_EmptyBoardBadVertical()
         {
             Placement sut;
@@ -1370,14 +1366,14 @@ namespace Scrabble.Tests
 
             sut = new Placement(spaceList);
             //Act
-            //result = sut.IsContiguous(new Game());
+            result = sut.IsContiguous(new Game());
 
             //Assert
             Assert.That(result, Is.False);
         }
 
         [Test]
-        [Category("IsContiguous")]
+        [Category("IsContiguous Horizontal")]
         public void IsContiguous_EmptyBoardBadHorizontal()
         {
             Placement sut;
@@ -1394,14 +1390,14 @@ namespace Scrabble.Tests
 
             sut = new Placement(spaceList);
             //Act
-            //result = sut.IsContiguous(new Game());
+            result = sut.IsContiguous(new Game());
 
             //Assert
             Assert.That(result, Is.False);
         }
 
         [Test]
-        [Category("IsContiguous")]
+        [Category("IsContiguous Horizontal")]
         public void IsContiguous_HorizontalOneGapGood()
         {
             Placement sut;
@@ -1436,7 +1432,7 @@ namespace Scrabble.Tests
         }
 
         [Test]
-        [Category("IsContiguous")]
+        [Category("IsContiguous Vertical")]
         public void IsContiguous_VerticalOneGapGood()
         {
             Placement sut;
@@ -1471,7 +1467,7 @@ namespace Scrabble.Tests
         }
 
         [Test]
-        [Category("IsContiguous")]
+        [Category("IsContiguous Vertical")]
         public void IsContiguous_VerticalDoubleGapGood()
         {
             Placement sut;
@@ -1501,7 +1497,7 @@ namespace Scrabble.Tests
         }
 
         [Test]
-        [Category("IsContiguous")]
+        [Category("IsContiguous Horizontal")]
         public void IsContiguous_HorizontalDoubleGapGood()
         {
             Placement sut;
@@ -1529,8 +1525,9 @@ namespace Scrabble.Tests
             //Assert
             Assert.That(result, Is.True);
         }
+
         [Test]
-        [Category("IsContiguous")]
+        [Category("IsContiguous Vertical")]
         public void IsContiguous_VerticalTwoSingleGapsGood()
         {
             Placement sut;
@@ -1560,7 +1557,7 @@ namespace Scrabble.Tests
         }
 
         [Test]
-        [Category("IsContiguous")]
+        [Category("IsContiguous Horizontal")]
         public void IsContiguous_HorizontalTwoSingleGapsGood()
         {
             Placement sut;
@@ -1590,7 +1587,7 @@ namespace Scrabble.Tests
         }
 
         [Test]
-        [Category("IsContiguous")]
+        [Category("IsContiguous Vertical")]
         public void IsContiguous_VerticalTripleGapGood()
         {
             Placement sut;
@@ -1621,7 +1618,7 @@ namespace Scrabble.Tests
         }
 
         [Test]
-        [Category("IsContiguous")]
+        [Category("IsContiguous Horizontal")]
         public void IsContiguous_HorizontalTripleGapGood()
         {
             Placement sut;
@@ -1652,7 +1649,7 @@ namespace Scrabble.Tests
         }
 
         [Test]
-        [Category("IsContiguous")]
+        [Category("IsContiguous Horizontal")]
         public void IsContiguous_HorizontalOneGapBad()
         {
             Placement sut;
@@ -1680,14 +1677,14 @@ namespace Scrabble.Tests
 
             sut = new Placement(spaceList);
             //Act
-            //result = sut.IsContiguous(newGame);
+            result = sut.IsContiguous(newGame);
 
             //Assert
             Assert.That(result, Is.False);
         }
 
         [Test]
-        [Category("IsContiguous")]
+        [Category("IsContiguous Vertical")]
         public void IsContiguous_VerticalOneGapBad()
         {
             Placement sut;
@@ -1715,14 +1712,14 @@ namespace Scrabble.Tests
 
             sut = new Placement(spaceList);
             //Act
-            //result = sut.IsContiguous(newGame);
+            result = sut.IsContiguous(newGame);
 
             //Assert
             Assert.That(result, Is.False);
         }
 
         [Test]
-        [Category("IsContiguous")]
+        [Category("IsContiguous Vertical")]
         public void IsContiguous_VerticalDoubleGapBad()
         {
             Placement sut;
@@ -1744,14 +1741,14 @@ namespace Scrabble.Tests
 
             sut = new Placement(spaceList);
             //Act
-            //result = sut.IsContiguous(newGame);
+            result = sut.IsContiguous(newGame);
 
             //Assert
             Assert.That(result, Is.False);
         }
 
         [Test]
-        [Category("IsContiguous")]
+        [Category("IsContiguous Horizontal")]
         public void IsContiguous_HorizontalDoubleGapBad()
         {
             Placement sut;
@@ -1773,14 +1770,14 @@ namespace Scrabble.Tests
 
             sut = new Placement(spaceList);
             //Act
-            //result = sut.IsContiguous(newGame);
+            result = sut.IsContiguous(newGame);
 
             //Assert
             Assert.That(result, Is.False);
         }
 
         [Test]
-        [Category("IsContiguous")]
+        [Category("IsContiguous Vertical")]
         public void IsContiguous_VerticalTwoSingleGapsBad()
         {
             Placement sut;
@@ -1802,14 +1799,14 @@ namespace Scrabble.Tests
 
             sut = new Placement(spaceList);
             //Act
-            //result = sut.IsContiguous(newGame);
+            result = sut.IsContiguous(newGame);
 
             //Assert
             Assert.That(result, Is.False);
         }
 
         [Test]
-        [Category("IsContiguous")]
+        [Category("IsContiguous Horizontal")]
         public void IsContiguous_HorizontalTwoSingleGapsBad()
         {
             Placement sut;
@@ -1831,14 +1828,14 @@ namespace Scrabble.Tests
 
             sut = new Placement(spaceList);
             //Act
-            //result = sut.IsContiguous(newGame);
+            result = sut.IsContiguous(newGame);
 
             //Assert
             Assert.That(result, Is.False);
         }
 
         [Test]
-        [Category("IsContiguous")]
+        [Category("IsContiguous Vertical")]
         public void IsContiguous_VerticalTripleGapMiddleBad()
         {
             Placement sut;
@@ -1862,14 +1859,14 @@ namespace Scrabble.Tests
 
             sut = new Placement(spaceList);
             //Act
-            //result = sut.IsContiguous(newGame);
+            result = sut.IsContiguous(newGame);
 
             //Assert
             Assert.That(result, Is.False);
         }
 
         [Test]
-        [Category("IsContiguous")]
+        [Category("IsContiguous Vertical")]
         public void IsContiguous_VerticalTripleGapOneBad()
         {
             Placement sut;
@@ -1892,14 +1889,14 @@ namespace Scrabble.Tests
 
             sut = new Placement(spaceList);
             //Act
-            //result = sut.IsContiguous(newGame);
+            result = sut.IsContiguous(newGame);
 
             //Assert
             Assert.That(result, Is.False);
         }
 
         [Test]
-        [Category("IsContiguous")]
+        [Category("IsContiguous Horizontal")]
         public void IsContiguous_HorizontalTripleGapOneBad()
         {
             Placement sut;
@@ -1922,14 +1919,14 @@ namespace Scrabble.Tests
 
             sut = new Placement(spaceList);
             //Act
-            //result = sut.IsContiguous(newGame);
+            result = sut.IsContiguous(newGame);
 
             //Assert
             Assert.That(result, Is.False);
         }
 
         [Test]
-        [Category("IsContiguous")]
+        [Category("IsContiguous Horizontal")]
         public void IsContiguous_HorizontalTripleGapMiddleBad()
         {
             Placement sut;
@@ -1952,14 +1949,14 @@ namespace Scrabble.Tests
 
             sut = new Placement(spaceList);
             //Act
-            //result = sut.IsContiguous(newGame);
+            result = sut.IsContiguous(newGame);
 
             //Assert
             Assert.That(result, Is.False);
         }
 
         [Test]
-        [Category("IsContiguous")]
+        [Category("IsContiguous Horizontal")]
         public void IsContiguous_HorizontalTwoPlacementCheat1()
         {
             Placement sut;
@@ -1982,14 +1979,14 @@ namespace Scrabble.Tests
 
             sut = new Placement(spaceList);
             //Act
-            //result = sut.IsContiguous(newGame);
+            result = sut.IsContiguous(newGame);
 
             //Assert
             Assert.That(result, Is.False);
         }
 
         [Test]
-        [Category("IsContiguous")]
+        [Category("IsContiguous Horizontal")]
         public void IsContiguous_HorizontalTwoPlacementCheat2()
         {
             Placement sut;
@@ -2013,14 +2010,14 @@ namespace Scrabble.Tests
 
             sut = new Placement(spaceList);
             //Act
-            //result = sut.IsContiguous(newGame);
+            result = sut.IsContiguous(newGame);
 
             //Assert
             Assert.That(result, Is.False);
         }
 
         [Test]
-        [Category("IsContiguous")]
+        [Category("IsContiguous Horizontal")]
         public void IsContiguous_HorizontalTwoPlacementCheat3()
         {
             Placement sut;
@@ -2045,14 +2042,14 @@ namespace Scrabble.Tests
 
             sut = new Placement(spaceList);
             //Act
-            //result = sut.IsContiguous(newGame);
+            result = sut.IsContiguous(newGame);
 
             //Assert
             Assert.That(result, Is.False);
         }
 
         [Test]
-        [Category("IsContiguous")]
+        [Category("IsContiguous Vertical")]
         public void IsContiguous_VerticalTwoPlacementCheat1()
         {
             Placement sut;
@@ -2075,14 +2072,14 @@ namespace Scrabble.Tests
 
             sut = new Placement(spaceList);
             //Act
-            //result = sut.IsContiguous(newGame);
+            result = sut.IsContiguous(newGame);
 
             //Assert
             Assert.That(result, Is.False);
         }
 
         [Test]
-        [Category("IsContiguous")]
+        [Category("IsContiguous Vertical")]
         public void IsContiguous_VerticalTwoPlacementCheat2()
         {
             Placement sut;
@@ -2106,14 +2103,14 @@ namespace Scrabble.Tests
 
             sut = new Placement(spaceList);
             //Act
-            //result = sut.IsContiguous(newGame);
+            result = sut.IsContiguous(newGame);
 
             //Assert
             Assert.That(result, Is.False);
         }
 
         [Test]
-        [Category("IsContiguous")]
+        [Category("IsContiguous Vertical")]
         public void IsContiguous_VerticalTwoPlacementCheat3()
         {
             Placement sut;
@@ -2122,7 +2119,7 @@ namespace Scrabble.Tests
             //Arrange
             List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>();
             tupleList.Add(Tuple.Create(new Space(7, 1), new Tile('a')));
-            tupleList.Add(Tuple.Create(new Space(7, 2), new Tile('c')));
+            tupleList.Add(Tuple.Create(new Space(7, 3), new Tile('c')));
             tupleList.Add(Tuple.Create(new Space(7, 10), new Tile('j')));
             tupleList.Add(Tuple.Create(new Space(7, 12), new Tile('l')));
 
@@ -2138,7 +2135,7 @@ namespace Scrabble.Tests
 
             sut = new Placement(spaceList);
             //Act
-            //result = sut.IsContiguous(newGame);
+            result = sut.IsContiguous(newGame);
 
             //Assert
             Assert.That(result, Is.False);

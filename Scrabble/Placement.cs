@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Scrabble
 {
@@ -199,7 +200,53 @@ namespace Scrabble
             if (IsSingle())
                 return true;
 
-            return false;
+            PlacementSort();
+            if (IsVertical())
+            {
+                int firstY = _spaceList[0].GetY();
+                int lastY = _spaceList.Last().GetY();
+                int xValue = _spaceList[0].GetX();
+                bool listContains = true;
+
+                for (int y = firstY + 1; y < lastY; y++)
+                {
+                    listContains = false;
+                    foreach (Space space in _spaceList)
+                    {
+                        if (space.GetCoords().Equals(new Space(xValue, y).GetCoords()))
+                        {
+                            listContains = true;
+                            break;
+                        }
+                    }
+                    if (!listContains && (game.GetSpace(xValue, y).GetTile() == null))
+                        return false;
+                }
+            }
+            else if (IsHorizontal())
+            {
+                int firstX = _spaceList[0].GetX();
+                int lastX = _spaceList.Last().GetX();
+                int yValue = _spaceList[0].GetY();
+                bool listContains = true;
+
+                for (int x = firstX + 1; x < lastX; x++)
+                {
+                    listContains = false;
+                    foreach (Space space in _spaceList)
+                    {
+                        if (space.GetCoords().Equals(new Space(x, yValue).GetCoords()))
+                        {
+                            listContains = true;
+                            break;
+                        }
+                    }
+                    if (!listContains && (game.GetSpace(x, yValue).GetTile() == null))
+                        return false;
+                }
+            }
+
+            return true;
         }
 
         public bool IsLegal(Game game)
