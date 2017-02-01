@@ -249,7 +249,7 @@ namespace Scrabble
             return true;
         }
 
-        public bool IsLegal(Game game)
+        public bool IsValid(Game game)
         {
             return IsContiguous(game) && IsOnBoard(game) && (IsAdjacent(game) || IsFirstMove(game));
         }
