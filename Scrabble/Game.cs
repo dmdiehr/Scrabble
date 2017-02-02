@@ -23,7 +23,7 @@ namespace Scrabble
         {
 
             _tray = tray;
-            _board = EmptyBoard();
+            EmptyBoard();
 
             if (startingBoard != null)
                 SetBoard(startingBoard);
@@ -206,7 +206,7 @@ namespace Scrabble
                 Tile newTile = new Tile((char)('a' + rdm.Next(0, 26)));
                 tiles.Add(newTile);
             }
-            _board = EmptyBoard();
+            EmptyBoard();
             SetBoard(spaces, tiles);
 
         }

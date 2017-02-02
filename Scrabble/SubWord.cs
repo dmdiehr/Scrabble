@@ -18,7 +18,7 @@ namespace Scrabble
 
             _word = ExtractWord();
 
-            _score = CalculateScore();
+            _score = SubWordScore();
 
         }
 
@@ -38,7 +38,7 @@ namespace Scrabble
             return returnString;
         }
 
-        public int CalculateScore()
+        public int SubWordScore()
         {
             if (_pairs.Count == 1)
                 return 0;

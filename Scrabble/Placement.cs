@@ -9,7 +9,7 @@ namespace Scrabble
     {
         //FIELDS
         private List<Space> _spaceList;
-        
+
         //CONSTRUCTOR
         public Placement(List<Space> spaceList = null)
         {
@@ -38,7 +38,7 @@ namespace Scrabble
 
             foreach (var item in _spaceList)
             {
-                returnString += item.GetCoordsString() + "\n"; 
+                returnString += item.GetCoordsString() + "\n";
             }
 
             return returnString;
@@ -50,7 +50,7 @@ namespace Scrabble
         }
         public void SetSpaceList(Space space)
         {
-            _spaceList = new List<Space>() {space};
+            _spaceList = new List<Space>() { space };
         }
 
 
@@ -94,7 +94,7 @@ namespace Scrabble
 
             for (int i = 0; i < _spaceList.Count; i++)
             {
-                for (int j = i+1; j < _spaceList.Count; j++)
+                for (int j = i + 1; j < _spaceList.Count; j++)
                 {
                     if (_spaceList[i].GetCoordsString() == _spaceList[j].GetCoordsString())
                         return false;
@@ -107,9 +107,9 @@ namespace Scrabble
         public bool IsSingle()
         {
             if (_spaceList == null)
-               return false;
+                return false;
             else
-               return (_spaceList.Count == 1);
+                return (_spaceList.Count == 1);
         }
 
         public bool IsHorizontal()
@@ -159,7 +159,7 @@ namespace Scrabble
 
         public bool IsAdjacent(Game game)
         {
-            
+
             foreach (Space space in _spaceList)
             {
                 try
@@ -256,8 +256,66 @@ namespace Scrabble
 
         public void PlacementSort()
         {
-            _spaceList.Sort(new SpaceComparer());           
+            _spaceList.Sort(new SpaceComparer());
         }
 
+        public List<Space> GetAnchors(Game game)
+        {
+            if (!IsValid(game))
+                throw new Exception("GetAnchors method cannot be run on an invalid Placement instance");
+
+            List<Space> anchors = new List<Space> { };
+            PlacementSort();
+
+            //make sure to test what happens to this when you run up against the edge of the board
+
+            if (IsSingle() || IsHorizontal())
+            {
+
+                // Anchors before placement
+                Space currentSpace = _spaceList[0];
+                while (currentSpace.GetAdjacentWest().GetTile() != null)
+                {
+                    anchors.Add(currentSpace.GetAdjacentWest());
+                    currentSpace = currentSpace.GetAdjacentWest();
+
+                }
+
+                // Anchors mid placement
+                //This may be a cheap way to do this, but since the Placement is already checked for validity
+                //it's much easier to simply add any space in the "placement zone" that has a tile 
+
+                int yValue = _spaceList[0].GetY();
+
+                for (int x = _spaceList[0].GetX(); x < _spaceList.Last().GetX(); x++)
+                {
+                    if (game.GetSpace(x,yValue).GetTile() != null)
+                    {
+                        anchors.Add(game.GetSpace(x, yValue));
+                    }
+                }
+
+                // Anchors after placement
+                currentSpace = _spaceList.Last();
+                while (currentSpace.GetAdjacentEast().GetTile() != null)
+                {
+                    anchors.Add(currentSpace.GetAdjacentEast());
+                    currentSpace = currentSpace.GetAdjacentEast();
+
+                }
+            }
+
+            return anchors;
+        }
+
+        public List<Play> ValidPlays(Game game)
+        {
+            List<Play> plays = new List<Play> { };
+
+
+
+
+            return plays;
+        }
     }
 }

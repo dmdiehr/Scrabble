@@ -11,7 +11,7 @@ namespace Scrabble
         //FIELDS
         private List<Tuple<Space, Tile>> _playList;
         private Game _game;
-        private List<Tuple<Space, Tile>>[] _subPlays;
+        private SubWord[] _subWords;
         private int _score;
         
         //CONSTRUCTORS
@@ -19,7 +19,7 @@ namespace Scrabble
         {
             _playList = playList;
             _game = game;
-            _subPlays = FindSubPlays();
+            _subWords = SubWords();
             _score = CalculateScore();
         }
 
@@ -40,8 +40,10 @@ namespace Scrabble
 
         //METHODS
 
-        public List<Tuple<Space, Tile>>[] FindSubPlays()
+        private SubWord[] SubWords()
         {
+            string[] subwords = new string[_playList.Count +1];
+            Placement thisPlacement = GetPlacement();
             //the array should be (_playlist.Count + 1) in size
             //the primary subplay will be the orientation of the placement
             //all other subplays will be the alternate orientation
@@ -55,23 +57,21 @@ namespace Scrabble
             //the primary subplay will have to account for the possible mix of mutiple gaps in the placement filled by the board and vice/versa.
             throw new NotImplementedException();
         }
-
-        public void SubPlaySort(List<Tuple<Space, Tile>> subPlay)
-        {
-            //this might have to be an exention method or otherwise subPlays may need to be their own class
-        }
         public int CalculateScore()
         {
-            //iterate through each item in _SubPlays
-            //if the SubPlay length == 1 ignore it
-            // for each subplay, (subscore += (tile.value * letterMultiplier) for each letter) * (all wordmultipliers * each other))
-            // add all subscores together
-            throw new NotImplementedException();
+            int score = 0;
+
+            foreach (SubWord word in _subWords)
+            {
+                score += word.SubWordScore();
+            }
+
+            return score;
         }
 
         public bool AreWordsValid()
         {
-            foreach (var item in _subPlays)
+            foreach (var item in _subWords)
             {
                 //order each subplay
                 //if the subplay is length == 1 ignore it
