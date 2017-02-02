@@ -20,12 +20,23 @@ namespace Scrabble
                 Tile newTile = new Tile(c);
                 newTileList.Add(newTile);
             }
-            _tiles = newTileList;
+            Tiles = newTileList;
         }
 
         //FIELDS
-        private List<Tile> _tiles;
+        public List<Tile> Tiles { get; set; }
 
-        //METHODS
+        //ACCESSORS
+        public string GetTilesString()
+        {
+            string returnString = "";
+
+            foreach (Tile tile in Tiles)
+            {
+                returnString += tile.GetLetter();
+            }
+            return returnString;
+        }
+
     }
 }

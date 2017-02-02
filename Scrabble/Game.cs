@@ -6,7 +6,16 @@ namespace Scrabble
 {
     public class Game
     {
-        //CONSTRUCTOR
+    
+        #region //FIELDS
+
+        private Space[,] _board;
+        private Tray _tray;
+        private string[] _dictionary;
+
+        #endregion
+
+        #region //CONSTRUCTORS
         /// <summary>
         /// Should eventually implement alternate board sizes, board types, and dictionaries and/or languages
         /// </summary>
@@ -33,7 +42,7 @@ namespace Scrabble
         public Game(string tray = "abcdefg", List<Tuple<Space, Tile>> startingBoard = null)
         {
 
-            _board = EmptyBoard();
+            EmptyBoard();
             _tray = new Tray(tray);
             try
             {
@@ -46,14 +55,10 @@ namespace Scrabble
                 _dictionary = new string[] { "this", "is", "just", "a", "test" };
             }
         }
+        #endregion
 
-        //FIELDS
+        #region //ACCESSORS
 
-        private Space[,] _board;
-        private Tray _tray;
-        private string[] _dictionary;
-
-        //METHODS
         public Space[,] GetBoard()
         {
             return _board;
@@ -61,11 +66,12 @@ namespace Scrabble
 
         public Space GetSpace(int x, int y)
         {
-            return _board[x, y];          
+            return _board[x, y];
         }
-        public Space GetSpace(Space otherSpace)
+
+        public Space GetSpace(Space space)
         {
-            return _board[otherSpace.GetX(), otherSpace.GetY()];
+            return _board[space.GetX(), space.GetY()];
         }
 
         public void SetBoard(List<Tuple<Space, Tile>> pairs)
@@ -75,6 +81,7 @@ namespace Scrabble
                 GetSpace(item.Item1).SetTile(item.Item2);
             }
         }
+
         public void SetBoard(List<Space> spaces, List<Tile> tiles)
         {
             if (spaces.Count != tiles.Count)
@@ -88,24 +95,49 @@ namespace Scrabble
             SetBoard(pairs);
         }
 
+        public Tray GetTray()
+        {
+            return _tray;
+        }
+
+        public string GetTrayString()
+        {
+            return _tray.GetTilesString();
+        }
+
+        public void SetTray(Tray tray)
+        {
+            _tray = tray;
+        }
+
+        public void SetTray(string tray)
+        {
+            _tray = new Tray(tray);
+        }
+
+        #endregion
+
+        #region //METHODS
+
+
         public List<Placement> PossiblePlacements()
         {
             throw new NotImplementedException();
         }
 
-        public Space[,] EmptyBoard()
+        public void EmptyBoard()
         {
-            Space[,] newBoard = new Space[15, 15];
+            Space[,] emptyBoard = new Space[15, 15];
             for (int x = 0; x < 15; x++)
             {
                 for (int y = 0; y < 15; y++)
                 {
-                    newBoard[x, y] = new Space(x, y);
+                    emptyBoard[x, y] = new Space(x, y);
                 }
             }
-            return newBoard;
+            _board = emptyBoard;
         }
-
+        #endregion
         /// <summary>
         /// Display methods for Program
         /// </summary>
@@ -178,6 +210,7 @@ namespace Scrabble
             SetBoard(spaces, tiles);
 
         }
+        
 
     }
 }
