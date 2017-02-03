@@ -48,6 +48,7 @@
     <Compile Include="PlacementTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SpaceTests.cs" />
+    <Compile Include="SubWordTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Scrabble\Scrabble.csproj">

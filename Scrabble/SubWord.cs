@@ -8,22 +8,23 @@ namespace Scrabble
     {
         //FIELDS
         private List<Tuple<Space, Tile>> _pairs;
+
         private string _word;
+        public string Word { get { return _word; } }
+
         private int _score;
+        public int Score { get { return _score; } }
 
         //CONSTURCTORS
         public SubWord(List<Tuple<Space, Tile>> pairs)
         {
-            _pairs = pairs.OrderBy(x => x.Item1, new SpaceComparer()).ToList();
-
+            _pairs = pairs.OrderBy(x => x.Item1, SpaceComparer.Instance).ToList();
             _word = ExtractWord();
-
             _score = SubWordScore();
 
         }
 
         //METHODS
-
         public string ExtractWord()
         {
             if (_pairs.Count == 1)
@@ -32,7 +33,7 @@ namespace Scrabble
             string returnString = "";
             foreach (var item in _pairs)
             {
-                returnString += item.Item2.GetLetter();
+                returnString += item.Item2.GetLetter();                
             }
 
             return returnString;
@@ -54,6 +55,7 @@ namespace Scrabble
 
             return score * totalWordMultiplier;
         }
+
 
     }
 }

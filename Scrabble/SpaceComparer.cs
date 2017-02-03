@@ -3,8 +3,12 @@ using System.Collections.Generic;
 
 namespace Scrabble
 {
-    internal class SpaceComparer : Comparer<Space>
+    class SpaceComparer : Comparer<Space>
     {
+        private static readonly SpaceComparer _instance = new SpaceComparer();
+
+        public static SpaceComparer Instance { get { return _instance; } }
+
         public override int Compare(Space a, Space b)
         {
             if (a == null && b == null)

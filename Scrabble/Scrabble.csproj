@@ -50,6 +50,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Space.cs" />
     <Compile Include="SpaceComparer.cs" />
+    <Compile Include="SpaceEqualityComparer.cs" />
     <Compile Include="SubWord.cs" />
     <Compile Include="Tile.cs" />
     <Compile Include="Tray.cs" />
