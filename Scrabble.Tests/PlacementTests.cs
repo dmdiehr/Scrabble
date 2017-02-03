@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Scrabble.Tests
 {
@@ -8,7 +9,7 @@ namespace Scrabble.Tests
     public class PlacementTests
     {
 
-        //IsOnBoard Tests
+        #region //IsOnBoard
 
         [Test]
         [Category("IsOnBoard")]
@@ -239,7 +240,9 @@ namespace Scrabble.Tests
             Assert.That(result, Is.False);
         }
 
-        //IsAvailable Tests
+
+        #endregion
+        #region //IsAvailable
 
         [Test]
         [Category("IsAvailable")]
@@ -454,7 +457,8 @@ namespace Scrabble.Tests
             Assert.That(result, Is.True);
         }
 
-        //HasNoDuplicates Test
+        #endregion
+        #region//HasNoDuplicates
 
         [Test]
         [Category("HasNoDuplicates")]
@@ -568,7 +572,8 @@ namespace Scrabble.Tests
 
         }
 
-        //IsFirstMove
+        #endregion
+        #region//IsFirstMove
 
         [Test]
         [Category("IsFirstMove")]
@@ -648,7 +653,8 @@ namespace Scrabble.Tests
             Assert.That(result, Is.False);
         }
 
-        //IsAdjacent
+        #endregion
+        #region//IsAdjacent
 
         [Test]
         [Category("IsAdjacent")]
@@ -953,8 +959,9 @@ namespace Scrabble.Tests
             Assert.That(result3, Is.False);
             Assert.That(result4, Is.False);
         }
-        
-        //IsSingle Tests
+
+        #endregion
+        #region//IsSingle
 
         [Test]
         [Category("IsSingle")]
@@ -1012,7 +1019,8 @@ namespace Scrabble.Tests
             Assert.That(result, Is.False);
         }
 
-        //IsHorizontal
+        #endregion
+        #region//IsHorizontal
 
         [Test]
         [Category("IsHorizontal")]
@@ -1152,8 +1160,9 @@ namespace Scrabble.Tests
             Assert.That(result, Is.False);
 
         }
-        
-        //IsVertical
+
+        #endregion
+        #region//IsVertical
 
         [Test]
         [Category("IsVertical")]
@@ -1298,7 +1307,8 @@ namespace Scrabble.Tests
 
         }
 
-        //IsContiguous Tests
+        #endregion
+        #region//IsContiguous
 
         [Test]
         [Category("IsContiguous Vertical")]
@@ -2140,5 +2150,46 @@ namespace Scrabble.Tests
             //Assert
             Assert.That(result, Is.False);
         }
+        #endregion
+
+        #region //GetAnchors
+        [Test]
+        [Category("GetAnchors")]
+        public void GetAnchors_DoubleMiddleGap()
+        {
+            Placement sut;
+            List<Space> result = null;
+
+            //Arrange
+            List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>();
+            tupleList.Add(Tuple.Create(new Space(7, 7), new Tile('a')));
+            tupleList.Add(Tuple.Create(new Space(7, 8), new Tile('b')));
+
+            Game newGame = new Game();
+            newGame.SetBoard(tupleList);
+
+            List<Space> spaceList = new List<Space>();
+            spaceList.Add(new Space(7, 6));
+            spaceList.Add(new Space(7, 5));
+            spaceList.Add(new Space(7, 9));
+            spaceList.Add(new Space(7, 10));
+            spaceList.Add(new Space(7, 11));
+
+            sut = new Placement(spaceList);
+
+            var expected = new List<Space>{ new Space(7,7,'a'), new Space(7,8,'b') };
+            //Act
+            result = sut.GetAnchors(newGame);
+
+            //Assert
+            Assert.That(result.Except(expected, SpaceEqualityComparer.Instance).Count(), Is.EqualTo(0));
+            Assert.That(expected.Except(result, SpaceEqualityComparer.Instance).Count(), Is.EqualTo(0));
+            //Obviously, this is hacky. It's asserting the equality of the two lists by using Except to create new 
+            //lists by subtracting the equivalent elements and then asserting that each new list has 0 elements.
+            //This was done because NUnit's normal way of using a custom EqualualityComparer by chaining .Using() to .EqualTo()
+            //was somehow creating an ambiguous method call. I could not resolve that issue.
+        }
+
+        #endregion
     }
 }

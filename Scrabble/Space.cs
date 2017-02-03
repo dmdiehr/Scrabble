@@ -21,6 +21,18 @@ namespace Scrabble
             LetterMultiplier = 1;
         }
 
+        public Space (int x, int y, char letter)
+        {
+            _coords = Tuple.Create(x, y);
+            _tile = new Tile(letter);
+        }
+
+        public Space (int x, int y, Tile tile)
+        {
+            _coords = Tuple.Create(x, y);
+            _tile = tile;
+        }
+
         //ACCESSORS
 
         public Tuple<int, int> GetCoords()

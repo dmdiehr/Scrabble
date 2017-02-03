@@ -64,7 +64,7 @@ namespace Scrabble
                 bool onBoard = false;
                 foreach (Space boardSpace in board)
                 {
-                    if (placementSpace.GetCoordsString() == boardSpace.GetCoordsString())
+                    if (SpaceEqualityComparer.Instance.Equals(placementSpace, boardSpace))
                     {
                         onBoard = true;
                     }
@@ -89,19 +89,10 @@ namespace Scrabble
 
         public bool HasNoDuplicates()
         {
-            if (_spaceList == null || IsSingle())
+            if (_spaceList == null)
                 return true;
 
-            for (int i = 0; i < _spaceList.Count; i++)
-            {
-                for (int j = i + 1; j < _spaceList.Count; j++)
-                {
-                    if (_spaceList[i].GetCoordsString() == _spaceList[j].GetCoordsString())
-                        return false;
-                }
-            }
-
-            return true;
+            return (_spaceList.Count == _spaceList.Distinct(SpaceEqualityComparer.Instance).Count());
         }
 
         public bool IsSingle()
@@ -283,7 +274,7 @@ namespace Scrabble
 
                 // Anchors mid placement
                 //This may be a cheap way to do this, but since the Placement is already checked for validity
-                //it's much easier to simply add any space in the "placement zone" that has a tile 
+                //it's easiest to simply add any space in the "placement zone" already has a tile 
 
                 int yValue = _spaceList[0].GetY();
 
@@ -301,6 +292,41 @@ namespace Scrabble
                 {
                     anchors.Add(currentSpace.GetAdjacentEast());
                     currentSpace = currentSpace.GetAdjacentEast();
+
+                }
+            }
+            else if (IsVertical())
+            {
+
+                // Anchors before placement
+                Space currentSpace = _spaceList[0];
+                while (currentSpace.GetAdjacentNorth().GetTile() != null)
+                {
+                    anchors.Add(currentSpace.GetAdjacentNorth());
+                    currentSpace = currentSpace.GetAdjacentNorth();
+
+                }
+
+                // Anchors mid placement
+                //This may be a cheap way to do this, but since the Placement is already checked for validity
+                //it's easiest to simply add any space in the "placement zone" already has a tile 
+
+                int xValue = _spaceList[0].GetX();
+
+                for (int y = _spaceList[0].GetY(); y < _spaceList.Last().GetY(); y++)
+                {
+                    if (game.GetSpace(xValue, y).GetTile() != null)
+                    {
+                        anchors.Add(game.GetSpace(xValue, y));
+                    }
+                }
+
+                // Anchors after placement
+                currentSpace = _spaceList.Last();
+                while (currentSpace.GetAdjacentSouth().GetTile() != null)
+                {
+                    anchors.Add(currentSpace.GetAdjacentSouth());
+                    currentSpace = currentSpace.GetAdjacentSouth();
 
                 }
             }

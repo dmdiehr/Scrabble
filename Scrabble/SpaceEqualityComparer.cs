@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Scrabble
 {
-    class SpaceEqualityComparer : EqualityComparer<Space>
+    public class SpaceEqualityComparer : EqualityComparer<Space>
     {
         private static readonly SpaceEqualityComparer _instance = new SpaceEqualityComparer();
 
