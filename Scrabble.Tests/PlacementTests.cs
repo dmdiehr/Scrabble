@@ -2549,7 +2549,96 @@ namespace Scrabble.Tests
             Assert.That(result.Select(s => s.GetString()).ToList(), Is.EquivalentTo(expected.Select(s => s.GetString()).ToList()));
         }
 
+        [Test]
+        [Category("GetAnchors")]
+        public void GetAnchors_NoAnchorsFirstMove()
+        {
+            Placement sut;
+            List<Space> result;
 
+            //Arrange
+            Game newGame = new Game();            
+
+            List<Space> spaceList = new List<Space>();
+            spaceList.Add(new Space(7, 7));
+            spaceList.Add(new Space(7, 8));
+            spaceList.Add(new Space(7, 9));
+            spaceList.Add(new Space(7, 10));
+
+            sut = new Placement(spaceList);
+
+
+            //Act
+            result = sut.GetAnchors(newGame);
+
+            //Assert
+            Assert.That(result.Count(), Is.EqualTo(0));
+        }
+        [Test]
+        [Category("GetAnchors")]
+        public void GetAnchors_NoAnchorsParallelVertical()
+        {
+            Placement sut;
+            List<Space> result;
+
+            //Arrange
+            List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>();
+            tupleList.Add(Tuple.Create(new Space(7, 7), new Tile('a')));
+            tupleList.Add(Tuple.Create(new Space(7, 8), new Tile('b')));
+            tupleList.Add(Tuple.Create(new Space(7, 9), new Tile('c')));
+            tupleList.Add(Tuple.Create(new Space(7, 10), new Tile('d')));
+
+            Game newGame = new Game();
+            newGame.SetBoard(tupleList);
+
+            List<Space> spaceList = new List<Space>();
+            spaceList.Add(new Space(6, 7));
+            spaceList.Add(new Space(6, 8));
+            spaceList.Add(new Space(6, 9));
+            spaceList.Add(new Space(6, 6));
+
+            sut = new Placement(spaceList);
+
+
+            //Act
+            result = sut.GetAnchors(newGame);
+
+            //Assert
+            Assert.That(result.Count(), Is.EqualTo(0));
+        }
+
+        [Test]
+        [Category("GetAnchors")]
+        public void GetAnchors_NoAnchorsParallelHorizontal()
+        {
+            Placement sut;
+            List<Space> result;
+
+            //Arrange
+            List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>();
+            tupleList.Add(Tuple.Create(new Space(7, 7), new Tile('a')));
+            tupleList.Add(Tuple.Create(new Space(8, 7), new Tile('b')));
+            tupleList.Add(Tuple.Create(new Space(9, 7), new Tile('c')));
+            tupleList.Add(Tuple.Create(new Space(10, 7), new Tile('d')));
+
+            Game newGame = new Game();
+            newGame.SetBoard(tupleList);
+
+            List<Space> spaceList = new List<Space>();
+            spaceList.Add(new Space(6, 8));
+            spaceList.Add(new Space(7, 8));
+            spaceList.Add(new Space(8, 8));
+            spaceList.Add(new Space(9, 8));
+
+            sut = new Placement(spaceList);
+
+
+            //Act
+            result = sut.GetAnchors(newGame);
+
+            //Assert
+            Assert.That(result.Count(), Is.EqualTo(0));
+        }
         #endregion
     }
 }
