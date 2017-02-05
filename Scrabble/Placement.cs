@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Scrabble
@@ -64,7 +65,7 @@ namespace Scrabble
                 bool onBoard = false;
                 foreach (Space boardSpace in board)
                 {
-                    if (SpaceEqualityComparer.Instance.Equals(placementSpace, boardSpace))
+                    if (SpaceCoordsEqualityComparer.Instance.Equals(placementSpace, boardSpace))
                     {
                         onBoard = true;
                     }
@@ -92,7 +93,7 @@ namespace Scrabble
             if (_spaceList == null)
                 return true;
 
-            return (_spaceList.Count == _spaceList.Distinct(SpaceEqualityComparer.Instance).Count());
+            return (_spaceList.Count == _spaceList.Distinct(SpaceCoordsEqualityComparer.Instance).Count());
         }
 
         public bool IsSingle()
@@ -159,13 +160,14 @@ namespace Scrabble
                         return true;
                 }
                 catch (IndexOutOfRangeException) { }
-
+                catch (NullReferenceException) { }
                 try
                 {
                     if (game.GetSpace(space.GetAdjacentSouth()).IsOccupied())
                         return true;
                 }
                 catch (IndexOutOfRangeException) { }
+                catch (NullReferenceException) { }
 
                 try
                 {
@@ -173,6 +175,7 @@ namespace Scrabble
                         return true;
                 }
                 catch (IndexOutOfRangeException) { }
+                catch (NullReferenceException) { }
 
                 try
                 {
@@ -180,6 +183,7 @@ namespace Scrabble
                         return true;
                 }
                 catch (IndexOutOfRangeException) { }
+                catch (NullReferenceException) { }
             }
             return false;
         }
@@ -265,9 +269,10 @@ namespace Scrabble
 
                 // Anchors before placement
                 Space currentSpace = _spaceList[0];
-                while (currentSpace.GetAdjacentWest().GetTile() != null)
+                while (game.GetSpace(currentSpace.GetAdjacentWest()) != null && game.GetSpace(currentSpace.GetAdjacentWest()).GetTile() != null)
                 {
-                    anchors.Add(currentSpace.GetAdjacentWest());
+                    Debug.WriteLine("Pre Add");
+                    anchors.Add(game.GetSpace(currentSpace.GetAdjacentWest()));
                     currentSpace = currentSpace.GetAdjacentWest();
 
                 }
@@ -282,15 +287,18 @@ namespace Scrabble
                 {
                     if (game.GetSpace(x,yValue).GetTile() != null)
                     {
+                        Debug.WriteLine("Middle Add!");
                         anchors.Add(game.GetSpace(x, yValue));
                     }
                 }
 
                 // Anchors after placement
                 currentSpace = _spaceList.Last();
-                while (currentSpace.GetAdjacentEast().GetTile() != null)
+                Debug.WriteLine("SpaceList Last = " + _spaceList.Last().GetString());
+                while (game.GetSpace(currentSpace.GetAdjacentEast()) != null && game.GetSpace(currentSpace.GetAdjacentEast()).GetTile() != null)
                 {
-                    anchors.Add(currentSpace.GetAdjacentEast());
+                    Debug.WriteLine("Post Add!");
+                    anchors.Add(game.GetSpace(currentSpace.GetAdjacentEast()));
                     currentSpace = currentSpace.GetAdjacentEast();
 
                 }
@@ -300,9 +308,9 @@ namespace Scrabble
 
                 // Anchors before placement
                 Space currentSpace = _spaceList[0];
-                while (currentSpace.GetAdjacentNorth().GetTile() != null)
-                {
-                    anchors.Add(currentSpace.GetAdjacentNorth());
+                while (game.GetSpace(currentSpace.GetAdjacentNorth()) != null && game.GetSpace(currentSpace.GetAdjacentNorth()).GetTile() != null)
+                {                  
+                    anchors.Add(game.GetSpace(currentSpace.GetAdjacentNorth()));
                     currentSpace = currentSpace.GetAdjacentNorth();
 
                 }
@@ -323,9 +331,9 @@ namespace Scrabble
 
                 // Anchors after placement
                 currentSpace = _spaceList.Last();
-                while (currentSpace.GetAdjacentSouth().GetTile() != null)
+                while (game.GetSpace(currentSpace.GetAdjacentSouth()) != null && game.GetSpace(currentSpace.GetAdjacentSouth()).GetTile() != null)
                 {
-                    anchors.Add(currentSpace.GetAdjacentSouth());
+                    anchors.Add(game.GetSpace(currentSpace.GetAdjacentSouth()));
                     currentSpace = currentSpace.GetAdjacentSouth();
 
                 }

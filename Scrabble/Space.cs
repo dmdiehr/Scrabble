@@ -25,12 +25,16 @@ namespace Scrabble
         {
             _coords = Tuple.Create(x, y);
             _tile = new Tile(letter);
+            WordMultiplier = 1;
+            LetterMultiplier = 1;
         }
 
         public Space (int x, int y, Tile tile)
         {
             _coords = Tuple.Create(x, y);
             _tile = tile;
+            WordMultiplier = 1;
+            LetterMultiplier = 1;
         }
 
         //ACCESSORS
@@ -38,11 +42,6 @@ namespace Scrabble
         public Tuple<int, int> GetCoords()
         {
             return _coords;
-        }
-
-        public string GetCoordsString()
-        {
-            return "(" + _coords.Item1 + "X, " + _coords.Item2 + "Y)";
         }
 
         public int GetX()
@@ -75,14 +74,46 @@ namespace Scrabble
             return _tile;
         }
 
-        public Char GetTileLetter()
+        public Char? GetTileLetter()
         {
-            return _tile.GetLetter();
+            try
+            {
+                return _tile.GetLetter();
+            }
+            catch (NullReferenceException)
+            {
+
+                return null;
+            }
+
         }
 
         public void RemoveTile()
         {
             _tile = null;
+        }
+
+        public string GetCoordsString()
+        {
+            return "(" + _coords.Item1 + "x, " + _coords.Item2 + "y)";
+        }
+
+        public string GetString()
+        {
+            char tileLetter;
+            int tileValue;
+            if (_tile != null)
+            {
+                tileLetter = _tile.GetLetter();
+                tileValue = _tile.GetValue();
+            }
+            else
+            {
+                tileLetter = '_';
+                tileValue = 0;
+            }
+                         
+            return string.Format("x = {0}, y = {1}, Letter = {2}, Value = {3}, Letter Multiplier = {4}, Word Multiplier = {5}", GetX(), GetY(), tileLetter, tileValue, LetterMultiplier, WordMultiplier);
         }
 
         //METHODS
@@ -100,11 +131,11 @@ namespace Scrabble
         {
             return new Space(GetX(), GetY() + 1);
         }
-        public Space GetAdjacentEast()
+        public Space GetAdjacentWest()
         {
             return new Space(GetX() - 1, GetY());
         }
-        public Space GetAdjacentWest()
+        public Space GetAdjacentEast()
         {
             return new Space(GetX() + 1, GetY());
         }

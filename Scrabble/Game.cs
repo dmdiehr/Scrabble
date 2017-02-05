@@ -65,13 +65,29 @@ namespace Scrabble
         }
 
         public Space GetSpace(int x, int y)
-        {
-            return _board[x, y];
+        {            
+            try
+            {
+                return _board[x, y];
+            }
+            catch (IndexOutOfRangeException)
+            {
+
+                return null;
+            }
         }
 
         public Space GetSpace(Space space)
         {
-            return _board[space.GetX(), space.GetY()];
+            try
+            {
+                return _board[space.GetX(), space.GetY()];
+            }
+            catch (IndexOutOfRangeException)
+            {
+
+                return null;
+            }
         }
 
         public void SetBoard(List<Tuple<Space, Tile>> pairs)

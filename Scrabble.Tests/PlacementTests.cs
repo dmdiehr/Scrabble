@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Scrabble.Tests
@@ -8,7 +9,6 @@ namespace Scrabble.Tests
     [TestFixture]
     public class PlacementTests
     {
-
         #region //IsOnBoard
 
         [Test]
@@ -2155,7 +2155,7 @@ namespace Scrabble.Tests
         #region //GetAnchors
         [Test]
         [Category("GetAnchors")]
-        public void GetAnchors_DoubleMiddleGap()
+        public void GetAnchors_Vertical_DoubleMiddleGap()
         {
             Placement sut;
             List<Space> result = null;
@@ -2177,18 +2177,378 @@ namespace Scrabble.Tests
 
             sut = new Placement(spaceList);
 
-            var expected = new List<Space>{ new Space(7,7,'a'), new Space(7,8,'b') };
+            var expected = new List<Space>{ new Space(7, 8, 'b'), new Space(7, 7, 'a') };
+            
             //Act
             result = sut.GetAnchors(newGame);
 
             //Assert
-            Assert.That(result.Except(expected, SpaceEqualityComparer.Instance).Count(), Is.EqualTo(0));
-            Assert.That(expected.Except(result, SpaceEqualityComparer.Instance).Count(), Is.EqualTo(0));
-            //Obviously, this is hacky. It's asserting the equality of the two lists by using Except to create new 
-            //lists by subtracting the equivalent elements and then asserting that each new list has 0 elements.
-            //This was done because NUnit's normal way of using a custom EqualualityComparer by chaining .Using() to .EqualTo()
-            //was somehow creating an ambiguous method call. I could not resolve that issue.
+
+            Assert.That(result.Select(s => s.GetString()).ToList(), Is.EquivalentTo(expected.Select(s => s.GetString()).ToList()));
         }
+
+        [Test]
+        [Category("GetAnchors")]
+        public void GetAnchors_Horizontal_DoubleMiddleGap()
+        {
+            Placement sut;
+            List<Space> result = null;
+
+            //Arrange
+            List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>();
+            tupleList.Add(Tuple.Create(new Space(7, 7), new Tile('a')));
+            tupleList.Add(Tuple.Create(new Space(8, 7), new Tile('b')));
+
+            Game newGame = new Game();
+            newGame.SetBoard(tupleList);
+
+            List<Space> spaceList = new List<Space>();
+            spaceList.Add(new Space(6, 7));
+            spaceList.Add(new Space(5, 7));
+            spaceList.Add(new Space(9, 7));
+            spaceList.Add(new Space(10, 7));
+            spaceList.Add(new Space(11, 7));
+
+            sut = new Placement(spaceList);
+
+            var expected = new List<Space> { new Space(7, 7, 'a'), new Space(8, 7, 'b') };
+            //Act
+            result = sut.GetAnchors(newGame);
+
+            //Assert
+            Assert.That(result.Select(s => s.GetString()).ToList(), Is.EquivalentTo(expected.Select(s => s.GetString()).ToList()));
+        }
+
+        [Test]
+        [Category("GetAnchors")]
+        public void GetAnchors_DoubleMiddleGap_WrongLetters()
+        {
+            Placement sut;
+            List<Space> result = null;
+
+            //Arrange
+            List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>();
+            tupleList.Add(Tuple.Create(new Space(7, 7), new Tile('a')));
+            tupleList.Add(Tuple.Create(new Space(7, 8), new Tile('b')));
+
+            Game newGame = new Game();
+            newGame.SetBoard(tupleList);
+
+            List<Space> spaceList = new List<Space>();
+            spaceList.Add(new Space(7, 6));
+            spaceList.Add(new Space(7, 5));
+            spaceList.Add(new Space(7, 9));
+            spaceList.Add(new Space(7, 10));
+            spaceList.Add(new Space(7, 11));
+
+            sut = new Placement(spaceList);
+
+            var expected = new List<Space> { new Space(7, 7, 'p'), new Space(7, 8, 'q') };
+            //Act
+            result = sut.GetAnchors(newGame);
+
+            //Assert
+            Assert.That(result.Select(s => s.GetString()).ToList(), Is.Not.EquivalentTo(expected.Select(s => s.GetString()).ToList()));
+        }
+
+        [Test]
+        [Category("GetAnchors")]
+        public void GetAnchors_HorizontalTwoSingleGaps()
+        {
+            Placement sut;
+            List<Space> result;
+
+            //Arrange
+            List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>();
+            tupleList.Add(Tuple.Create(new Space(7, 7), new Tile('a')));
+            tupleList.Add(Tuple.Create(new Space(10, 7), new Tile('b')));
+
+            Game newGame = new Game();
+            newGame.SetBoard(tupleList);
+
+            List<Space> spaceList = new List<Space>();
+            spaceList.Add(new Space(6, 7));
+            spaceList.Add(new Space(5, 7));
+            spaceList.Add(new Space(9, 7));
+            spaceList.Add(new Space(8, 7));
+            spaceList.Add(new Space(11, 7));
+
+            sut = new Placement(spaceList);
+            List<Space> expected = new List<Space> { new Space(7, 7, 'a'), new Space(10, 7, 'b') };
+            
+            //Act
+            result = sut.GetAnchors(newGame);            
+
+            //Assert
+            Assert.That(result.Select(s => s.GetString()).ToList(), Is.EquivalentTo(expected.Select(s => s.GetString()).ToList()));
+        }
+        [Test]
+        [Category("GetAnchors")]
+        public void GetAnchors_VerticalTwoSingleGaps()
+        {
+            Placement sut;
+            List<Space> result;
+
+            //Arrange
+            List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>();
+            tupleList.Add(Tuple.Create(new Space(7, 7), new Tile('a')));
+            tupleList.Add(Tuple.Create(new Space(7, 10), new Tile('b')));
+
+            Game newGame = new Game();
+            newGame.SetBoard(tupleList);
+
+            List<Space> spaceList = new List<Space>();
+            spaceList.Add(new Space(7, 6));
+            spaceList.Add(new Space(7, 5));
+            spaceList.Add(new Space(7, 9));
+            spaceList.Add(new Space(7, 8));
+            spaceList.Add(new Space(7, 11));
+
+            sut = new Placement(spaceList);
+            List<Space> expected = new List<Space> { new Space(7, 7, 'a'), new Space(7, 10, 'b') };
+
+            //Act
+            result = sut.GetAnchors(newGame);
+
+            //Assert
+            Assert.That(result.Select(s => s.GetString()).ToList(), Is.EquivalentTo(expected.Select(s => s.GetString()).ToList()));
+        }
+
+        [Test]
+        [Category("GetAnchors")]
+        public void GetAnchors_VerticalMultiple()
+        {
+            Placement sut;
+            List<Space> result;
+
+            //Arrange
+            List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>();
+            tupleList.Add(Tuple.Create(new Space(2, 1), new Tile('a')));
+            tupleList.Add(Tuple.Create(new Space(2, 4), new Tile('b')));
+            tupleList.Add(Tuple.Create(new Space(2, 5), new Tile('c')));
+            tupleList.Add(Tuple.Create(new Space(2, 6), new Tile('d')));
+            tupleList.Add(Tuple.Create(new Space(2, 8), new Tile('e')));
+            tupleList.Add(Tuple.Create(new Space(2, 11), new Tile('f')));
+            tupleList.Add(Tuple.Create(new Space(2, 12), new Tile('g')));
+            tupleList.Add(Tuple.Create(new Space(2, 13), new Tile('h')));
+
+            Game newGame = new Game();
+            newGame.SetBoard(tupleList);
+
+            List<Space> spaceList = new List<Space>();
+            spaceList.Add(new Space(2, 2));
+            spaceList.Add(new Space(2, 3));
+            spaceList.Add(new Space(2, 7));
+            spaceList.Add(new Space(2, 9));
+            spaceList.Add(new Space(2, 10));
+
+            sut = new Placement(spaceList);
+            List<Space> expected = new List<Space> {
+                new Space(2, 1, 'a'),
+                new Space(2, 4, 'b'),
+                new Space(2, 5, 'c'),
+                new Space(2, 6, 'd'),
+                new Space(2, 8, 'e'),
+                new Space(2, 11, 'f'),
+                new Space(2, 12, 'g'),
+                new Space(2, 13, 'h')
+            };
+
+            //Act
+            result = sut.GetAnchors(newGame);
+
+            //Assert
+            Assert.That(result.Select(s => s.GetString()).ToList(), Is.EquivalentTo(expected.Select(s => s.GetString()).ToList()));
+        }
+        [Test]
+        [Category("GetAnchors")]
+        public void GetAnchors_HorizontalMultiple()
+        {
+            Placement sut;
+            List<Space> result;
+
+            //Arrange
+            List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>();
+            tupleList.Add(Tuple.Create(new Space(1, 14), new Tile('a')));
+            tupleList.Add(Tuple.Create(new Space(4, 14), new Tile('b')));
+            tupleList.Add(Tuple.Create(new Space(5, 14), new Tile('c')));
+            tupleList.Add(Tuple.Create(new Space(6, 14), new Tile('d')));
+            tupleList.Add(Tuple.Create(new Space(8, 14), new Tile('e')));
+            tupleList.Add(Tuple.Create(new Space(11, 14), new Tile('f')));
+            tupleList.Add(Tuple.Create(new Space(12, 14), new Tile('g')));
+            tupleList.Add(Tuple.Create(new Space(13, 14), new Tile('h')));
+
+            Game newGame = new Game();
+            newGame.SetBoard(tupleList);
+
+            List<Space> spaceList = new List<Space>();
+            spaceList.Add(new Space(2, 14));
+            spaceList.Add(new Space(3, 14));
+            spaceList.Add(new Space(7, 14));
+            spaceList.Add(new Space(9, 14));
+            spaceList.Add(new Space(10, 14));
+
+            sut = new Placement(spaceList);
+            List<Space> expected = new List<Space> {
+                new Space(1, 14, 'a'),
+                new Space(4, 14, 'b'),
+                new Space(5, 14, 'c'),
+                new Space(6, 14, 'd'),
+                new Space(8, 14, 'e'),
+                new Space(11, 14, 'f'),
+                new Space(12, 14, 'g'),
+                new Space(13, 14, 'h')
+            };
+
+            //Act
+            result = sut.GetAnchors(newGame);
+
+            //Assert
+            Assert.That(result.Select(s => s.GetString()).ToList(), Is.EquivalentTo(expected.Select(s => s.GetString()).ToList()));
+        }
+
+        [Test]
+        [Category("GetAnchors")]
+        public void GetAnchors_Corner0000()
+        {
+            Placement sut;
+            List<Space> result;
+
+            //Arrange
+            List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>();
+            tupleList.Add(Tuple.Create(new Space(0, 0), new Tile('a')));
+            tupleList.Add(Tuple.Create(new Space(2, 0), new Tile('b')));
+            tupleList.Add(Tuple.Create(new Space(3, 0), new Tile('c')));
+            tupleList.Add(Tuple.Create(new Space(6, 0), new Tile('d')));
+
+            Game newGame = new Game();
+            newGame.SetBoard(tupleList);
+
+            List<Space> spaceList = new List<Space>();
+            spaceList.Add(new Space(1, 0));
+            spaceList.Add(new Space(4, 0));
+            spaceList.Add(new Space(5, 0));
+
+            sut = new Placement(spaceList);
+            List<Space> expected = new List<Space> {
+                new Space(0, 0, 'a'),
+                new Space(2, 0, 'b'),
+                new Space(3, 0, 'c'),
+                new Space(6, 0, 'd'),
+ 
+            };
+
+            //Act
+            result = sut.GetAnchors(newGame);
+
+            //Assert
+            Assert.That(result.Select(s => s.GetString()).ToList(), Is.EquivalentTo(expected.Select(s => s.GetString()).ToList()));
+        }
+        [Test]
+        [Category("GetAnchors")]
+        public void GetAnchors_Corner1400()
+        {
+            Placement sut;
+            List<Space> result;
+
+            //Arrange
+            List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>();
+            tupleList.Add(Tuple.Create(new Space(11, 0), new Tile('a')));
+
+            Game newGame = new Game();
+            newGame.SetBoard(tupleList);
+
+            List<Space> spaceList = new List<Space>();
+            spaceList.Add(new Space(14, 0));
+            spaceList.Add(new Space(13, 0));
+            spaceList.Add(new Space(12, 0));
+
+            sut = new Placement(spaceList);
+            List<Space> expected = new List<Space> {
+                new Space(11, 0, 'a')
+            };
+
+            //Act
+            result = sut.GetAnchors(newGame);
+
+            //Assert
+            Assert.That(result.Select(s => s.GetString()).ToList(), Is.EquivalentTo(expected.Select(s => s.GetString()).ToList()));
+        }
+        [Test]
+        [Category("GetAnchors")]
+        public void GetAnchors_Corner1414()
+        {
+            Placement sut;
+            List<Space> result;
+
+            //Arrange
+            List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>();
+            tupleList.Add(Tuple.Create(new Space(14, 14), new Tile('a')));
+            tupleList.Add(Tuple.Create(new Space(14, 12), new Tile('b')));
+            tupleList.Add(Tuple.Create(new Space(14, 10), new Tile('c')));
+            tupleList.Add(Tuple.Create(new Space(14, 9), new Tile('d')));
+
+            Game newGame = new Game();
+            newGame.SetBoard(tupleList);
+
+            List<Space> spaceList = new List<Space>();
+            spaceList.Add(new Space(14, 13));
+            spaceList.Add(new Space(14, 11));
+          
+            sut = new Placement(spaceList);
+            List<Space> expected = new List<Space> {
+                new Space(14, 14, 'a'),
+                new Space(14, 12, 'b'),
+                new Space(14, 10, 'c'),
+                new Space(14, 9, 'd'),
+
+            };
+
+            //Act
+            result = sut.GetAnchors(newGame);
+
+            //Assert
+            Assert.That(result.Select(s => s.GetString()).ToList(), Is.EquivalentTo(expected.Select(s => s.GetString()).ToList()));
+        }
+        [Test]
+        [Category("GetAnchors")]
+        public void GetAnchors_Corner0014()
+        {
+            Placement sut;
+            List<Space> result;
+
+            //Arrange
+            List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>();
+            tupleList.Add(Tuple.Create(new Space(0, 14), new Tile('a')));
+            tupleList.Add(Tuple.Create(new Space(0, 13), new Tile('b')));
+            tupleList.Add(Tuple.Create(new Space(0, 10), new Tile('c')));
+            tupleList.Add(Tuple.Create(new Space(0, 8), new Tile('d')));
+
+            Game newGame = new Game();
+            newGame.SetBoard(tupleList);
+
+            List<Space> spaceList = new List<Space>();
+            spaceList.Add(new Space(0, 12));
+            spaceList.Add(new Space(0, 11));
+            spaceList.Add(new Space(0, 9));
+            spaceList.Add(new Space(0, 7));
+
+            sut = new Placement(spaceList);
+            List<Space> expected = new List<Space> {
+                new Space(0, 14, 'a'),
+                new Space(0, 13, 'b'),
+                new Space(0, 10, 'c'),
+                new Space(0, 08, 'd'),
+
+            };
+
+            //Act
+            result = sut.GetAnchors(newGame);
+
+            //Assert
+            Assert.That(result.Select(s => s.GetString()).ToList(), Is.EquivalentTo(expected.Select(s => s.GetString()).ToList()));
+        }
+
 
         #endregion
     }
