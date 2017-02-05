@@ -58,7 +58,16 @@ namespace Scrabble
 
         public override int GetHashCode(Space obj)
         {
-            return obj.GetX().GetHashCode() ^ obj.GetY().GetHashCode();
+            try
+            {
+                return obj.GetX().GetHashCode() ^ obj.GetY().GetHashCode();
+            }
+            catch
+            {
+
+                return 0;
+            }
+            
         }
     }
     public class SpaceTileEqualityComparer : EqualityComparer<Space>
@@ -79,7 +88,14 @@ namespace Scrabble
 
         public override int GetHashCode(Space obj)
         {
-            return obj.GetX().GetHashCode() ^ obj.GetY().GetHashCode();
+            try
+            {
+                return obj.GetX().GetHashCode() ^ obj.GetY().GetHashCode();
+            }
+            catch
+            {
+                return 0;
+            }
         }
     }
 }

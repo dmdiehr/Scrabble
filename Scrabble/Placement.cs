@@ -6,7 +6,7 @@ using System.Linq;
 namespace Scrabble
 {
 
-    public class Placement
+    public sealed class Placement
     {
         //FIELDS
         private List<Space> _spaceList;
@@ -14,6 +14,10 @@ namespace Scrabble
         //CONSTRUCTOR
         public Placement(List<Space> spaceList = null)
         {
+            if (spaceList == null)
+            {
+                spaceList = new List<Space>();
+            }
             _spaceList = spaceList;
         }
 
@@ -56,6 +60,44 @@ namespace Scrabble
 
 
         //METHODS
+
+        public override bool Equals(object obj)
+        {
+
+            if (obj == null)
+                return false;
+            if (ReferenceEquals(obj, this))
+                return true;
+            if (obj.GetType() != this.GetType())
+                return false;
+            Placement rhs = obj as Placement;
+
+            if (this._spaceList.Count != rhs._spaceList.Count)
+                return false;
+
+            this.PlacementSort();
+            rhs.PlacementSort();
+
+            for (int i = 0; i < this._spaceList.Count; i++)
+            {
+                if (!SpaceCoordsEqualityComparer.Instance.Equals(this._spaceList[i], rhs._spaceList[i]))
+                    return false;
+            }
+            return true;
+        }
+
+        public override int GetHashCode()
+        {
+            try
+            {
+                return this._spaceList[0].GetX() ^ this._spaceList[0].GetY();
+            }
+            catch
+            {
+                return 0;
+            }
+           
+        }
 
         public bool IsOnBoard(Game game)
         {
@@ -106,7 +148,7 @@ namespace Scrabble
 
         public bool IsHorizontal()
         {
-            if (IsSingle() || (_spaceList == null))
+            if (_spaceList.Count <=1)
                 return false;
             for (int i = 1; i < _spaceList.Count; i++)
             {
@@ -118,7 +160,7 @@ namespace Scrabble
 
         public bool IsVertical()
         {
-            if (IsSingle() || (_spaceList == null))
+            if (_spaceList.Count <= 1)
                 return false;
             for (int i = 1; i < _spaceList.Count; i++)
             {
@@ -251,7 +293,7 @@ namespace Scrabble
 
         public void PlacementSort()
         {
-            _spaceList.Sort(new SpaceComparer());
+            _spaceList.Sort(SpaceComparer.Instance);
         }
 
         public List<Space> GetAnchors(Game game)

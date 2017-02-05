@@ -9,6 +9,187 @@ namespace Scrabble.Tests
     [TestFixture]
     public class PlacementTests
     {
+        [Test]
+        [Category("Equals Override")]
+        public void Equals_BothEmpty()
+        {
+            Placement placement1 = new Placement();
+            Placement placement2 = new Placement();
+
+            Assert.That(placement1.Equals(placement2), Is.True);
+            Assert.That(placement1.GetHashCode(), Is.EqualTo(placement2.GetHashCode()));
+               
+        }
+
+        [Test]
+        [Category("Equals Override")]
+        public void Equals_SingleSpace_True()
+        {
+            Placement placement1 = new Placement(new Space(7,7));
+            Placement placement2 = new Placement(new Space(7,7));
+
+            Assert.That(placement1.Equals(placement2), Is.True);
+            Assert.That(placement1.GetHashCode(), Is.EqualTo(placement2.GetHashCode()));
+
+        }
+        [Test]
+        [Category("Equals Override")]
+        public void Equals_DifferentConstuctors()
+        {
+            Placement placement1 = new Placement(new Space(7, 7));
+            Placement placement2 = new Placement(new List<Space>{ new Space(7, 7) });
+
+            Assert.That(placement1.Equals(placement2), Is.True);
+            Assert.That(placement1.GetHashCode(), Is.EqualTo(placement2.GetHashCode()));
+
+        }
+
+        [Test]
+        [Category("Equals Override")]
+        public void Equals_NotAffectedByLetters()
+        {
+            Placement placement1 = new Placement(new Space(7, 7, 'a'));
+            Placement placement2 = new Placement(new Space(7, 7, 'b'));
+
+            Assert.That(placement1.Equals(placement2), Is.True);
+            Assert.That(placement1.GetHashCode(), Is.EqualTo(placement2.GetHashCode()));
+
+        }
+
+        [Test]
+        [Category("Equals Override")]
+        public void Equals_LongPlacement()
+        {
+            List<Space> spaceList = new List<Space>();
+
+            spaceList.Add(new Space(7, 7));
+            spaceList.Add(new Space(7, 8));
+            spaceList.Add(new Space(7, 9));
+            spaceList.Add(new Space(7, 10));
+            spaceList.Add(new Space(7, 12));
+            spaceList.Add(new Space(7, 13));
+            spaceList.Add(new Space(7, 14));
+
+
+
+            Placement placement1 = new Placement(spaceList);
+            Placement placement2 = new Placement(spaceList);
+
+            Assert.That(placement1.Equals(placement2), Is.True);
+            Assert.That(placement1.GetHashCode(), Is.EqualTo(placement2.GetHashCode()));
+
+        }
+
+        [Test]
+        [Category("Equals Override")]
+        public void Equals_OneInvalidPlacement()
+        {
+            List<Space> spaceList1 = new List<Space>();
+
+            spaceList1.Add(new Space(7, 7));
+            spaceList1.Add(new Space(7, 8));
+            spaceList1.Add(new Space(7, 9));
+            spaceList1.Add(new Space(7, 10));
+            spaceList1.Add(new Space(7, 12));
+            spaceList1.Add(new Space(7, 13));
+            spaceList1.Add(new Space(7, 14));
+
+            List<Space> spaceList2 = new List<Space>();
+
+            spaceList2.Add(new Space(8, 7));
+            spaceList2.Add(new Space(6, 8));
+            spaceList2.Add(new Space(13, 9));
+
+
+            Placement placement1 = new Placement(spaceList1);
+            Placement placement2 = new Placement(spaceList2);
+
+            Assert.That(placement1.Equals(placement2), Is.False);
+        }
+
+        [Test]
+        [Category("Equals Override")]
+        public void Equals_TwoSameInvalidPlacement()
+        {
+            List<Space> spaceList1 = new List<Space>();
+
+            spaceList1.Add(new Space(8, 7));
+            spaceList1.Add(new Space(6, 8));
+            spaceList1.Add(new Space(13, 9));
+
+            List<Space> spaceList2 = new List<Space>();
+
+            spaceList2.Add(new Space(8, 7));
+            spaceList2.Add(new Space(6, 8));
+            spaceList2.Add(new Space(13, 9));
+
+
+            Placement placement1 = new Placement(spaceList1);
+            Placement placement2 = new Placement(spaceList2);
+
+            Assert.That(placement1.Equals(placement2), Is.True);
+            Assert.That(placement1.GetHashCode(), Is.EqualTo(placement2.GetHashCode()));
+        }
+
+        [Test]
+        [Category("Equals Override")]
+        public void Equals_ResetPlacement()
+        {
+            List<Space> spaceList1 = new List<Space>();
+
+            spaceList1.Add(new Space(7, 8));
+            spaceList1.Add(new Space(7, 7));
+            spaceList1.Add(new Space(7, 9));
+
+            List<Space> spaceList2 = new List<Space>();
+
+            spaceList2.Add(new Space(8, 7));
+            spaceList2.Add(new Space(6, 8));
+            spaceList2.Add(new Space(13, 9));
+
+
+            Placement placement1 = new Placement(spaceList1);
+            Placement placement2 = new Placement(spaceList2);
+
+            placement2.SetSpaceList(spaceList1);
+
+            Assert.That(placement1.Equals(placement2), Is.True);
+            Assert.That(placement1.GetHashCode(), Is.Not.(placement2.GetHashCode()));
+        }
+
+        [Test]
+        [Category("Equals Override")]
+        public void Equals_DifferentOrder()
+        {
+            List<Space> spaceList1 = new List<Space>();
+
+            spaceList1.Add(new Space(7, 7));
+            spaceList1.Add(new Space(7, 8));
+            spaceList1.Add(new Space(7, 9));
+            spaceList1.Add(new Space(7, 2));
+            spaceList1.Add(new Space(7, 3));
+            spaceList1.Add(new Space(7, 4));
+            spaceList1.Add(new Space(7, 0));
+
+            List<Space> spaceList2 = new List<Space>();
+
+            spaceList2.Add(new Space(7, 0));
+            spaceList2.Add(new Space(7, 2));
+            spaceList2.Add(new Space(7, 3));
+            spaceList2.Add(new Space(7, 4));
+            spaceList2.Add(new Space(7, 9));
+            spaceList2.Add(new Space(7, 8));
+            spaceList2.Add(new Space(7, 7));
+
+
+
+            Placement placement1 = new Placement(spaceList1);
+            Placement placement2 = new Placement(spaceList2);
+
+            Assert.That(placement1.Equals(placement2), Is.True);
+            Assert.That(placement1.GetHashCode(), Is.EqualTo(placement2.GetHashCode()));
+
+        }
         #region //IsOnBoard
 
         [Test]
@@ -465,7 +646,7 @@ namespace Scrabble.Tests
         public void HasNoDuplicates_Single()
         {
             Placement sut;
-            var result = false;
+            bool result = false;
 
             //Arrang
 
@@ -2251,7 +2432,7 @@ namespace Scrabble.Tests
 
             //Assert
             Assert.That(result.Select(s => s.GetString()).ToList(), Is.Not.EquivalentTo(expected.Select(s => s.GetString()).ToList()));
-            Assert.That(result.Except(expected, SpaceTileEqualityComparer.Instance).Count(), Is.EqualTo(0));
+            Assert.That(result.Except(expected, SpaceTileEqualityComparer.Instance).Count(), Is.EqualTo(2));
         }
 
         [Test]
