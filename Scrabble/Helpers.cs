@@ -79,7 +79,7 @@ namespace Scrabble
 
         public override int GetHashCode(Space obj)
         {
-            return obj.GetCoords().GetHashCode() ^ obj.GetTile().GetHashCode();
+            return obj.GetX().GetHashCode() ^ obj.GetY().GetHashCode();
         }
     }
 }
