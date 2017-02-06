@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
+using System.Linq;
 
 namespace Scrabble
 {
@@ -137,8 +139,68 @@ namespace Scrabble
 
 
         public List<Placement> PossiblePlacements()
-        {
-            throw new NotImplementedException();
+        {            
+            HashSet<Placement> returnHash = new HashSet<Placement>();
+
+            if (_tray.Tiles.Count == 0)
+                return new List<Placement>();
+
+            //Adds all valid single space placements
+            foreach (Space space in _board)
+            {
+                if (new Placement(space).IsValid(this))
+                    returnHash.Add(new Placement(space));
+            }
+
+            //build placements of each length. Basing each on valid placements of size -1
+
+            for (int i = 2; i <= _tray.Tiles.Count; i++)
+            {
+
+                List<Placement> buildFromList = returnHash.Where(x => x.GetSpaceList().Count() == i - 1).ToList();
+
+                foreach (var item in buildFromList)
+                {
+                    if (item.IsSingle() || item.IsHorizontal())
+                    {
+                        int yValue = item.GetSpaceList()[0].GetY();
+
+                        for (int x = 0; x < 15; x++)
+                        {
+                            List<Space> newSpaceList = new List<Space>(item.GetSpaceList());
+                            Space newSpace = new Space(x, yValue);
+
+                            newSpaceList.Add(newSpace);
+                            Placement potentialPlacement = new Placement(newSpaceList);
+
+                            if (potentialPlacement.IsValid(this))
+                            {
+                                returnHash.Add(potentialPlacement);
+                            }
+                        }
+                    }
+
+                    if (item.IsSingle() || item.IsVertical())
+                    {
+                        int xValue = item.GetSpaceList()[0].GetX();
+
+                        for (int y = 0; y < 15; y++)
+                        {
+                            List<Space> newSpaceList = new List<Space>(item.GetSpaceList());
+                            Space newSpace = new Space(xValue, y);
+
+                            newSpaceList.Add(newSpace);
+                            Placement potentialPlacement = new Placement(newSpaceList);
+
+                            if (potentialPlacement.IsValid(this))
+                            {
+                                returnHash.Add(potentialPlacement);
+                            }
+                        }
+                    }
+                }               
+            }
+            return returnHash.ToList();
         }
 
         public void EmptyBoard()

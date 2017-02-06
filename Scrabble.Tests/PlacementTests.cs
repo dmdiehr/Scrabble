@@ -9,6 +9,7 @@ namespace Scrabble.Tests
     [TestFixture]
     public class PlacementTests
     {
+        #region //Equals
         [Test]
         [Category("Equals Override")]
         public void Equals_BothEmpty()
@@ -154,7 +155,7 @@ namespace Scrabble.Tests
             placement2.SetSpaceList(spaceList1);
 
             Assert.That(placement1.Equals(placement2), Is.True);
-            Assert.That(placement1.GetHashCode(), Is.Not.(placement2.GetHashCode()));
+            Assert.That(placement1.GetHashCode(), Is.EqualTo(placement2.GetHashCode()));
         }
 
         [Test]
@@ -638,6 +639,7 @@ namespace Scrabble.Tests
             Assert.That(result, Is.True);
         }
 
+        #endregion
         #endregion
         #region//HasNoDuplicates
 
@@ -2332,7 +2334,6 @@ namespace Scrabble.Tests
             Assert.That(result, Is.False);
         }
         #endregion
-
         #region //GetAnchors
         [Test]
         [Category("GetAnchors")]
