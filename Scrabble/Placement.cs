@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using ExtentionMethods;
 
 namespace Scrabble
 {
@@ -386,12 +387,14 @@ namespace Scrabble
 
         public List<Play> ValidPlays(Game game)
         {
-            List<Play> plays = new List<Play> { };
+            List<Play> plays = new List<Play>();
 
 
 
 
             return plays;
         }
+
+
     }
 }

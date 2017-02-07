@@ -57,7 +57,7 @@ namespace Scrabble.Tests
             result = sut.PossiblePlacements();
 
             //Assert
-            Assert.That(result.Count, Is.EqualTo(8));            
+            Assert.That(result.Count, Is.EqualTo(8));
             Assert.That(result, Is.EquivalentTo(expected));
         }
         [Test]
@@ -77,6 +77,34 @@ namespace Scrabble.Tests
 
             //Assert
             Assert.That(result.Count, Is.EqualTo(55));
+        }
+
+        [Test]
+        [Category("PossiblePlacements")]
+        public void PossiblePlacements_2tray_2board()
+        {
+            //Arrange
+            Game sut = new Game("cd");
+            List<Placement> result;
+
+            List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>
+            {
+                Tuple.Create(new Space(7,7), new Tile('a')),
+                Tuple.Create(new Space(7,8), new Tile('b'))
+            };
+            sut.SetBoard(tupleList);
+
+            ////Act
+            result = sut.PossiblePlacements();
+
+            foreach (Placement placement in result)
+            {
+                Debug.WriteLine(placement.GetSpaceListString());
+            }
+
+            //Assert
+            Assert.That(result.Count, Is.EqualTo(25));
+
         }
     }
 }

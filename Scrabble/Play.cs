@@ -8,6 +8,9 @@ namespace Scrabble
 {
     public class Play
     {
+        //In case you forget, a Play is a Placement with Tiles associated with specific Spaces. 
+        //It does not include spaces or tiles from the board. (Those are anchors.) 
+
         //FIELDS
         private List<Tuple<Space, Tile>> _playList;
         private Game _game;
@@ -21,6 +24,11 @@ namespace Scrabble
             _game = game;
             _subWords = SubWords();
             _score = CalculateScore();
+
+            if (!GetPlacement().IsValid(game))
+            {
+                throw new Exception("This play consists of an invalid placement ");
+            }
         }
 
         public Play() { }
@@ -42,21 +50,58 @@ namespace Scrabble
 
         private SubWord[] SubWords()
         {
-            string[] subwords = new string[_playList.Count +1];
-            Placement thisPlacement = GetPlacement();
-            //the array should be (_playlist.Count + 1) in size
-            //the primary subplay will be the orientation of the placement
-            //all other subplays will be the alternate orientation
-            //might have be specific when it somes to single tile plays
+            SubWord[] subwords = new SubWord[_playList.Count +1];
 
-            //will probably have to build the primary and secondary subplays separately
+            //Single tile placements are a special case
+            //Essentially, single tile placements have no primary SubWord
+            //And instead have two secondary words. Or at least that's how I'll approach them.
+            if (GetPlacement().IsSingle())
+            {
+                //Get Horizontal SubWord
+
+                //Get Vertical SubWord
+
+                //return subwords
+                
+            }
+
+            List<Space> mainWord = new List<Space>();
+
+            //First, convert the playList into Spaces with imbedded tiles
+            //and include anchors from the board
             
-            // the secondary subplays should be easy - just start with the tuple we have and add the tuples north and south (or east/west)
-            // until we find a null tile in each direction
+            foreach (Tuple<Space, Tile> item in _playList)
+            {
+                mainWord.Add(new Space(item.Item1.GetX(), item.Item1.GetY(), item.Item2));
+            }
 
-            //the primary subplay will have to account for the possible mix of mutiple gaps in the placement filled by the board and vice/versa.
+            Placement thisPlacement = GetPlacement();
+            List<Space> anchors = thisPlacement.GetAnchors(_game);
+
+            mainWord.AddRange(anchors);
+
+            mainWord.Sort(SpaceComparer.Instance);
+
+            SubWord primaryWord = new SubWord(mainWord);
+            subwords[0] = primaryWord;
+
+            List<Space> playSpaces = thisPlacement.GetSpaceList();
+            
+
+
+            if (GetPlacement().IsHorizontal())
+            {
+                //Build a vertical subword for each space in the Play
+            }
+
+            if (GetPlacement().IsVertical())
+            {
+                //Build a horizontal subword for each space in the Play
+            }
+
             throw new NotImplementedException();
         }
+
         public int CalculateScore()
         {
             int score = 0;

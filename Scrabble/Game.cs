@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using ExtentionMethods;
 
 namespace Scrabble
 {
@@ -202,6 +203,11 @@ namespace Scrabble
             }
             return returnHash.ToList();
         }
+
+
+        
+
+
 
         public void EmptyBoard()
         {
