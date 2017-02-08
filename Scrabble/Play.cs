@@ -22,7 +22,7 @@ namespace Scrabble
         {
             _playList = playList;
             _game = game;
-            _subWords = SubWords();
+            _subWords = GetSubWords();
             _score = CalculateScore();
 
             if (!GetPlacement().IsValid(game))
@@ -48,7 +48,7 @@ namespace Scrabble
 
         //METHODS
 
-        private SubWord[] SubWords()
+        private SubWord[] GetSubWords()
         {
             SubWord[] subwords = new SubWord[_playList.Count +1];
 
@@ -99,17 +99,74 @@ namespace Scrabble
                 //Build a horizontal subword for each space in the Play
             }
 
-            throw new NotImplementedException();
+            return subwords;
         }
+
+        public SubWord SingleSubWord(Space space, string direction)
+        {
+            #region //Custom Exceptions for Parameter Checking
+            if (direction != "vertical" && direction != "horizontal")
+                throw new Exception("The direction parameter must be \"vertical\" or \"horizontal\"");
+            if (space.GetTile() == null)
+                throw new Exception("The space parameter must have a space whose tile is not null");
+            #endregion
+
+            List<Space> spaceList = new List<Space> { space };
+            Space currentSpace = space;
+
+            if (direction == "horizontal")
+            {
+                while (_game.GetSpace(currentSpace.GetAdjacentWest()) != null && _game.GetSpace(currentSpace.GetAdjacentWest()).GetTile() != null)
+                {
+                    spaceList.Add(_game.GetSpace(currentSpace.GetAdjacentWest()));
+                    currentSpace = currentSpace.GetAdjacentWest();
+                }
+
+                currentSpace = space;
+
+                while (_game.GetSpace(currentSpace.GetAdjacentEast()) != null && _game.GetSpace(currentSpace.GetAdjacentEast()).GetTile() != null)
+                {
+                    spaceList.Add(_game.GetSpace(currentSpace.GetAdjacentEast()));
+                    currentSpace = currentSpace.GetAdjacentEast();
+                }
+            }
+
+            if (direction == "vertical")
+            {
+                while (_game.GetSpace(currentSpace.GetAdjacentNorth()) != null && _game.GetSpace(currentSpace.GetAdjacentNorth()).GetTile() != null)
+                {
+                    spaceList.Add(_game.GetSpace(currentSpace.GetAdjacentNorth()));
+                    currentSpace = currentSpace.GetAdjacentNorth();
+                }
+
+                currentSpace = space;
+
+                while (_game.GetSpace(currentSpace.GetAdjacentSouth()) != null && _game.GetSpace(currentSpace.GetAdjacentSouth()).GetTile() != null)
+                {
+                    spaceList.Add(_game.GetSpace(currentSpace.GetAdjacentSouth()));
+                    currentSpace = currentSpace.GetAdjacentSouth();
+                }
+            }
+
+            return new SubWord(spaceList);
+
+        }
+
+
 
         public int CalculateScore()
         {
             int score = 0;
 
-            foreach (SubWord word in _subWords)
+            try
             {
-                score += word.SubWordScore();
+                foreach (SubWord word in _subWords)
+                {
+                    score += word.SubWordScore();
+                }
+
             }
+            catch { }
 
             return score;
         }

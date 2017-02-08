@@ -314,7 +314,6 @@ namespace Scrabble
                 Space currentSpace = _spaceList[0];
                 while (game.GetSpace(currentSpace.GetAdjacentWest()) != null && game.GetSpace(currentSpace.GetAdjacentWest()).GetTile() != null)
                 {
-                    Debug.WriteLine("Pre Add");
                     anchors.Add(game.GetSpace(currentSpace.GetAdjacentWest()));
                     currentSpace = currentSpace.GetAdjacentWest();
 
@@ -330,17 +329,14 @@ namespace Scrabble
                 {
                     if (game.GetSpace(x,yValue).GetTile() != null)
                     {
-                        Debug.WriteLine("Middle Add!");
                         anchors.Add(game.GetSpace(x, yValue));
                     }
                 }
 
                 // Anchors after placement
                 currentSpace = _spaceList.Last();
-                Debug.WriteLine("SpaceList Last = " + _spaceList.Last().GetString());
                 while (game.GetSpace(currentSpace.GetAdjacentEast()) != null && game.GetSpace(currentSpace.GetAdjacentEast()).GetTile() != null)
                 {
-                    Debug.WriteLine("Post Add!");
                     anchors.Add(game.GetSpace(currentSpace.GetAdjacentEast()));
                     currentSpace = currentSpace.GetAdjacentEast();
 

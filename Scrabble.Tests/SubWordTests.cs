@@ -16,12 +16,12 @@ namespace Scrabble.Tests
 
             //Arrange
 
-            List<Tuple<Space, Tile >> pairs = new List<Tuple<Space, Tile>> {
-                Tuple.Create(new Space(7,7), new Tile('t')),
-                Tuple.Create(new Space(7,8), new Tile('e')),
-                Tuple.Create(new Space(7,9), new Tile('s')),
-                Tuple.Create(new Space(7,10), new Tile('t'))
-            };
+            List<Space> pairs = new List<Space> {
+                new Space(7,7,'t'),
+                new Space(7,8,'e'),
+                new Space(7,9,'s'),
+                new Space(7,10,'t')
+             };
             
 
             sut = new SubWord(pairs);
@@ -35,7 +35,7 @@ namespace Scrabble.Tests
         }
 
         [Test]
-        [Category("Consctructor")]
+        [Category("Constructor")]
         public void Constructor_NewVertOutOfOrder()
         {
             SubWord sut;
@@ -44,11 +44,11 @@ namespace Scrabble.Tests
 
             //Arrange
 
-            List<Tuple<Space, Tile>> pairs = new List<Tuple<Space, Tile>> {
-                Tuple.Create(new Space(7,9), new Tile('s')),
-                Tuple.Create(new Space(7,8), new Tile('e')),
-                Tuple.Create(new Space(7,7), new Tile('t')),
-                Tuple.Create(new Space(7,10), new Tile('t'))
+            List<Space> pairs = new List<Space> {
+                new Space(7,9,'s'),
+                new Space(7,8,'e'),
+                new Space(7,7,'t'),
+                new Space(7,10,'t')
             };
 
 
@@ -72,11 +72,11 @@ namespace Scrabble.Tests
 
             //Arrange
 
-            List<Tuple<Space, Tile>> pairs = new List<Tuple<Space, Tile>> {
-                Tuple.Create(new Space(7,7), new Tile('t')),
-                Tuple.Create(new Space(8,7), new Tile('e')),
-                Tuple.Create(new Space(9,7), new Tile('s')),
-                Tuple.Create(new Space(10,7), new Tile('t'))
+            List<Space> pairs = new List<Space> {
+                new Space(7,7, 't'),
+                new Space(8,7, 'e'),
+                new Space(9,7, 's'),
+                new Space(10,7, 't')
             };
 
 
@@ -100,11 +100,11 @@ namespace Scrabble.Tests
 
             //Arrange
 
-            List<Tuple<Space, Tile>> pairs = new List<Tuple<Space, Tile>> {
-                Tuple.Create(new Space(9,7), new Tile('s')),
-                Tuple.Create(new Space(8,7), new Tile('e')),
-                Tuple.Create(new Space(7,7), new Tile('t')),
-                Tuple.Create(new Space(10,7), new Tile('t'))
+            List<Space> pairs = new List<Space> {
+                new Space(9,7,'s'),
+                new Space(8,7,'e'),
+                new Space(7,7,'t'),
+                new Space(10,7,'t')
             };
 
 

@@ -114,6 +114,21 @@ namespace Scrabble
             SetBoard(pairs);
         }
 
+        public void SetBoard(List<Space> spaces)
+        {
+            foreach (var item in spaces)
+            {
+                if (item.GetTile() == null)
+                    throw new Exception("The SetBoard method must include a tile for each space.");
+            }
+
+            foreach (var item in spaces)
+            {
+                GetSpace(item).SetTile(item.GetTile());
+            }
+
+        }
+
         public Tray GetTray()
         {
             return _tray;

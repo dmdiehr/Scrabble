@@ -20,18 +20,15 @@ namespace Scrabble
         //CONSTURCTORS
         public SubWord(List<Space> pairs)
         {
-            _pairs = pairs;
-            _word = ExtractWord();
-            _score = SubWordScore();
-
-            _pairs.Sort(SpaceComparer.Instance);
-
-            foreach (Space space in _pairs)
+            foreach (Space space in pairs)
             {
                 if (space.GetTile() == null)
                     throw new Exception("You're constructing your SubWord with empty Spaces... don't do that.");
             }
-
+            pairs.Sort(SpaceComparer.Instance);
+            _pairs = pairs;
+            _word = ExtractWord();
+            _score = SubWordScore();           
         }
 
         //METHODS
