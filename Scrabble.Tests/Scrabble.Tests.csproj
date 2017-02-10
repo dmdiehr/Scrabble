@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExtentionsTests.cs" />
     <Compile Include="GameTests.cs" />
     <Compile Include="PlacementTests.cs" />
     <Compile Include="PlayTests.cs" />

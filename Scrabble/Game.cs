@@ -149,6 +149,11 @@ namespace Scrabble
             _tray = new Tray(tray);
         }
 
+        public string[] GetDictionary()
+        {
+            return _dictionary;
+        }
+
         #endregion
 
         #region //METHODS

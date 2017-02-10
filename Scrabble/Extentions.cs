@@ -6,7 +6,7 @@ namespace ExtentionMethods
 {
     public static class Extensions
     {
-        public static List<string> WordFind(this String[] stringArray, string tray, int wordSize = 0, List<Tuple<int, char>> anchorTuples = null)
+        public static List<string> WordFind(this string[] stringArray, string tray, int wordSize = 0, List<Tuple<int, char>> anchorTuples = null)
         {
             string letters = tray;
             if (anchorTuples != null)
