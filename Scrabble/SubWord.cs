@@ -9,7 +9,7 @@ namespace Scrabble
         //A Subword, unlike a Play, does in fact include spaces and tiles from the board.
         
         //FIELDS
-        private List<Space> _pairs;
+        private List<Tuple<Space, Tile>> _pairs;
 
         private string _word;
         public string Word { get { return _word; } }
@@ -18,15 +18,10 @@ namespace Scrabble
         public int Score { get { return _score; } }
 
         //CONSTURCTORS
-        public SubWord(List<Space> pairs)
+        public SubWord(List<Tuple<Space, Tile>> pairs)
         {
-            foreach (Space space in pairs)
-            {
-                if (space.GetTile() == null)
-                    throw new Exception("You're constructing your SubWord with empty Spaces... don't do that.");
-            }
-            pairs.Sort(SpaceComparer.Instance);
-            _pairs = pairs;
+
+            _pairs = pairs.OrderBy(x => x.Item1, SpaceComparer.Instance).ToList();
             _word = ExtractWord();
             _score = SubWordScore();           
         }
@@ -38,9 +33,18 @@ namespace Scrabble
                 return "";
 
             string returnString = "";
-            foreach (var item in _pairs)
+            foreach (Tuple<Space, Tile> pair in _pairs)
             {
-                returnString += item.GetTileLetter();                
+                try
+                {
+                    returnString += pair.Item2.GetLetter();
+                }
+                catch (NullReferenceException)
+                {
+
+                    returnString += pair.Item1.GetTileLetter();
+                }
+                          
             }
 
             return returnString;
@@ -54,10 +58,19 @@ namespace Scrabble
             int score = 0;
             int totalWordMultiplier = 1;
 
-            foreach (var item in _pairs)
+            foreach (Tuple<Space, Tile> pair in _pairs)
             {
-                totalWordMultiplier *= item.WordMultiplier;
-                score += ( item.LetterMultiplier * item.GetTile().GetValue());
+                totalWordMultiplier *= pair.Item1.WordMultiplier;
+                try
+                {
+                    score += (pair.Item1.LetterMultiplier * pair.Item2.GetValue());
+                }
+                catch (NullReferenceException)
+                {
+
+                    score += (pair.Item1.LetterMultiplier * pair.Item1.GetTile().GetValue());
+                }
+                
             }
 
             return score * totalWordMultiplier;

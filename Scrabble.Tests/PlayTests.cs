@@ -30,12 +30,13 @@ namespace Scrabble.Tests
 
 
             //Act
-            var result = sut.SingleSubWord(new Space(7, 6, 'e'), "vertical");
+            var result = sut.SingleSubWord(Tuple.Create(new Space(7, 6), new Tile('e')), "vertical");
             var resultWord = result.Word;
             var resultScore = result.Score;
 
             //Assert
-            Assert.That(resultWord, Is.EqualTo("et"));      
+            Assert.That(resultWord, Is.EqualTo("et"));
+            Assert.That(resultScore, Is.EqualTo(2));
         }
     }
 }

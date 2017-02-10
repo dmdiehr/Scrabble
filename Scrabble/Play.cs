@@ -58,6 +58,7 @@ namespace Scrabble
             if (GetPlacement().IsSingle())
             {
                 //Get Horizontal SubWord
+                //subwords[0] = SingleSubWord(_playList[0].Item1)
 
                 //Get Vertical SubWord
 
@@ -65,22 +66,17 @@ namespace Scrabble
                 
             }
 
-            List<Space> mainWord = new List<Space>();
+            List<Tuple<Space, Tile>> mainWord = new List<Tuple<Space, Tile>>();
 
-            //First, convert the playList into Spaces with imbedded tiles
-            //and include anchors from the board
-            
-            foreach (Tuple<Space, Tile> item in _playList)
-            {
-                mainWord.Add(new Space(item.Item1.GetX(), item.Item1.GetY(), item.Item2));
-            }
+           
 
             Placement thisPlacement = GetPlacement();
             List<Space> anchors = thisPlacement.GetAnchors(_game);
 
-            mainWord.AddRange(anchors);
-
-            mainWord.Sort(SpaceComparer.Instance);
+            foreach (Space anchor in anchors)
+            {
+                mainWord.Add(Tuple.Create(anchor, anchor.GetTile()));
+            }                    
 
             SubWord primaryWord = new SubWord(mainWord);
             subwords[0] = primaryWord;
@@ -102,32 +98,32 @@ namespace Scrabble
             return subwords;
         }
 
-        public SubWord SingleSubWord(Space space, string direction)
+        public SubWord SingleSubWord(Tuple<Space, Tile> tuple, string direction)
         {
             #region //Custom Exceptions for Parameter Checking
             if (direction != "vertical" && direction != "horizontal")
                 throw new Exception("The direction parameter must be \"vertical\" or \"horizontal\"");
-            if (space.GetTile() == null)
+            if (tuple.Item2 == null)
                 throw new Exception("The space parameter must have a space whose tile is not null");
             #endregion
 
-            List<Space> spaceList = new List<Space> { space };
-            Space currentSpace = space;
+            List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>> { tuple };
+            Space currentSpace = tuple.Item1;
 
             if (direction == "horizontal")
             {
                 while (_game.GetSpace(currentSpace.GetAdjacentWest()) != null && _game.GetSpace(currentSpace.GetAdjacentWest()).GetTile() != null)
                 {
-                    spaceList.Add(_game.GetSpace(currentSpace.GetAdjacentWest()));
                     currentSpace = currentSpace.GetAdjacentWest();
+                    tupleList.Add(Tuple.Create(_game.GetSpace(currentSpace), currentSpace.GetTile()));                    
                 }
 
-                currentSpace = space;
+                currentSpace = tuple.Item1;
 
                 while (_game.GetSpace(currentSpace.GetAdjacentEast()) != null && _game.GetSpace(currentSpace.GetAdjacentEast()).GetTile() != null)
                 {
-                    spaceList.Add(_game.GetSpace(currentSpace.GetAdjacentEast()));
                     currentSpace = currentSpace.GetAdjacentEast();
+                    tupleList.Add(Tuple.Create(_game.GetSpace(currentSpace), currentSpace.GetTile()));
                 }
             }
 
@@ -135,20 +131,20 @@ namespace Scrabble
             {
                 while (_game.GetSpace(currentSpace.GetAdjacentNorth()) != null && _game.GetSpace(currentSpace.GetAdjacentNorth()).GetTile() != null)
                 {
-                    spaceList.Add(_game.GetSpace(currentSpace.GetAdjacentNorth()));
                     currentSpace = currentSpace.GetAdjacentNorth();
+                    tupleList.Add(Tuple.Create(_game.GetSpace(currentSpace), currentSpace.GetTile()));
                 }
 
-                currentSpace = space;
+                currentSpace = tuple.Item1;
 
                 while (_game.GetSpace(currentSpace.GetAdjacentSouth()) != null && _game.GetSpace(currentSpace.GetAdjacentSouth()).GetTile() != null)
                 {
-                    spaceList.Add(_game.GetSpace(currentSpace.GetAdjacentSouth()));
                     currentSpace = currentSpace.GetAdjacentSouth();
+                    tupleList.Add(Tuple.Create(_game.GetSpace(currentSpace), currentSpace.GetTile()));
                 }
             }
 
-            return new SubWord(spaceList);
+            return new SubWord(tupleList);
 
         }
 
