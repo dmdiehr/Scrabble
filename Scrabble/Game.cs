@@ -280,6 +280,8 @@ namespace Scrabble
                 for (int y = 0; y < 15; y++)
                 {
                     emptyBoard[x, y] = new Space(x, y);
+                    emptyBoard[x, y].WordMultiplier = 1;
+                    emptyBoard[x, y].LetterMultiplier = 1;
                 }
             }
             _board = emptyBoard;

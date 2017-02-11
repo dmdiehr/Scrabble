@@ -52,7 +52,7 @@ namespace Scrabble.Tests
             };
             Game game = new Game();
             game.SetBoard(spaceList);
-            game.SetMultiplier(7, 7, "word", 2);
+            game.SetMultiplier(11, 7, "word", 2);
 
 
             Play sut = new Play(new List<Tuple<Space, Tile>> { Tuple.Create(new Space(11, 7), new Tile('s')), Tuple.Create(new Space(11, 8), new Tile('u')), Tuple.Create(new Space(11, 9), new Tile('m')) }, game);

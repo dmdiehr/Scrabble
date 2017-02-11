@@ -17,24 +17,18 @@ namespace Scrabble
         {
             _coords = Tuple.Create(x, y);
             _tile = null;
-            WordMultiplier = 1;
-            LetterMultiplier = 1;
         }
 
         public Space (int x, int y, char letter)
         {
             _coords = Tuple.Create(x, y);
             _tile = new Tile(letter);
-            WordMultiplier = 1;
-            LetterMultiplier = 1;
         }
 
         public Space (int x, int y, Tile tile)
         {
             _coords = Tuple.Create(x, y);
             _tile = tile;
-            WordMultiplier = 1;
-            LetterMultiplier = 1;
         }
 
         //ACCESSORS

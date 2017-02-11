@@ -2365,8 +2365,7 @@ namespace Scrabble.Tests
             result = sut.GetAnchors(newGame);
 
             //Assert
-
-            Assert.That(result.Select(s => s.GetString()).ToList(), Is.EquivalentTo(expected.Select(s => s.GetString()).ToList()));
+            
             Assert.That(result.Except(expected, SpaceTileEqualityComparer.Instance).Count(), Is.EqualTo(0));
         }
 
@@ -2398,8 +2397,7 @@ namespace Scrabble.Tests
             //Act
             result = sut.GetAnchors(newGame);
 
-            //Assert
-            Assert.That(result.Select(s => s.GetString()).ToList(), Is.EquivalentTo(expected.Select(s => s.GetString()).ToList()));
+            //Assert            
             Assert.That(result.Except(expected, SpaceTileEqualityComparer.Instance).Count(), Is.EqualTo(0));
         }
 
@@ -2431,8 +2429,7 @@ namespace Scrabble.Tests
             //Act
             result = sut.GetAnchors(newGame);
 
-            //Assert
-            Assert.That(result.Select(s => s.GetString()).ToList(), Is.Not.EquivalentTo(expected.Select(s => s.GetString()).ToList()));
+            //Assert            
             Assert.That(result.Except(expected, SpaceTileEqualityComparer.Instance).Count(), Is.EqualTo(2));
         }
 
@@ -2464,8 +2461,7 @@ namespace Scrabble.Tests
             //Act
             result = sut.GetAnchors(newGame);            
 
-            //Assert
-            Assert.That(result.Select(s => s.GetString()).ToList(), Is.EquivalentTo(expected.Select(s => s.GetString()).ToList()));
+            //Assert            
             Assert.That(result.Except(expected, SpaceTileEqualityComparer.Instance).Count(), Is.EqualTo(0));
         }
         [Test]
@@ -2496,8 +2492,7 @@ namespace Scrabble.Tests
             //Act
             result = sut.GetAnchors(newGame);
 
-            //Assert
-            Assert.That(result.Select(s => s.GetString()).ToList(), Is.EquivalentTo(expected.Select(s => s.GetString()).ToList()));
+            //Assert            
             Assert.That(result.Except(expected, SpaceTileEqualityComparer.Instance).Count(), Is.EqualTo(0));
         }
 
@@ -2544,8 +2539,7 @@ namespace Scrabble.Tests
             //Act
             result = sut.GetAnchors(newGame);
 
-            //Assert
-            Assert.That(result.Select(s => s.GetString()).ToList(), Is.EquivalentTo(expected.Select(s => s.GetString()).ToList()));
+            //Assert            
             Assert.That(result.Except(expected, SpaceTileEqualityComparer.Instance).Count(), Is.EqualTo(0));
         }
         [Test]
@@ -2591,8 +2585,7 @@ namespace Scrabble.Tests
             //Act
             result = sut.GetAnchors(newGame);
 
-            //Assert
-            Assert.That(result.Select(s => s.GetString()).ToList(), Is.EquivalentTo(expected.Select(s => s.GetString()).ToList()));
+            //Assert            
             Assert.That(result.Except(expected, SpaceTileEqualityComparer.Instance).Count(), Is.EqualTo(0));
         }
 
@@ -2630,8 +2623,7 @@ namespace Scrabble.Tests
             //Act
             result = sut.GetAnchors(newGame);
 
-            //Assert
-            Assert.That(result.Select(s => s.GetString()).ToList(), Is.EquivalentTo(expected.Select(s => s.GetString()).ToList()));
+            //Assert            
             Assert.That(result.Except(expected, SpaceTileEqualityComparer.Instance).Count(), Is.EqualTo(0));
         }
         [Test]
@@ -2661,8 +2653,7 @@ namespace Scrabble.Tests
             //Act
             result = sut.GetAnchors(newGame);
 
-            //Assert
-            Assert.That(result.Select(s => s.GetString()).ToList(), Is.EquivalentTo(expected.Select(s => s.GetString()).ToList()));
+            //Assert           
             Assert.That(result.Except(expected, SpaceTileEqualityComparer.Instance).Count(), Is.EqualTo(0));
         }
         [Test]
@@ -2698,8 +2689,7 @@ namespace Scrabble.Tests
             //Act
             result = sut.GetAnchors(newGame);
 
-            //Assert
-            Assert.That(result.Select(s => s.GetString()).ToList(), Is.EquivalentTo(expected.Select(s => s.GetString()).ToList()));
+            //Assert            
             Assert.That(result.Except(expected, SpaceTileEqualityComparer.Instance).Count(), Is.EqualTo(0));
         }
         [Test]
@@ -2737,8 +2727,7 @@ namespace Scrabble.Tests
             //Act
             result = sut.GetAnchors(newGame);
 
-            //Assert
-            Assert.That(result.Select(s => s.GetString()).ToList(), Is.EquivalentTo(expected.Select(s => s.GetString()).ToList()));
+            //Assert            
             Assert.That(result.Except(expected, SpaceTileEqualityComparer.Instance).Count(), Is.EqualTo(0));
         }
 
@@ -2831,18 +2820,6 @@ namespace Scrabble.Tests
 
             //Assert
             Assert.That(result.Count(), Is.EqualTo(0));
-
-            //var expected = new List<Space> { new Space(7, 7, 'a'), new Space(7, 8, 'b') };
-            //var result = new List<Space> { new Space(7, 7, 'a'), new Space(7, 8, 'b') };
-
-            ////These asserts pass
-            //Assert.That(SpaceTileEqualityComparer.Instance.Equals(expected[0], result[0]));
-            //Assert.That(SpaceTileEqualityComparer.Instance.Equals(expected[1], result[1]));
-            //Assert.That(expected.Count() == result.Count());
-            //Assert.That(result.Except(expected, SpaceCoordsEqualityComparer.Instance).Count(), Is.EqualTo(0));
-
-            ////This assert fails
-            //Assert.That(result.Except(expected, SpaceTileEqualityComparer.Instance).Count(), Is.EqualTo(0));
         }
         #endregion
     }
