@@ -13,6 +13,7 @@ namespace Scrabble.Tests
             SubWord sut;
             string resultWord = "";
             int resultScore = 0;
+            Game game = new Game();
 
             //Arrange
 
@@ -24,7 +25,7 @@ namespace Scrabble.Tests
              };
             
 
-            sut = new SubWord(pairs);
+            sut = new SubWord(pairs, game);
             //Act
             resultWord = sut.Word;
             resultScore = sut.Score;
@@ -41,6 +42,7 @@ namespace Scrabble.Tests
             SubWord sut;
             string resultWord = "";
             int resultScore = 0;
+            Game game = new Game();
 
             //Arrange
 
@@ -52,7 +54,7 @@ namespace Scrabble.Tests
              };
 
 
-            sut = new SubWord(pairs);
+            sut = new SubWord(pairs, game);
             //Act
             resultWord = sut.Word;
             resultScore = sut.Score;
@@ -69,6 +71,7 @@ namespace Scrabble.Tests
             SubWord sut;
             string resultWord = "";
             int resultScore = 0;
+            Game game = new Game();
 
             //Arrange
 
@@ -80,7 +83,7 @@ namespace Scrabble.Tests
              };
 
 
-            sut = new SubWord(pairs);
+            sut = new SubWord(pairs, game);
             //Act
             resultWord = sut.Word;
             resultScore = sut.Score;
@@ -97,6 +100,7 @@ namespace Scrabble.Tests
             SubWord sut;
             string resultWord = "";
             int resultScore = 0;
+            Game game = new Game();
 
             //Arrange
 
@@ -108,7 +112,7 @@ namespace Scrabble.Tests
              };
 
 
-            sut = new SubWord(pairs);
+            sut = new SubWord(pairs, game);
             //Act
             resultWord = sut.Word;
             resultScore = sut.Score;

@@ -129,6 +129,49 @@ namespace Scrabble
 
         }
 
+        public void SetMultiplier(Space space, string bonusType, int bonusValue)
+        {
+            if (bonusType != "word" && bonusType != "letter")
+                throw new ArgumentException("bonusType must be either \"word\" or \"letter\"");
+
+            if (bonusType == "word")
+            {
+                GetSpace(space).WordMultiplier = bonusValue;
+            }
+            if (bonusType == "letter")
+            {
+                GetSpace(space).LetterMultiplier = bonusValue;
+            }
+        }
+        public void SetMultiplier(Tuple<int, int> space, string bonusType, int bonusValue)
+        {
+            if (bonusType != "word" && bonusType != "letter")
+                throw new ArgumentException("bonusType must be either \"word\" or \"letter\"");
+
+            if (bonusType == "word")
+            {
+                GetSpace(space.Item1, space.Item1).WordMultiplier = bonusValue;
+            }
+            if (bonusType == "letter")
+            {
+                GetSpace(space.Item1, space.Item1).LetterMultiplier = bonusValue;
+            }
+        }
+        public void SetMultiplier(int x, int y,string bonusType, int bonusValue)
+        {
+            if (bonusType != "word" && bonusType != "letter")
+                throw new ArgumentException("bonusType must be either \"word\" or \"letter\"");
+
+            if (bonusType == "word")
+            {
+                GetSpace(x, y).WordMultiplier = bonusValue;
+            }
+            if (bonusType == "letter")
+            {
+                GetSpace(x, y).LetterMultiplier = bonusValue;
+            }
+        }
+
         public Tray GetTray()
         {
             return _tray;

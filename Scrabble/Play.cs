@@ -78,7 +78,7 @@ namespace Scrabble
                 mainWord.Add(Tuple.Create(anchor, anchor.GetTile()));
             }                    
 
-            SubWord primaryWord = new SubWord(mainWord);
+            SubWord primaryWord = new SubWord(mainWord, _game);
             subwords[0] = primaryWord;
 
             List<Space> playSpaces = thisPlacement.GetSpaceList();
@@ -144,7 +144,7 @@ namespace Scrabble
                 }
             }
 
-            return new SubWord(tupleList);
+            return new SubWord(tupleList, _game);
 
         }
 

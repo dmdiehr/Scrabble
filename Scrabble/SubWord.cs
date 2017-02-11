@@ -10,6 +10,7 @@ namespace Scrabble
         
         //FIELDS
         private List<Tuple<Space, Tile>> _pairs;
+        private Game _game;
 
         private string _word;
         public string Word { get { return _word; } }
@@ -18,10 +19,11 @@ namespace Scrabble
         public int Score { get { return _score; } }
 
         //CONSTURCTORS
-        public SubWord(List<Tuple<Space, Tile>> pairs)
+        public SubWord(List<Tuple<Space, Tile>> pairs, Game game)
         {
 
             _pairs = pairs.OrderBy(x => x.Item1, SpaceComparer.Instance).ToList();
+            _game = game;
             _word = ExtractWord();
             _score = SubWordScore();           
         }
@@ -60,15 +62,15 @@ namespace Scrabble
 
             foreach (Tuple<Space, Tile> pair in _pairs)
             {
-                totalWordMultiplier *= pair.Item1.WordMultiplier;
+                totalWordMultiplier *= _game.GetSpace(pair.Item1).WordMultiplier;
                 try
                 {
-                    score += (pair.Item1.LetterMultiplier * pair.Item2.GetValue());
+                    score += (_game.GetSpace(pair.Item1).LetterMultiplier * pair.Item2.GetValue());                    
                 }
                 catch (NullReferenceException)
                 {
 
-                    score += (pair.Item1.LetterMultiplier * pair.Item1.GetTile().GetValue());
+                    score += (_game.GetSpace(pair.Item1).LetterMultiplier * pair.Item1.GetTile().GetValue());
                 }
                 
             }
