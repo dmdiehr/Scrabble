@@ -307,7 +307,7 @@ namespace Scrabble
 
             //make sure to test what happens to this when you run up against the edge of the board
 
-            if (IsSingle() || IsHorizontal())
+            if (IsHorizontal())
             {
 
                 // Anchors before placement

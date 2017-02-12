@@ -7,7 +7,7 @@ using System.Collections.Generic;
 namespace Scrabble.Tests
 {
     [TestFixture]
-    public class ClassTests
+    public class ExtensionsTests
     {
         [Test]
         [Category("WordFind")]

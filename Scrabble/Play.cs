@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,13 +17,13 @@ namespace Scrabble
         private Game _game;
         private SubWord[] _subWords;
         private int _score;
-        
+
         //CONSTRUCTORS
         public Play(List<Tuple<Space, Tile>> playList, Game game)
         {
             _playList = playList;
             _game = game;
-            _subWords = GetSubWords();
+            _subWords = SubWords();
             _score = CalculateScore();
 
             if (!GetPlacement().IsValid(game))
@@ -30,8 +31,6 @@ namespace Scrabble
                 throw new Exception("This play consists of an invalid placement ");
             }
         }
-
-        public Play() { }
 
         //ACCESSORS
 
@@ -45,10 +44,22 @@ namespace Scrabble
             return new Placement(placementList);
         }
 
+        public List<SubWord> GetSubWords()
+        {
+            List<SubWord> returnList = new List<SubWord>();
+            foreach (SubWord subWord in _subWords)
+            {
+                if (subWord.Word.Length > 1)
+                {
+                    returnList.Add(subWord);
+                }
+            }
+            return returnList;
+        }
 
         //METHODS
 
-        private SubWord[] GetSubWords()
+        private SubWord[] SubWords()
         {
             SubWord[] subwords = new SubWord[_playList.Count +1];
 
@@ -58,18 +69,37 @@ namespace Scrabble
             if (GetPlacement().IsSingle())
             {
                 //Get Horizontal SubWord
-                //subwords[0] = SingleSubWord(_playList[0].Item1)
+                SubWord horizontal = SingleSubWord(_playList[0], "horizontal");
 
                 //Get Vertical SubWord
+                SubWord vertical = SingleSubWord(_playList[0], "vertical");
 
                 //return subwords
-                
+                if (vertical == null)
+                {
+                    subwords[0] = horizontal;
+                    subwords[1] = vertical;
+                }
+                else if(horizontal == null)
+                {
+                    subwords[0] = vertical;
+                    subwords[1] = horizontal;
+                }
+                else if (horizontal.ExtractWord().Length >= vertical.ExtractWord().Length)
+                {
+                    subwords[0] = horizontal;
+                    subwords[1] = vertical;
+                }
+                else
+                {
+                    subwords[0] = vertical;
+                    subwords[1] = horizontal;
+                }                
+
+                return subwords;
             }
 
-            List<Tuple<Space, Tile>> mainWord = new List<Tuple<Space, Tile>>();
-
-           
-
+            List<Tuple<Space, Tile>> mainWord = _playList.ToList();          
             Placement thisPlacement = GetPlacement();
             List<Space> anchors = thisPlacement.GetAnchors(_game);
 
@@ -88,13 +118,21 @@ namespace Scrabble
             if (GetPlacement().IsHorizontal())
             {
                 //Build a vertical subword for each space in the Play
+                for (int i = 1; i < subwords.Length; i++)
+                {
+                    subwords[i] = SingleSubWord(_playList[i - 1], "vertical");
+                }
+
             }
 
             if (GetPlacement().IsVertical())
             {
                 //Build a horizontal subword for each space in the Play
+                for (int i = 1; i < subwords.Length; i++)
+                {
+                    subwords[i] = SingleSubWord(_playList[i - 1], "horizontal");
+                }
             }
-
             return subwords;
         }
 

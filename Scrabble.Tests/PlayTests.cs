@@ -68,5 +68,112 @@ namespace Scrabble.Tests
             Assert.That(resultWord, Is.EqualTo("tests"));
             Assert.That(resultScore, Is.EqualTo(10));
         }
+
+        [Test]
+        [Category("GetSubWords")]
+        public void GetSubWords_FirstPlay_Horizontal()
+        {
+            //Arrange
+            Game game = new Game();
+            List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>
+            {
+                Tuple.Create(new Space(7, 7), new Tile('t')),
+                Tuple.Create(new Space(8, 7), new Tile('e')),
+                Tuple.Create(new Space(9, 7), new Tile('s')),
+                Tuple.Create(new Space(10, 7), new Tile('t'))
+            };
+
+            //Act
+            Play play = new Play(tupleList, game);
+
+            //Assert
+            Assert.That(play.GetSubWords().Count, Is.EqualTo(1));
+            Assert.That(play.GetSubWords()[0].Word, Is.EqualTo("test"));
+        }
+
+        [Test]
+        [Category("GetSubWords")]
+        public void GetSubWords_ParallelPlay_Vertical()
+        {
+            //Arrange
+            Game game = new Game();
+
+            List<Space> boardList = new List<Space>
+            {
+                new Space(7, 7, 'a'),
+                new Space(7, 8, 'b'),
+                new Space(7, 9, 'c'),
+                new Space(7, 10, 'd')
+            };
+            game.SetBoard(boardList);
+
+            List<Tuple<Space, Tile>> playList = new List<Tuple<Space, Tile>>
+            {
+                Tuple.Create(new Space(8, 7), new Tile('t')),
+                Tuple.Create(new Space(8, 9), new Tile('s')),
+                Tuple.Create(new Space(8, 8), new Tile('e')),
+                Tuple.Create(new Space(8, 10), new Tile('t'))
+            };
+
+            List<string> expected = new List<string> { "test", "at", "be", "cs", "dt" };
+            
+            //Act
+            Play play = new Play(playList, game);
+            List<string> result = new List<string>();
+            foreach (SubWord subword in play.GetSubWords())
+            {
+                result.Add(subword.Word);
+            }
+
+            //Assert
+            Assert.That(play.GetSubWords().Count, Is.EqualTo(5));
+            Assert.That(result, Is.EquivalentTo(expected));
+        }
+
+        [Test]
+        [Category("GetSubWords")]
+        public void GetSubWords_Complicated_Horizontal()
+        {
+            //Arrange
+            Game game = new Game();
+
+            List<Space> boardList = new List<Space>
+            {
+                new Space(7, 7, 'a'),
+                new Space(8, 7, 'b'),
+                new Space(9, 7, 'c'),
+                new Space(10, 7, 'd'),
+
+                new Space(10, 8, 'e'),
+                new Space(10, 9, 'f'),
+                new Space(10, 10, 'g'),
+
+                new Space(9, 9, 'h'),
+                new Space(11, 9, 'i')
+            };
+            game.SetBoard(boardList);
+
+            List<Tuple<Space, Tile>> playList = new List<Tuple<Space, Tile>>
+            {
+                Tuple.Create(new Space(9, 8), new Tile('t')),
+                Tuple.Create(new Space(11, 8), new Tile('s')),
+                Tuple.Create(new Space(12, 8), new Tile('t'))
+            };
+
+            List<string> expected = new List<string> { "test", "cth", "si" };
+
+            //Act
+            Play play = new Play(playList, game);
+            List<string> result = new List<string>();
+            foreach (SubWord subword in play.GetSubWords())
+            {
+                result.Add(subword.Word);
+            }
+
+            //Assert
+            Assert.That(play.GetSubWords().Count, Is.EqualTo(3));
+            Assert.That(result, Is.EquivalentTo(expected));
+        }
+
     }
 }
