@@ -57,6 +57,11 @@ namespace Scrabble
             return returnList;
         }
 
+        public int GetScore()
+        {
+            return _score;
+        }
+
         //METHODS
 
         private SubWord[] SubWords()
@@ -207,26 +212,12 @@ namespace Scrabble
 
         public bool AreWordsValid()
         {
-            foreach (var item in _subWords)
+            foreach (SubWord subWord in GetSubWords())
             {
-                //order each subplay
-                //if the subplay is length == 1 ignore it
-                // concatenate the tile letters into a string
-                // check the string against game._dictionary
-                //return false if not in the dictionary
+                if (!_game.GetDictionary().Contains(subWord.Word))
+                    return false;
             }
             return true;
         }
-
-        public bool IsPlacementValid()
-        {
-            return GetPlacement().IsValid(_game);
-        }
-
-        public bool IsPlayValid()
-        {
-            return IsPlacementValid() && AreWordsValid();
-        }
-
     }
 }

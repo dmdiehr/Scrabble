@@ -173,6 +173,55 @@ namespace Scrabble.Tests
             //Assert
             Assert.That(play.GetSubWords().Count, Is.EqualTo(3));
             Assert.That(result, Is.EquivalentTo(expected));
+            Assert.That(play.GetScore(), Is.EqualTo(14));
+            Assert.That(play.AreWordsValid, Is.False);
+        }
+
+        [Test]
+        [Category("GetSubWords")]
+        public void GetSubWords_Complicated_Vertical()
+        {
+            //Arrange
+            Game game = new Game();
+
+            List<Space> boardList = new List<Space>
+            {
+                new Space(7, 7, 'a'),
+                new Space(7, 8, 'r'),
+                new Space(7, 9, 't'),
+                new Space(7, 10, 'y'),
+
+                new Space(8, 8, 'a'),
+                new Space(9, 8, 'i'),
+                new Space(10, 8, 'e'),
+
+                new Space(9, 7, 'h'),
+                new Space(9, 9, 's')
+            };
+            game.SetBoard(boardList);
+
+            List<Tuple<Space, Tile>> playList = new List<Tuple<Space, Tile>>
+            {
+                Tuple.Create(new Space(8, 9), new Tile('e')),
+                Tuple.Create(new Space(10, 9), new Tile('t')),
+                Tuple.Create(new Space(11, 9), new Tile('s'))
+            };
+
+            List<string> expected = new List<string> { "tests", "ae", "et" };
+
+            //Act
+            Play play = new Play(playList, game);
+            List<string> result = new List<string>();
+            foreach (SubWord subword in play.GetSubWords())
+            {
+                result.Add(subword.Word);
+            }
+
+            //Assert
+            Assert.That(play.GetSubWords().Count, Is.EqualTo(3));
+            Assert.That(result, Is.EquivalentTo(expected));
+            Assert.That(play.GetScore(), Is.EqualTo(9));
+            Assert.That(play.AreWordsValid, Is.True);
         }
 
     }

@@ -266,12 +266,7 @@ namespace Scrabble
             }
             return returnHash.ToList();
         }
-
-
-        
-
-
-
+            
         public void EmptyBoard()
         {
             Space[,] emptyBoard = new Space[15, 15];
