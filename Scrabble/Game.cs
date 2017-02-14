@@ -281,7 +281,7 @@ namespace Scrabble
             return returnHash.ToList();
         }
 
-        public List<Play> GetAllPlays()
+        public List<Play> FindAllPlays()
         {
             List<Play> returnList = new List<Play>();
 

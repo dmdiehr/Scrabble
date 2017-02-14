@@ -401,19 +401,6 @@ namespace Scrabble
 
                 return plays;
             }
-
-            //THIS IS A TOTAL FUCKING MESS. THE FIRST THING TO FIX (I THINK) IS TO RUN ALL SINGLE TILE
-            //PLACEMENTS THROUGH ALLSUBWORDSAREVALID WITHOUT LOOKING FOR A VALID PRIMARY WORD
-
-            //IF I CAN GET SINGLE TILE PLAYS WORKING THEN MAYBE I CAN FIGURE OUT WHAT THE HELL IS GOING
-            //ON WITH THE PLAYS AND PLACEMENT LENGTHS NOT MATCHING
-
-            Debug.WriteLine("********************************************************");
-            Debug.WriteLine("********************************************************");
-            Debug.WriteLine("********************************************************");
-            Debug.WriteLine("********************************************************");
-            Debug.WriteLine("New Placement: " + GetSpaceListString());
-            Debug.WriteLine("********************************************************");
             
             string tray = game.GetTray().GetTilesString();
 
@@ -444,23 +431,18 @@ namespace Scrabble
             }
 
             //Now remove the anchors and convert them back into something that can be made into Play instances
-
             List<Tuple<int, char>> sortedAnchors = anchors.OrderBy(x => x.Item1).ToList();
 
             for(int i = 0; i < possiblePrimaryWords.Count; i++)
-            {
-                Debug.WriteLine("#############Inside the possiblePrimaryWords for loop");
+            {               
                 string newWord = possiblePrimaryWords[i];
                 for (int j = 0; j < sortedAnchors.Count; j++)
-                {
-                    Debug.WriteLine("++++++++++++++++Inside sortedAnchors for loop");
-                    if (newWord[sortedAnchors[j].Item1] - j != sortedAnchors[j].Item2)
+                {              
+                    if (newWord[sortedAnchors[j].Item1 - j] != sortedAnchors[j].Item2)
                         throw new Exception("Bad design bro, your anchors aren't where you think they are!");
 
-                    Debug.WriteLine("Word before removal: " + newWord);
-                    Debug.WriteLine("Removed letter = " + newWord[sortedAnchors[j].Item1 - j]);
-                    newWord = newWord.Remove(sortedAnchors[j].Item1 - j);
-                    Debug.WriteLine("Word after removal =" + newWord);
+                    newWord = newWord.Remove(sortedAnchors[j].Item1 - j, 1);
+
                 }
                 possiblePrimaryWords[i] = newWord;
             }
@@ -468,8 +450,7 @@ namespace Scrabble
             //At this point possiblePrimaryWords should have been scrubbed of the anchor letters
                     
             foreach (string word in possiblePrimaryWords)
-            {
-                Debug.WriteLine("@@@@@@@@@@@@@@Inside scrubbed possiblePrimaryWords foreach loop. Does this break the first time?");
+            {               
                 this.PlacementSort();
                 if (word.Length != _spaceList.Count)
                     throw new Exception("You done messed up! You're Play ain't the same size as your Placement.");

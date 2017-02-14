@@ -137,11 +137,11 @@ namespace Scrabble.Tests
         }
         #endregion
 
-        #region //GetAllPlays
+        #region //FindAllPlays
 
         [Test]
-        [Category("GetAllPlays")]
-        public void GetAllPlays_NoSecondarySubwords()
+        [Category("FindAllPlays")]
+        public void FindAllPlays_NoSecondarySubwords()
         {
             //Arrange
             List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>();
@@ -154,15 +154,15 @@ namespace Scrabble.Tests
             newGame.SetBoard(tupleList);
 
             //Act
-            List<Play> result = newGame.GetAllPlays();
+            List<Play> result = newGame.FindAllPlays();
 
             //Assert
             Assert.That(result.Count, Is.EqualTo(6));
         }
 
         [Test]
-        [Category("GetAllPlays")]
-        public void GetAllPlays_ManyPlays()
+        [Category("FindAllPlays")]
+        public void FindAllPlays_ManyPlays()
         {
             //Arrange
             List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>();
@@ -175,7 +175,7 @@ namespace Scrabble.Tests
             newGame.SetBoard(tupleList);
 
             //Act
-            List<Play> result = newGame.GetAllPlays();
+            List<Play> result = newGame.FindAllPlays();
 
             //Assert
             Assert.That(result.Count, Is.EqualTo(68));

@@ -2876,69 +2876,137 @@ namespace Scrabble.Tests
 
         }
 
-        //[Test]
-        //[Category("ValidPlays")]
-        //public void ValidPlays_PlayCounts()
-        //{
-        //    //Arrange
-        //    List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>();
-        //    tupleList.Add(Tuple.Create(new Space(6, 7), new Tile('a')));
-        //    tupleList.Add(Tuple.Create(new Space(7, 7), new Tile('b')));
-        //    tupleList.Add(Tuple.Create(new Space(8, 7), new Tile('b')));
-        //    tupleList.Add(Tuple.Create(new Space(9, 7), new Tile('a')));
+        [Test]
+        [Category("ValidPlays")]
+        public void ValidPlays_MultiTileNoPlays()
+        {
+            //Arrange
+            List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>();
+            tupleList.Add(Tuple.Create(new Space(7, 7), new Tile('a')));
+            tupleList.Add(Tuple.Create(new Space(8, 7), new Tile('b')));
+            tupleList.Add(Tuple.Create(new Space(9, 7), new Tile('b')));
+            tupleList.Add(Tuple.Create(new Space(10, 7), new Tile('a')));
 
-        //    Game newGame = new Game("zade");
-        //    newGame.SetBoard(tupleList);
+            Game newGame = new Game("qvcj");
+            newGame.SetBoard(tupleList);
 
-        //    //play1 expect 2 plays, "daze" and "adze"
+            //play1 expect 0 plays
 
-        //    List<Space> spaceList1 = new List<Space>();
-        //    spaceList1.Add(new Space(6, 8));
-        //    spaceList1.Add(new Space(5, 8));
-        //    spaceList1.Add(new Space(4, 8));
-        //    spaceList1.Add(new Space(3, 8));
+            List<Space> spaceList1 = new List<Space>();
+            spaceList1.Add(new Space(6, 7));
+            spaceList1.Add(new Space(5, 7));
+            spaceList1.Add(new Space(4, 7));
+            spaceList1.Add(new Space(3, 7));
 
-        //    var placement1 = new Placement(spaceList1);
+            var placement1 = new Placement(spaceList1);
 
-        //    //play2 expect 5 plays, "ae", "za", "ad", "ed", "de"
+            
+            //Act
+            var plays1 = placement1.ValidPlays(newGame);
 
-        //    List<Space> spaceList2 = new List<Space>();
-        //    spaceList2.Add(new Space(6, 8));
-        //    spaceList2.Add(new Space(5, 8));
+            //Assert
+
+            Assert.That(plays1.Count, Is.EqualTo(0));
+
+        }
+
+        [Test]
+        [Category("ValidPlays")]
+        public void ValidPlays_MultiTiles_TrayPlacementMatch_OnePlay()
+        {
+            //Arrange
+            List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>();
+            tupleList.Add(Tuple.Create(new Space(7, 7), new Tile('o')));
+            tupleList.Add(Tuple.Create(new Space(8, 7), new Tile('u')));
+            tupleList.Add(Tuple.Create(new Space(9, 7), new Tile('t')));
+ 
+
+            Game newGame = new Game("lay");
+            newGame.SetBoard(tupleList);
+
+            //play1 expect 0 plays
+
+            List<Space> spaceList1 = new List<Space>();
+            spaceList1.Add(new Space(6, 7));
+            spaceList1.Add(new Space(5, 7));
+            spaceList1.Add(new Space(4, 7));
 
 
-        //    var placement2 = new Placement(spaceList2);
-
-        //    //play3 expect 0 plays
-
-        //    List<Space> spaceList3 = new List<Space>();
-        //    spaceList3.Add(new Space(5, 7));
+            var placement1 = new Placement(spaceList1);
 
 
-        //    var placement3 = new Placement(spaceList3);
+            //Act
+            var plays1 = placement1.ValidPlays(newGame);
 
-        //    //play4 expect 1 play, "ab"
+            //Assert
 
-        //    List<Space> spaceList4 = new List<Space>();
-        //    spaceList4.Add(new Space(7, 6));
+            Assert.That(plays1.Count, Is.EqualTo(1));
+
+        }
+
+        [Test]
+        [Category("ValidPlays")]
+        public void ValidPlays_ManyPlays()
+        {
+            //Arrange
+            List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>();
+            tupleList.Add(Tuple.Create(new Space(6, 7), new Tile('a')));
+            tupleList.Add(Tuple.Create(new Space(7, 7), new Tile('b')));
+            tupleList.Add(Tuple.Create(new Space(8, 7), new Tile('b')));
+            tupleList.Add(Tuple.Create(new Space(9, 7), new Tile('a')));
+
+            Game newGame = new Game("zade");
+            newGame.SetBoard(tupleList);
+
+            //play1 expect 2 plays, "daze" and "adze"
+
+            List<Space> spaceList1 = new List<Space>();
+            spaceList1.Add(new Space(6, 8));
+            spaceList1.Add(new Space(5, 8));
+            spaceList1.Add(new Space(4, 8));
+            spaceList1.Add(new Space(3, 8));
+
+            var placement1 = new Placement(spaceList1);
+
+            //play2 expect 5 plays, "ae", "za", "ad", "ed", "de"
+
+            List<Space> spaceList2 = new List<Space>();
+            spaceList2.Add(new Space(6, 8));
+            spaceList2.Add(new Space(5, 8));
 
 
-        //    var placement4 = new Placement(spaceList4);
+            var placement2 = new Placement(spaceList2);
+
+            //play3 expect 0 plays
+
+            List<Space> spaceList3 = new List<Space>();
+            spaceList3.Add(new Space(5, 7));
 
 
-        //    //Act
-        //    //var plays1 = placement1.ValidPlays(newGame);
-        //    //var plays2 = placement2.ValidPlays(newGame);
-        //    var plays3 = placement3.ValidPlays(newGame);
-        //    var plays4 = placement4.ValidPlays(newGame);
+            var placement3 = new Placement(spaceList3);
 
-        //    //Assert
+            //play4 expect 1 play, "ab"
 
-        //    //Assert.That(plays1.Count, Is.EqualTo(2));
-        //    //Assert.That(plays2.Count, Is.EqualTo(5));
-        //    Assert.That(plays3.Count, Is.EqualTo(0));
-        //    Assert.That(plays4.Count, Is.EqualTo(1));
-        //}
+            List<Space> spaceList4 = new List<Space>();
+            spaceList4.Add(new Space(7, 6));
+
+
+            var placement4 = new Placement(spaceList4);
+
+
+            //Act
+            var plays1 = placement1.ValidPlays(newGame);
+            var plays2 = placement2.ValidPlays(newGame);
+            var plays3 = placement3.ValidPlays(newGame);
+            var plays4 = placement4.ValidPlays(newGame);
+
+            //Assert
+
+            Assert.That(plays1.Count, Is.EqualTo(2));
+            Assert.That(plays2.Count, Is.EqualTo(5));
+            Assert.That(plays3.Count, Is.EqualTo(0));
+            Assert.That(plays4.Count, Is.EqualTo(1));
+        }
         #endregion
     }
 }
