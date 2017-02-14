@@ -9,6 +9,7 @@ namespace Scrabble.Tests
     [TestFixture]
     public class GameTests
     {
+        #region //PossiblePlacements
         [Test]
         [Category("PossiblePlacements")]
         public void PossiblePlacements_SingleTile_EmptyBoard()
@@ -106,5 +107,79 @@ namespace Scrabble.Tests
             Assert.That(result.Count, Is.EqualTo(25));
 
         }
+
+        [Test]
+        [Category("PossiblePlacements")]
+        public void PossiblePlacements_EmptyTray()
+        {
+            //Arrange
+            Game sut = new Game("");
+            List<Placement> result;
+
+            List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>
+            {
+                Tuple.Create(new Space(7,7), new Tile('a')),
+                Tuple.Create(new Space(7,8), new Tile('b'))
+            };
+            sut.SetBoard(tupleList);
+
+            ////Act
+            result = sut.PossiblePlacements();
+
+            foreach (Placement placement in result)
+            {
+                Debug.WriteLine(placement.GetSpaceListString());
+            }
+
+            //Assert
+            Assert.That(result.Count, Is.EqualTo(0));
+
+        }
+        #endregion
+
+        #region //GetAllPlays
+
+        [Test]
+        [Category("GetAllPlays")]
+        public void GetAllPlays_NoSecondarySubwords()
+        {
+            //Arrange
+            List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>();
+            tupleList.Add(Tuple.Create(new Space(6, 7), new Tile('a')));
+            tupleList.Add(Tuple.Create(new Space(7, 7), new Tile('b')));
+            tupleList.Add(Tuple.Create(new Space(8, 7), new Tile('b')));
+            tupleList.Add(Tuple.Create(new Space(9, 7), new Tile('a')));
+
+            Game newGame = new Game("zp");
+            newGame.SetBoard(tupleList);
+
+            //Act
+            List<Play> result = newGame.GetAllPlays();
+
+            //Assert
+            Assert.That(result.Count, Is.EqualTo(6));
+        }
+
+        [Test]
+        [Category("GetAllPlays")]
+        public void GetAllPlays_ManyPlays()
+        {
+            //Arrange
+            List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>();
+            tupleList.Add(Tuple.Create(new Space(6, 7), new Tile('a')));
+            tupleList.Add(Tuple.Create(new Space(7, 7), new Tile('b')));
+            tupleList.Add(Tuple.Create(new Space(8, 7), new Tile('b')));
+            tupleList.Add(Tuple.Create(new Space(9, 7), new Tile('a')));
+
+            Game newGame = new Game("zade");
+            newGame.SetBoard(tupleList);
+
+            //Act
+            List<Play> result = newGame.GetAllPlays();
+
+            //Assert
+            Assert.That(result.Count, Is.EqualTo(68));
+        }
+        #endregion
     }
 }

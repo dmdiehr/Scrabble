@@ -201,6 +201,20 @@ namespace Scrabble
 
         #region //METHODS
 
+        public void EmptyBoard()
+        {
+            Space[,] emptyBoard = new Space[15, 15];
+            for (int x = 0; x < 15; x++)
+            {
+                for (int y = 0; y < 15; y++)
+                {
+                    emptyBoard[x, y] = new Space(x, y);
+                    emptyBoard[x, y].WordMultiplier = 1;
+                    emptyBoard[x, y].LetterMultiplier = 1;
+                }
+            }
+            _board = emptyBoard;
+        }
 
         public List<Placement> PossiblePlacements()
         {            
@@ -266,21 +280,24 @@ namespace Scrabble
             }
             return returnHash.ToList();
         }
-            
-        public void EmptyBoard()
+
+        public List<Play> GetAllPlays()
         {
-            Space[,] emptyBoard = new Space[15, 15];
-            for (int x = 0; x < 15; x++)
+            List<Play> returnList = new List<Play>();
+
+            List<Placement> possiblePlacements = PossiblePlacements();
+
+            foreach (Placement placement in possiblePlacements)
             {
-                for (int y = 0; y < 15; y++)
-                {
-                    emptyBoard[x, y] = new Space(x, y);
-                    emptyBoard[x, y].WordMultiplier = 1;
-                    emptyBoard[x, y].LetterMultiplier = 1;
-                }
+                returnList.AddRange(placement.ValidPlays(this));
             }
-            _board = emptyBoard;
+
+            return returnList;
         }
+
+
+            
+
         #endregion
         /// <summary>
         /// Display methods for Program

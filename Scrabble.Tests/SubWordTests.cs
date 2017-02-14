@@ -7,7 +7,7 @@ namespace Scrabble.Tests
     class SubWordTests
     {
         [Test]
-        [Category("Constructor")]
+        [Category("SubWord Constructor")]
         public void Constructor_NewVertInOrder()
         {
             SubWord sut;
@@ -36,7 +36,7 @@ namespace Scrabble.Tests
         }
 
         [Test]
-        [Category("Constructor")]
+        [Category("SubWord Constructor")]
         public void Constructor_NewVertOutOfOrder()
         {
             SubWord sut;
@@ -65,7 +65,7 @@ namespace Scrabble.Tests
         }
 
         [Test]
-        [Category("Constructor")]
+        [Category("SubWord Constructor")]
         public void Constructor_NewHorizontalInOrder()
         {
             SubWord sut;
@@ -94,7 +94,7 @@ namespace Scrabble.Tests
         }
 
         [Test]
-        [Category("Constructor")]
+        [Category("SubWord Constructor")]
         public void Constructor_NewHorizontalOutOfOrder()
         {
             SubWord sut;

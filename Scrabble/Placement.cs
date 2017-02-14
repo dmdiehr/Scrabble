@@ -383,11 +383,112 @@ namespace Scrabble
 
         public List<Play> ValidPlays(Game game)
         {
+
+            //Will need to be turned into a hashset or be vetted for duplicates in someway... eventually
             List<Play> plays = new List<Play>();
 
+            if (IsSingle())
+            {
+                foreach (Tile tile in game.GetTray().Tiles)
+                {
+                    Play thisPlay = new Play(new List<Tuple<Space, Tile>> { Tuple.Create(_spaceList[0], tile) }, game);
 
+                    if (thisPlay.AreWordsValid())
+                    {
+                        plays.Add(thisPlay);
+                    }
+                }
 
+                return plays;
+            }
 
+            //THIS IS A TOTAL FUCKING MESS. THE FIRST THING TO FIX (I THINK) IS TO RUN ALL SINGLE TILE
+            //PLACEMENTS THROUGH ALLSUBWORDSAREVALID WITHOUT LOOKING FOR A VALID PRIMARY WORD
+
+            //IF I CAN GET SINGLE TILE PLAYS WORKING THEN MAYBE I CAN FIGURE OUT WHAT THE HELL IS GOING
+            //ON WITH THE PLAYS AND PLACEMENT LENGTHS NOT MATCHING
+
+            Debug.WriteLine("********************************************************");
+            Debug.WriteLine("********************************************************");
+            Debug.WriteLine("********************************************************");
+            Debug.WriteLine("********************************************************");
+            Debug.WriteLine("New Placement: " + GetSpaceListString());
+            Debug.WriteLine("********************************************************");
+            
+            string tray = game.GetTray().GetTilesString();
+
+            //first find legal primary subwords by getting the tray and anchors and running them through wordfind
+            //Find relative position and letters of anchors                        
+
+            List<Space> primaryWordSpaces = new List<Space>();
+            primaryWordSpaces.AddRange(GetAnchors(game));
+            primaryWordSpaces.AddRange(_spaceList);
+            primaryWordSpaces.Sort(SpaceComparer.Instance);   
+
+            List<Tuple<int, char>> anchors = new List<Tuple<int, char>>();
+
+            for (int i = 0; i < primaryWordSpaces.Count; i++)
+            {
+                if(primaryWordSpaces[i].GetTile() != null)
+                {
+                    anchors.Add(Tuple.Create(i, primaryWordSpaces[i].GetTile().GetLetter()));
+                }
+            }
+
+            List<string> possiblePrimaryWords = game.GetDictionary().WordFind(tray, primaryWordSpaces.Count, anchors);
+
+            Debug.WriteLine("Possible Primary Words List:");
+            foreach (var word in possiblePrimaryWords)
+            {
+                Debug.WriteLine(" - " +word);
+            }
+
+            //Now remove the anchors and convert them back into something that can be made into Play instances
+
+            List<Tuple<int, char>> sortedAnchors = anchors.OrderBy(x => x.Item1).ToList();
+
+            for(int i = 0; i < possiblePrimaryWords.Count; i++)
+            {
+                Debug.WriteLine("#############Inside the possiblePrimaryWords for loop");
+                string newWord = possiblePrimaryWords[i];
+                for (int j = 0; j < sortedAnchors.Count; j++)
+                {
+                    Debug.WriteLine("++++++++++++++++Inside sortedAnchors for loop");
+                    if (newWord[sortedAnchors[j].Item1] - j != sortedAnchors[j].Item2)
+                        throw new Exception("Bad design bro, your anchors aren't where you think they are!");
+
+                    Debug.WriteLine("Word before removal: " + newWord);
+                    Debug.WriteLine("Removed letter = " + newWord[sortedAnchors[j].Item1 - j]);
+                    newWord = newWord.Remove(sortedAnchors[j].Item1 - j);
+                    Debug.WriteLine("Word after removal =" + newWord);
+                }
+                possiblePrimaryWords[i] = newWord;
+            }
+
+            //At this point possiblePrimaryWords should have been scrubbed of the anchor letters
+                    
+            foreach (string word in possiblePrimaryWords)
+            {
+                Debug.WriteLine("@@@@@@@@@@@@@@Inside scrubbed possiblePrimaryWords foreach loop. Does this break the first time?");
+                this.PlacementSort();
+                if (word.Length != _spaceList.Count)
+                    throw new Exception("You done messed up! You're Play ain't the same size as your Placement.");
+
+                List<Tuple<Space, Tile>> newPlayList = new List<Tuple<Space, Tile>>();
+
+                for (int i = 0; i < _spaceList.Count; i++)
+                {
+                    newPlayList.Add(Tuple.Create(_spaceList[i], new Tile(word[i])));
+                }
+
+                plays.Add(new Play(newPlayList, game));
+              
+            }
+
+            //At this point Plays should be populated with a list of Plays that have valid primary subwords
+            //Now we vet that list
+
+            plays.RemoveAll(p => !p.AreWordsValid());
             return plays;
         }
 
