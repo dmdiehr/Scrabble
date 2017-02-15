@@ -37,9 +37,9 @@ namespace Scrabble.Tests
 
             List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>
             {
-                Tuple.Create(new Space(7,7), new Tile('a')),
-                Tuple.Create(new Space(7,8), new Tile('b')),
-                Tuple.Create(new Space(7,9), new Tile('c'))
+                Tuple.Create(new Space(7,7), new Tile('A')),
+                Tuple.Create(new Space(7,8), new Tile('B')),
+                Tuple.Create(new Space(7,9), new Tile('C'))
             };
             sut.SetBoard(tupleList);
 
@@ -90,8 +90,8 @@ namespace Scrabble.Tests
 
             List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>
             {
-                Tuple.Create(new Space(7,7), new Tile('a')),
-                Tuple.Create(new Space(7,8), new Tile('b'))
+                Tuple.Create(new Space(7,7), new Tile('A')),
+                Tuple.Create(new Space(7,8), new Tile('B'))
             };
             sut.SetBoard(tupleList);
 
@@ -118,8 +118,8 @@ namespace Scrabble.Tests
 
             List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>
             {
-                Tuple.Create(new Space(7,7), new Tile('a')),
-                Tuple.Create(new Space(7,8), new Tile('b'))
+                Tuple.Create(new Space(7,7), new Tile('A')),
+                Tuple.Create(new Space(7,8), new Tile('B'))
             };
             sut.SetBoard(tupleList);
 
@@ -145,12 +145,12 @@ namespace Scrabble.Tests
         {
             //Arrange
             List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>();
-            tupleList.Add(Tuple.Create(new Space(6, 7), new Tile('a')));
-            tupleList.Add(Tuple.Create(new Space(7, 7), new Tile('b')));
-            tupleList.Add(Tuple.Create(new Space(8, 7), new Tile('b')));
-            tupleList.Add(Tuple.Create(new Space(9, 7), new Tile('a')));
+            tupleList.Add(Tuple.Create(new Space(6, 7), new Tile('A')));
+            tupleList.Add(Tuple.Create(new Space(7, 7), new Tile('B')));
+            tupleList.Add(Tuple.Create(new Space(8, 7), new Tile('B')));
+            tupleList.Add(Tuple.Create(new Space(9, 7), new Tile('A')));
 
-            Game newGame = new Game("zp");
+            Game newGame = new Game("ZP");
             newGame.SetBoard(tupleList);
 
             //Act
@@ -166,12 +166,12 @@ namespace Scrabble.Tests
         {
             //Arrange
             List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>();
-            tupleList.Add(Tuple.Create(new Space(6, 7), new Tile('a')));
-            tupleList.Add(Tuple.Create(new Space(7, 7), new Tile('b')));
-            tupleList.Add(Tuple.Create(new Space(8, 7), new Tile('b')));
-            tupleList.Add(Tuple.Create(new Space(9, 7), new Tile('a')));
+            tupleList.Add(Tuple.Create(new Space(6, 7), new Tile('A')));
+            tupleList.Add(Tuple.Create(new Space(7, 7), new Tile('B')));
+            tupleList.Add(Tuple.Create(new Space(8, 7), new Tile('B')));
+            tupleList.Add(Tuple.Create(new Space(9, 7), new Tile('A')));
 
-            Game newGame = new Game("zade");
+            Game newGame = new Game("ZADE");
             newGame.SetBoard(tupleList);
 
             //Act

@@ -22,7 +22,7 @@ namespace ExtentionMethods
 
             foreach (char c in letters)
             {
-                int index = c - 'a';
+                int index = c - 'A';
                 available[index] += 1;
             }
             foreach (string item in stringArray)
@@ -31,7 +31,7 @@ namespace ExtentionMethods
                 bool ok = true;
                 foreach (char c in item.ToCharArray())
                 {
-                    int index = c - 'a';
+                    int index = c - 'A';
                     count[index] += 1;
                     if (count[index] > available[index])
                     {

@@ -11,38 +11,38 @@ namespace Scrabble
 
             if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))
             {
-                _letter = Char.ToLower(c);
+                _letter = Char.ToUpper(c);
             }
             else
             {
                 throw new ArgumentException("A Tile can only contain an English Letter");
             }
-
-            if ("aeionrtlsu".Contains(_letter + ""))
+           
+            if ("AEIONRTLSU".Contains(_letter + ""))
             {
                 _value = 1;
             }
-            else if ("dg".Contains(_letter + ""))
+            else if ("DG".Contains(_letter + ""))
             {
                 _value = 2;
             }
-            else if ("bcmp".Contains(_letter + ""))
+            else if ("BCMP".Contains(_letter + ""))
             {
                 _value = 3;
             }
-            else if ("fhvwy".Contains(_letter + ""))
+            else if ("FHVWY".Contains(_letter + "")) 
             {
                 _value = 4;
             }
-            else if ("k".Contains(_letter + ""))
+            else if ("K".Contains(_letter + ""))
             {
                 _value = 5;
             }
-            else if ("jx".Contains(_letter + ""))
+            else if ("JX".Contains(_letter + ""))
             {
                 _value = 8;
             }
-            else if ("qz".Contains(_letter + ""))
+            else if ("QZ".Contains(_letter + ""))
             {
                 _value = 10;
             }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -37,6 +38,18 @@ namespace Scrabble
                 if (input.ToLower() == "random")
                 {
                     newGame.RandomBoard();
+                }
+
+                if (input.ToLower() == "caps")
+                {
+                    string[] newDictionary = newGame.GetDictionary();
+                    for (int i = 0; i < newDictionary.Length; i++)
+                    {
+                        newDictionary[i] = newDictionary[i].ToUpper();
+                        Console.WriteLine(newDictionary[i] + "word #" + i);                        
+                    }
+                    File.WriteAllLines("C:\\Users\\David\\Desktop\\Code\\C#-VS\\Scrabble\\Scrabble\\Dictionary\\caps.txt", newDictionary);
+
                 }
             } while (input != "exit");
 

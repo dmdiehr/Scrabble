@@ -33,7 +33,7 @@ namespace Scrabble
             
             try
             {
-                _dictionary = File.ReadAllText("C:\\Users\\David\\Desktop\\Code\\C#-VS\\ScrabbleCore\\ScrabbleCore\\Dictionary\\dictionary.txt").Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+                _dictionary = File.ReadAllText("C:\\Users\\David\\Desktop\\Code\\C#-VS\\Scrabble\\Scrabble\\Dictionary\\dictionary.txt").Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
             }
             catch (Exception)
             {
@@ -157,7 +157,7 @@ namespace Scrabble
                 GetSpace(space.Item1, space.Item1).LetterMultiplier = bonusValue;
             }
         }
-        public void SetMultiplier(int x, int y,string bonusType, int bonusValue)
+        public void SetMultiplier(int x, int y, string bonusType, int bonusValue)
         {
             if (bonusType != "word" && bonusType != "letter")
                 throw new ArgumentException("bonusType must be either \"word\" or \"letter\"");
@@ -364,7 +364,7 @@ namespace Scrabble
             List<Tile> tiles = new List<Tile>();
             for (int i = 0; i < 50; i++)
             {
-                Tile newTile = new Tile((char)('a' + rdm.Next(0, 26)));
+                Tile newTile = new Tile((char)('A' + rdm.Next(0, 26)));
                 tiles.Add(newTile);
             }
             EmptyBoard();
