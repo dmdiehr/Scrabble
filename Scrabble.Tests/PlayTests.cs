@@ -35,38 +35,6 @@ namespace Scrabble.Tests
 
             //Assert
             Assert.That(resultWord, Is.EqualTo("ET"));
-            Assert.That(resultScore, Is.EqualTo(2));
-        }
-
-        [Test]
-        [Category("SingleSubWord")]
-        public void SingleSubWord_BonusSquares()
-        {
-            //Arrange
-
-            List<Space> spaceList = new List<Space> {
-                new Space(7, 7, 'T'),
-                new Space(9,7,'S'),
-                new Space(8,7,'E'),
-                new Space(10,7,'T')
-            };
-            Game game = new Game();
-            game.SetBoard(spaceList);
-            game.SetMultiplier(11, 7, "word", 2);
-
-
-            Play sut = new Play(new List<Tuple<Space, Tile>> { Tuple.Create(new Space(11, 7), new Tile('S')), Tuple.Create(new Space(11, 8), new Tile('U')), Tuple.Create(new Space(11, 9), new Tile('M')) }, game);
-
-
-
-            //Act
-            var result = sut.SingleSubWord(Tuple.Create(new Space(11, 7), new Tile('S')), "horizontal");
-            var resultWord = result.Word;
-            var resultScore = result.Score;
-
-            //Assert
-            Assert.That(resultWord, Is.EqualTo("TESTS"));
-            Assert.That(resultScore, Is.EqualTo(10));
         }
 
         [Test]
@@ -172,8 +140,7 @@ namespace Scrabble.Tests
 
             //Assert
             Assert.That(play.GetSubWords().Count, Is.EqualTo(3));
-            Assert.That(result, Is.EquivalentTo(expected));
-            Assert.That(play.GetScore(), Is.EqualTo(14));
+            Assert.That(result, Is.EquivalentTo(expected));           
             Assert.That(play.AreWordsValid, Is.False);
         }
 
@@ -220,7 +187,6 @@ namespace Scrabble.Tests
             //Assert
             Assert.That(play.GetSubWords().Count, Is.EqualTo(3));
             Assert.That(result, Is.EquivalentTo(expected));
-            Assert.That(play.GetScore(), Is.EqualTo(9));
             Assert.That(play.AreWordsValid, Is.True);
         }
 

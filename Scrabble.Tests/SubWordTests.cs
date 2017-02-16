@@ -31,8 +31,7 @@ namespace Scrabble.Tests
             resultScore = sut.Score;
 
             //Assert
-            Assert.That(resultWord, Is.EqualTo("TEST"));
-            Assert.That(resultScore, Is.EqualTo(4));
+            Assert.That(resultWord, Is.EqualTo("TEST"));           
         }
 
         [Test]
@@ -60,8 +59,7 @@ namespace Scrabble.Tests
             resultScore = sut.Score;
 
             //Assert
-            Assert.That(resultWord, Is.EqualTo("TEST"));
-            Assert.That(resultScore, Is.EqualTo(4));
+            Assert.That(resultWord, Is.EqualTo("TEST"));           
         }
 
         [Test]
@@ -69,8 +67,7 @@ namespace Scrabble.Tests
         public void Constructor_NewHorizontalInOrder()
         {
             SubWord sut;
-            string resultWord = "";
-            int resultScore = 0;
+            string resultWord = "";           
             Game game = new Game();
 
             //Arrange
@@ -85,12 +82,10 @@ namespace Scrabble.Tests
 
             sut = new SubWord(pairs, game);
             //Act
-            resultWord = sut.Word;
-            resultScore = sut.Score;
+            resultWord = sut.Word;            
 
             //Assert
-            Assert.That(resultWord, Is.EqualTo("TEST"));
-            Assert.That(resultScore, Is.EqualTo(4));
+            Assert.That(resultWord, Is.EqualTo("TEST"));           
         }
 
         [Test]
@@ -99,7 +94,6 @@ namespace Scrabble.Tests
         {
             SubWord sut;
             string resultWord = "";
-            int resultScore = 0;
             Game game = new Game();
 
             //Arrange
@@ -115,11 +109,9 @@ namespace Scrabble.Tests
             sut = new SubWord(pairs, game);
             //Act
             resultWord = sut.Word;
-            resultScore = sut.Score;
 
             //Assert
-            Assert.That(resultWord, Is.EqualTo("TEST"));
-            Assert.That(resultScore, Is.EqualTo(4));
+            Assert.That(resultWord, Is.EqualTo("TEST"));            
         }
     }
 }

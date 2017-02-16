@@ -27,25 +27,18 @@ namespace Scrabble
 
             _tray = tray;
             EmptyBoard();
+            ScrabbleMultipliers();
 
             if (startingBoard != null)
                 SetBoard(startingBoard);
-            
-            try
-            {
-                _dictionary = File.ReadAllText("C:\\Users\\David\\Desktop\\Code\\C#-VS\\Scrabble\\Scrabble\\Dictionary\\dictionary.txt").Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
-            }
-            catch (Exception)
-            {
 
-                Console.WriteLine("**********Something is up with your Dictionary file*******");
-                _dictionary = new string[] { "this", "is", "just", "a", "test" };
-            }         
+            _dictionary = File.ReadAllText("C:\\Users\\David\\Desktop\\Code\\C#-VS\\Scrabble\\Scrabble\\Dictionary\\dictionary.txt").Split(new string[] { Environment.NewLine }, StringSplitOptions.None);                  
         }
         public Game(string tray = "abcdefg", List<Tuple<Space, Tile>> startingBoard = null)
         {
 
             EmptyBoard();
+            ScrabbleMultipliers();
             _tray = new Tray(tray);
             try
             {
@@ -170,6 +163,80 @@ namespace Scrabble
             {
                 GetSpace(x, y).LetterMultiplier = bonusValue;
             }
+        }
+
+        private void ScrabbleMultipliers()
+        {
+            //3W
+            SetMultiplier(0, 0, "word", 3);
+            SetMultiplier(7, 0, "word", 3);
+            SetMultiplier(14, 0, "word", 3);
+            SetMultiplier(0, 7, "word", 3);
+            SetMultiplier(14, 7, "word", 3);
+            SetMultiplier(0, 14, "word", 3);
+            SetMultiplier(7, 14, "word", 3);
+            SetMultiplier(14, 14, "word", 3);
+
+            //2W
+            SetMultiplier(1, 1, "word", 2);
+            SetMultiplier(13, 1, "word", 2);
+            SetMultiplier(2, 2, "word", 2);
+            SetMultiplier(12, 2, "word", 2);
+            SetMultiplier(3, 3, "word", 2);
+            SetMultiplier(11, 3, "word", 2);
+            SetMultiplier(4, 4, "word", 2);
+            SetMultiplier(10, 4, "word", 2);
+            SetMultiplier(7, 7, "word", 2);
+            SetMultiplier(4, 10, "word", 2);
+            SetMultiplier(10, 10, "word", 2);
+            SetMultiplier(3, 11, "word", 2);
+            SetMultiplier(11, 11, "word", 2);
+            SetMultiplier(2, 12, "word", 2);
+            SetMultiplier(12, 12, "word", 2);
+            SetMultiplier(1, 13, "word", 2);
+            SetMultiplier(13, 13, "word", 2);
+
+            //3L
+            SetMultiplier(5, 1, "letter", 3);
+            SetMultiplier(9, 1, "letter", 3);
+            SetMultiplier(1, 5, "letter", 3);
+            SetMultiplier(5, 5, "letter", 3);
+            SetMultiplier(9, 5, "letter", 3);
+            SetMultiplier(13, 5, "letter", 3);
+            SetMultiplier(1, 9, "letter", 3);
+            SetMultiplier(5, 9, "letter", 3);
+            SetMultiplier(9, 9, "letter", 3);
+            SetMultiplier(13, 9, "letter", 3);
+            SetMultiplier(5, 13, "letter", 3);
+            SetMultiplier(9, 13, "letter", 3);
+
+            //2L
+            SetMultiplier(0, 3, "letter", 2);
+            SetMultiplier(0, 11, "letter", 2);
+            SetMultiplier(2, 6, "letter", 2);
+            SetMultiplier(2, 8, "letter", 2);
+            SetMultiplier(3, 0, "letter", 2);
+            SetMultiplier(3, 7, "letter", 2);
+            SetMultiplier(3, 14, "letter", 2);
+            SetMultiplier(2, 6, "letter", 2);
+            SetMultiplier(6, 6, "letter", 2);
+            SetMultiplier(8, 6, "letter", 2);
+            SetMultiplier(12, 6, "letter", 2);
+            SetMultiplier(3, 7, "letter", 2);
+            SetMultiplier(11, 7, "letter", 2);
+            SetMultiplier(2, 8, "letter", 2);
+            SetMultiplier(6, 8, "letter", 2);
+            SetMultiplier(8, 8, "letter", 2);
+            SetMultiplier(12, 8, "letter", 2);
+            SetMultiplier(0, 11, "letter", 2);
+            SetMultiplier(7, 11, "letter", 2);
+            SetMultiplier(14, 11, "letter", 2);
+            SetMultiplier(6, 12, "letter", 2);
+            SetMultiplier(8, 12, "letter", 2);
+            SetMultiplier(3, 14, "letter", 2);
+            SetMultiplier(11, 14, "letter", 2);
+
+
         }
 
         public Tray GetTray()
