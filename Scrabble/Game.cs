@@ -91,6 +91,8 @@ namespace Scrabble
             foreach (var item in pairs)
             {
                 GetSpace(item.Item1).SetTile(item.Item2);
+                GetSpace(item.Item1).LetterMultiplier = 1;
+                GetSpace(item.Item1).WordMultiplier = 1;
             }
         }
 
@@ -118,6 +120,8 @@ namespace Scrabble
             foreach (var item in spaces)
             {
                 GetSpace(item).SetTile(item.GetTile());
+                GetSpace(item).LetterMultiplier = 1;
+                GetSpace(item).WordMultiplier = 1;
             }
 
         }

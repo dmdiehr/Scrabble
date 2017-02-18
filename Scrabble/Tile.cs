@@ -9,16 +9,20 @@ namespace Scrabble
         {
             //Blank tiles not yet implemented
 
-            if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))
+            if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c == '?'))
             {
                 _letter = Char.ToUpper(c);
             }
             else
             {
-                throw new ArgumentException("A Tile can only contain an English Letter");
+                throw new ArgumentException("A Tile can only contain an English Letter or '?' (representing a blank tile)");
             }
-           
-            if ("AEIONRTLSU".Contains(_letter + ""))
+
+            if (_letter == '?')
+            {
+                _value = 0;
+            }           
+            else if ("AEIONRTLSU".Contains(_letter + ""))
             {
                 _value = 1;
             }
@@ -66,6 +70,13 @@ namespace Scrabble
         public int GetValue()
         {
             return _value;
+        }
+        public void SetBlank(char c)
+        {
+            if (this._letter != '?')
+                throw new InvalidOperationException("SetBlank can only be performed on a Tile with the value '?'");
+
+            _letter = c;
         }
     }
 }

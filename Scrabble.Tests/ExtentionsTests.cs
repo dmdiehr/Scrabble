@@ -3,6 +3,7 @@ using NUnit.Framework;
 using Scrabble;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Scrabble.Tests
 {
@@ -58,6 +59,23 @@ namespace Scrabble.Tests
             //Assert
             Assert.That(result.Count, Is.EqualTo(2));
             Assert.That(result, Is.EquivalentTo(new List<string> { "WRAP", "WARP" }));
+        }
+
+        [Test]
+        [Category("WordFind")]
+        public void WordFind_Unused_Blank()
+        {
+            //Arrange
+
+            Game game = new Game("AI?");
+
+
+            //Act
+            List<string> result = game.GetDictionary().WordFind(game.GetTrayString(), 3, new List<Tuple<int, char>> { Tuple.Create(0, 'Z'), Tuple.Create(2, 'G') });
+            
+            //Assert
+            Assert.That(result.Count, Is.EqualTo(2));
+            Assert.That(result, Is.EquivalentTo(new List<string> { "ZAG", "ZIG" }));
         }
     }
 }
