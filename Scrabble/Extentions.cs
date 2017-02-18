@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace ExtentionMethods
@@ -24,35 +25,9 @@ namespace ExtentionMethods
 
             letters = letters.ToUpper();
 
-            //create substrings for all possible values of blank tiles
-            //should probably be done with recursion but this works
-            List<string> subStrings = new List<string> {""};
 
-            int counter = numberOfBlanks;
-            while (counter > 0)
-            {
-                List<string> newSubStrings = new List<string>();
-
-                foreach (string subString in subStrings)
-                {
-                    for (int i = 0; i < 26; i++)
-                    {
-                        string newSubString = (char)('A' + i) + subString;
-                        newSubStrings.Add(newSubString);
-                    }
-                }
-                subStrings = newSubStrings;
-                counter--;
-            }
-            
-            //now combine each possible substring with the existing letters
-            //run them through SimpleWordFind, and add the results to resultHashSet
-            foreach (var subString in subStrings)
-            {
-                List<string> stringList = stringArray.SimpleWordFind(letters+subString);
-                resultHashSet.UnionWith(stringList);
-            }
-            
+            List<string> stringList = stringArray.WordFindWithWildCards(letters, numberOfBlanks);
+            resultHashSet.UnionWith(stringList);
 
 
             // vet resultList with wordSize
@@ -118,6 +93,49 @@ namespace ExtentionMethods
                     {
                         ok = false;
                         break;
+                    }
+                }
+                if (ok)
+                {
+                    returnList.Add(item);
+                }
+            }
+
+            return returnList;
+        }
+
+        public static List<string> WordFindWithWildCards(this string[] stringArray, string letters, int wildcards = 0)
+        {
+            List<string> returnList = new List<string>();
+       
+            int[] available = new int[26];
+            foreach (char c in letters)
+            {
+                int index = c - 'A';
+                available[index] += 1;
+            }
+
+            foreach (string item in stringArray)
+            {                
+                int[] tempAvailable = new int[26];             
+                Array.Copy(available, tempAvailable, 26);
+
+                int wildcardsLeft = wildcards;
+                int[] count = new int[26];
+                bool ok = true;
+                foreach (char c in item.ToCharArray())
+                {
+                    int index = c - 'A';
+                    count[index] += 1;
+                    if (count[index] - tempAvailable[index] > wildcardsLeft)
+                    {
+                        ok = false;
+                        break;
+                    }
+                    else if (count[index] > tempAvailable[index])
+                    {
+                        wildcardsLeft--;
+                        tempAvailable[index]++;
                     }
                 }
                 if (ok)

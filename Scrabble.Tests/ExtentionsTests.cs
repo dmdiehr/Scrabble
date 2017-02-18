@@ -22,6 +22,11 @@ namespace Scrabble.Tests
             //Act
             List<string> result = game.GetDictionary().WordFind(game.GetTrayString(), 7);
 
+            foreach (var item in result)
+            {
+                Debug.WriteLine("+++++++++" + item + "^^^^^^^^^^^^^^^^");
+            }
+
             //Assert
             Assert.That(result.Count, Is.EqualTo(1));
             Assert.That(result[0], Is.EqualTo("QUIZZES"));
@@ -76,6 +81,33 @@ namespace Scrabble.Tests
             //Assert
             Assert.That(result.Count, Is.EqualTo(2));
             Assert.That(result, Is.EquivalentTo(new List<string> { "ZAG", "ZIG" }));
+        }
+
+        [Test]
+        [Category("WordFind")]
+        public void WordFind_Two_Blanks()
+        {
+            //Arrange
+
+            Game game = new Game("Q??");
+
+
+            //Act
+            List<string> result1 = game.GetDictionary().WordFind(game.GetTrayString(), 3);
+            List<string> result2 = game.GetDictionary().WordFind(game.GetTrayString(), 2);
+            List<string> result3 = game.GetDictionary().WordFind(game.GetTrayString(), 3, new List<Tuple<int, char>> {Tuple.Create(2, 'Q') });
+
+            //foreach (var item in result2)
+            //{
+            //    Debug.WriteLine("*" + item + "* ");
+            //}
+
+
+            //Assert
+            Assert.That(result1, Is.EquivalentTo(new List<string> { "QAT", "QIS", "QUA", "SUQ" }));
+            Assert.That(result2.Count, Is.EqualTo(101));
+            Assert.That(result3, Is.EquivalentTo(new List<string> { "SUQ" }));
+
         }
     }
 }
