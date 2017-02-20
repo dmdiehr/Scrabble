@@ -430,7 +430,7 @@ namespace Scrabble
                 Debug.WriteLine(" - " +word);
             }
 
-            //Now remove the anchors and convert them back into something that can be made into Play instances
+            //Now remove the anchors so the remaining letters can be matched up to the spaces in the Placement
             List<Tuple<int, char>> sortedAnchors = anchors.OrderBy(x => x.Item1).ToList();
 
             for(int i = 0; i < possiblePrimaryWords.Count; i++)
@@ -457,17 +457,55 @@ namespace Scrabble
 
                 List<Tuple<Space, Tile>> newPlayList = new List<Tuple<Space, Tile>>();
 
-                for (int i = 0; i < _spaceList.Count; i++)
+
+                //This is where each play is constructed.
+                //This is where possible use of blank tiles
+                //will have to be dealt with
+
+
+                //If the tray has no blanks, don't worry about them
+                //just make a tile for each letter and assign it to 
+                //a space in order
+                if (!game.GetTrayString().Contains("?"))
                 {
-                    newPlayList.Add(Tuple.Create(_spaceList[i], new Tile(word[i])));
+                    for (int i = 0; i < _spaceList.Count; i++)
+                    {
+                        newPlayList.Add(Tuple.Create(_spaceList[i], new Tile(word[i])));
+                    }
+
+                    plays.Add(new Play(newPlayList, game));
+                }
+                // If all the blanks in the tray have to be used to make the word AND the word has
+                // no repeated letters then just make a blank tile and set its letter 
+                //as its needed and add the word to the list.
+                else if (true)
+                {
+                    
+
+                }
+                // If all the blanks are used AND the word has repeated letters BUT a blank is not
+                // needed for either repeated letter then also just use the blank to make a tile as it's needed
+                else if (true)
+                {
+
+                }
+                // If 
+                else if (true)
+                {
+
+                }
+                //If no blank tiles are needed then we have to find all permutations of the word
+                //as blanks could be used and add those
+                else if (true)
+                {
+
                 }
 
-                plays.Add(new Play(newPlayList, game));
-              
+             
             }
 
             //At this point Plays should be populated with a list of Plays that have valid primary subwords
-            //Now we vet that list
+            //Now we vet that list by checking secondary subwords
 
             plays.RemoveAll(p => !p.AreWordsValid());
             return plays;
