@@ -169,6 +169,51 @@ namespace Scrabble
             }
         }
 
+        
+
+        public Tray GetTray()
+        {
+            return _tray;
+        }
+
+        public string GetTrayString()
+        {
+            return _tray.GetTilesString();
+        }
+
+        public void SetTray(Tray tray)
+        {
+            _tray = tray;
+        }
+
+        public void SetTray(string tray)
+        {
+            _tray = new Tray(tray);
+        }
+
+        public string[] GetDictionary()
+        {
+            return _dictionary;
+        }
+
+        #endregion
+
+        #region //METHODS
+
+        private void EmptyBoard()
+        {
+            Space[,] emptyBoard = new Space[15, 15];
+            for (int x = 0; x < 15; x++)
+            {
+                for (int y = 0; y < 15; y++)
+                {
+                    emptyBoard[x, y] = new Space(x, y);
+                    emptyBoard[x, y].WordMultiplier = 1;
+                    emptyBoard[x, y].LetterMultiplier = 1;
+                }
+            }
+            _board = emptyBoard;
+        }
         private void ScrabbleMultipliers()
         {
             //3W
@@ -241,50 +286,6 @@ namespace Scrabble
             SetMultiplier(11, 14, "letter", 2);
 
 
-        }
-
-        public Tray GetTray()
-        {
-            return _tray;
-        }
-
-        public string GetTrayString()
-        {
-            return _tray.GetTilesString();
-        }
-
-        public void SetTray(Tray tray)
-        {
-            _tray = tray;
-        }
-
-        public void SetTray(string tray)
-        {
-            _tray = new Tray(tray);
-        }
-
-        public string[] GetDictionary()
-        {
-            return _dictionary;
-        }
-
-        #endregion
-
-        #region //METHODS
-
-        public void EmptyBoard()
-        {
-            Space[,] emptyBoard = new Space[15, 15];
-            for (int x = 0; x < 15; x++)
-            {
-                for (int y = 0; y < 15; y++)
-                {
-                    emptyBoard[x, y] = new Space(x, y);
-                    emptyBoard[x, y].WordMultiplier = 1;
-                    emptyBoard[x, y].LetterMultiplier = 1;
-                }
-            }
-            _board = emptyBoard;
         }
 
         public List<Placement> PossiblePlacements()

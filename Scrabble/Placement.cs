@@ -398,7 +398,6 @@ namespace Scrabble
                         plays.Add(thisPlay);
                     }
                 }
-
                 return plays;
             }
             
@@ -448,9 +447,9 @@ namespace Scrabble
             }
 
             //At this point possiblePrimaryWords should have been scrubbed of the anchor letters
-                    
+
             foreach (string word in possiblePrimaryWords)
-            {               
+            {
                 this.PlacementSort();
                 if (word.Length != _spaceList.Count)
                     throw new Exception("You done messed up! You're Play ain't the same size as your Placement.");
@@ -466,43 +465,28 @@ namespace Scrabble
                 //If the tray has no blanks, don't worry about them
                 //just make a tile for each letter and assign it to 
                 //a space in order
-                if (!game.GetTrayString().Contains("?"))
+
+                List<string> possibleCombinations = word.WildCardCombinations(game.GetTrayString());
+                foreach (string combo in possibleCombinations)
                 {
+
                     for (int i = 0; i < _spaceList.Count; i++)
                     {
-                        newPlayList.Add(Tuple.Create(_spaceList[i], new Tile(word[i])));
+                        Tile thisTile = new Tile(combo[i]);
+                        if (combo[i] == '?')
+                            thisTile.SetBlank(word[i]);
+
+                        newPlayList.Add(Tuple.Create(_spaceList[i], new Tile(combo[i])));
+                        
                     }
 
                     plays.Add(new Play(newPlayList, game));
-                }
-                // If all the blanks in the tray have to be used to make the word AND the word has
-                // no repeated letters then just make a blank tile and set its letter 
-                //as its needed and add the word to the list.
-                else if (true)
-                {
                     
 
                 }
-                // If all the blanks are used AND the word has repeated letters BUT a blank is not
-                // needed for either repeated letter then also just use the blank to make a tile as it's needed
-                else if (true)
-                {
-
-                }
-                // If 
-                else if (true)
-                {
-
-                }
-                //If no blank tiles are needed then we have to find all permutations of the word
-                //as blanks could be used and add those
-                else if (true)
-                {
-
-                }
-
-             
             }
+
+
 
             //At this point Plays should be populated with a list of Plays that have valid primary subwords
             //Now we vet that list by checking secondary subwords

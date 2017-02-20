@@ -191,8 +191,6 @@ namespace Scrabble
 
         }
 
-
-
         public int CalculateScore()
         {
             int score = 0;
