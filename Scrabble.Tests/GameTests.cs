@@ -71,11 +71,6 @@ namespace Scrabble.Tests
             ////Act
             result = sut.PossiblePlacements();
 
-            foreach (var item in result)
-            {
-                Debug.WriteLine(item.GetSpaceListString());
-            }
-
             //Assert
             Assert.That(result.Count, Is.EqualTo(55));
         }
@@ -97,11 +92,6 @@ namespace Scrabble.Tests
 
             ////Act
             result = sut.PossiblePlacements();
-
-            foreach (Placement placement in result)
-            {
-                Debug.WriteLine(placement.GetSpaceListString());
-            }
 
             //Assert
             Assert.That(result.Count, Is.EqualTo(25));
@@ -125,11 +115,6 @@ namespace Scrabble.Tests
 
             ////Act
             result = sut.PossiblePlacements();
-
-            foreach (Placement placement in result)
-            {
-                Debug.WriteLine(placement.GetSpaceListString());
-            }
 
             //Assert
             Assert.That(result.Count, Is.EqualTo(0));

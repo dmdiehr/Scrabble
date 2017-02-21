@@ -300,7 +300,16 @@ namespace Scrabble
         public List<Space> GetAnchors(Game game)
         {
             if (!IsValid(game))
-                throw new Exception("GetAnchors method cannot be run on an invalid Placement instance");
+                throw new Exception(
+                    "GetAnchors method cannot be run on an invalid Placement instance \n" +
+                    "IsStraight: " + IsStraight() + "\n" +
+                    "IsContiguous: " + IsContiguous(game) + "\n" +
+                    "IsOnBoard: " + IsOnBoard(game) + "\n" +
+                    "IsAdjacent: " + IsAdjacent(game) + "\n" +
+                    "IsAvailable: " + IsAvailable(game) + "\n" +
+                    "HasNoDuplicates: " + HasNoDuplicates() + "\n" +
+                    "Placement: " + GetSpaceListString()               
+                    );
 
             List<Space> anchors = new List<Space> { };
             PlacementSort();
@@ -423,12 +432,6 @@ namespace Scrabble
 
             List<string> possiblePrimaryWords = game.GetDictionary().WordFind(tray, primaryWordSpaces.Count, anchors);
 
-            Debug.WriteLine("Possible Primary Words List:");
-            foreach (var word in possiblePrimaryWords)
-            {
-                Debug.WriteLine(" - " +word);
-            }
-
             //Now remove the anchors so the remaining letters can be matched up to the spaces in the Placement
             List<Tuple<int, char>> sortedAnchors = anchors.OrderBy(x => x.Item1).ToList();
 
@@ -453,31 +456,19 @@ namespace Scrabble
                 this.PlacementSort();
                 if (word.Length != _spaceList.Count)
                     throw new Exception("You done messed up! You're Play ain't the same size as your Placement.");
-
-                List<Tuple<Space, Tile>> newPlayList = new List<Tuple<Space, Tile>>();
-
-
-                //This is where each play is constructed.
-                //This is where possible use of blank tiles
-                //will have to be dealt with
-
-
-                //If the tray has no blanks, don't worry about them
-                //just make a tile for each letter and assign it to 
-                //a space in order
-
+                
                 List<string> possibleCombinations = word.WildCardCombinations(game.GetTrayString());
                 foreach (string combo in possibleCombinations)
                 {
-
+                    List<Tuple<Space, Tile>> newPlayList = new List<Tuple<Space, Tile>>();
                     for (int i = 0; i < _spaceList.Count; i++)
                     {
                         Tile thisTile = new Tile(combo[i]);
                         if (combo[i] == '?')
                             thisTile.SetBlank(word[i]);
 
-                        newPlayList.Add(Tuple.Create(_spaceList[i], new Tile(combo[i])));
-                        
+                        newPlayList.Add(Tuple.Create(_spaceList[i], thisTile));
+                       
                     }
 
                     plays.Add(new Play(newPlayList, game));
@@ -494,7 +485,6 @@ namespace Scrabble
             plays.RemoveAll(p => !p.AreWordsValid());
             return plays;
         }
-
 
     }
 }

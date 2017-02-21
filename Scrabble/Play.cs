@@ -35,13 +35,13 @@ namespace Scrabble
         //ACCESSORS
 
         public Placement GetPlacement()
-        {
-            List<Space> placementList = new List<Space>();
+        {           
+            List<Space> spaceList = new List<Space>();
             foreach (Tuple<Space, Tile> item in _playList)
             {
-                placementList.Add(item.Item1);
+                spaceList.Add(item.Item1);
             }
-            return new Placement(placementList);
+            return new Placement(spaceList);
         }
 
         public List<SubWord> GetSubWords()

@@ -2838,7 +2838,6 @@ namespace Scrabble.Tests
             Assert.That(result.Count(), Is.EqualTo(0));
         }
         #endregion
-
         #region //ValidPlays
 
         [Test]
@@ -3023,6 +3022,40 @@ namespace Scrabble.Tests
             Assert.That(plays3.Count, Is.EqualTo(0));
             Assert.That(plays4.Count, Is.EqualTo(1));
         }
+
+        [Test]
+        [Category("ValidPlays")]
+        public void ValidPlays_MultiTilesWithBlanks_ManyPlays()
+        {
+            //Arrange
+            List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>();
+            tupleList.Add(Tuple.Create(new Space(7, 7), new Tile('A')));
+            tupleList.Add(Tuple.Create(new Space(8, 7), new Tile('N')));
+            tupleList.Add(Tuple.Create(new Space(9, 7), new Tile('D')));
+
+
+            Game game1 = new Game("LAY??");
+            game1.SetBoard(tupleList);
+
+            List<Space> spaceList = new List<Space>();
+            spaceList.Add(new Space(7, 6));
+            spaceList.Add(new Space(8, 6));
+            
+
+
+            var placement1 = new Placement(spaceList);
+
+
+            //Act
+            var plays1 = placement1.ValidPlays(game1);
+
+            //Assert
+
+            Assert.That(plays1.Count, Is.EqualTo(60));
+
+        }
+
+
         #endregion
     }
 }
