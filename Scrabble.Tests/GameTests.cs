@@ -25,7 +25,7 @@ namespace Scrabble.Tests
 
             //Assert
             Assert.That(result.Count, Is.EqualTo(1));
-            Assert.That(result[0].GetSpaceListString(), Is.EqualTo(new Placement(new Space(7, 7)).GetSpaceListString()));
+            Assert.That(result[0].GetSpaceListString(), Is.EqualTo(new Placement(new Space(7, 7), sut).GetSpaceListString()));
         }
 
         [Test]
@@ -46,14 +46,14 @@ namespace Scrabble.Tests
 
             List<Placement> expected = new List<Placement>
             {
-                new Placement(new Space(6, 7)),
-                new Placement(new Space(6, 8)),
-                new Placement(new Space(6, 9)),
-                new Placement(new Space(7, 10)),
-                new Placement(new Space(7, 6)),
-                new Placement(new Space(8, 7)),
-                new Placement(new Space(8, 8)),
-                new Placement(new Space(8, 9)),
+                new Placement(new Space(6, 7), sut),
+                new Placement(new Space(6, 8), sut),
+                new Placement(new Space(6, 9), sut),
+                new Placement(new Space(7, 10), sut),
+                new Placement(new Space(7, 6), sut),
+                new Placement(new Space(8, 7), sut),
+                new Placement(new Space(8, 8), sut),
+                new Placement(new Space(8, 9), sut),
             };
             ////Act
             result = sut.PossiblePlacements();
@@ -168,46 +168,47 @@ namespace Scrabble.Tests
         }
         #endregion
 
-        //[Test]
-        //[Category("Lots of Results")]
-        //public void LotsOfResults()
-        //{
-        //    //Arrange
-        //    Game game = new Game("ABCDEFG");
+        [Test]
+        [Category("Lots of Results")]
+        [Ignore("Takes 15 secons")]
+        public void LotsOfResults()
+        {
+            //Arrange
+            Game game = new Game("ABCDEFG");
 
-        //    List<Space> boardList = new List<Space>
-        //    {
-        //        new Space(3, 3, 'V'),
-        //        new Space(4, 3, 'O'),
-        //        new Space(5, 3, 'X'),
+            List<Space> boardList = new List<Space>
+            {
+                new Space(3, 3, 'V'),
+                new Space(4, 3, 'O'),
+                new Space(5, 3, 'X'),
 
-        //        new Space(1, 7, 'P'),
-        //        new Space(2, 7, 'I'),
-        //        new Space(3, 7, 'S'),
-        //        new Space(4, 7, 'H'),
-        //        new Space(5, 7, 'O'),
-        //        new Space(6, 7, 'G'),
-        //        new Space(7, 7, 'E'),
+                new Space(1, 7, 'P'),
+                new Space(2, 7, 'I'),
+                new Space(3, 7, 'S'),
+                new Space(4, 7, 'H'),
+                new Space(5, 7, 'O'),
+                new Space(6, 7, 'G'),
+                new Space(7, 7, 'E'),
 
 
-        //        new Space(7, 8, 'F'),
-        //        new Space(8, 8, 'A'),
-        //        new Space(9, 8, 'Z'),
-        //        new Space(10, 8, 'E'),
+                new Space(7, 8, 'F'),
+                new Space(8, 8, 'A'),
+                new Space(9, 8, 'Z'),
+                new Space(10, 8, 'E'),
 
-        //        new Space(4, 2, 'D'),
-        //        new Space(4, 4, 'V'),
-        //        new Space(4, 5, 'I'),
-        //        new Space(4, 6, 'S'),
+                new Space(4, 2, 'D'),
+                new Space(4, 4, 'V'),
+                new Space(4, 5, 'I'),
+                new Space(4, 6, 'S'),
 
-        //    };
-        //    game.SetBoard(boardList);
+            };
+            game.SetBoard(boardList);
 
-        //    //Act
-        //    List<Play> allPlays = game.FindAllPlays();
+            //Act
+            List<Play> allPlays = game.FindAllPlays();
 
-        //    //Assert
-        //    Assert.That(allPlays.Count, Is.EqualTo(384));
-        //}
+            //Assert
+            Assert.That(allPlays.Count, Is.EqualTo(384));
+        }
     }
 }

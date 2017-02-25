@@ -298,8 +298,8 @@ namespace Scrabble
             //Adds all valid single space placements
             foreach (Space space in _board)
             {
-                if (new Placement(space).IsValid(this))
-                    returnHash.Add(new Placement(space));
+                if (new Placement(space, this).IsValid())
+                    returnHash.Add(new Placement(space, this));
             }
 
             //build placements of each length. Basing each on valid placements of size -1
@@ -321,9 +321,9 @@ namespace Scrabble
                             Space newSpace = new Space(x, yValue);
 
                             newSpaceList.Add(newSpace);
-                            Placement potentialPlacement = new Placement(newSpaceList);
+                            Placement potentialPlacement = new Placement(newSpaceList, this);
 
-                            if (potentialPlacement.IsValid(this))
+                            if (potentialPlacement.IsValid())
                             {
                                 returnHash.Add(potentialPlacement);
                             }
@@ -340,9 +340,9 @@ namespace Scrabble
                             Space newSpace = new Space(xValue, y);
 
                             newSpaceList.Add(newSpace);
-                            Placement potentialPlacement = new Placement(newSpaceList);
+                            Placement potentialPlacement = new Placement(newSpaceList, this);
 
-                            if (potentialPlacement.IsValid(this))
+                            if (potentialPlacement.IsValid())
                             {
                                 returnHash.Add(potentialPlacement);
                             }
@@ -361,7 +361,7 @@ namespace Scrabble
 
             foreach (Placement placement in possiblePlacements)
             {
-                returnList.AddRange(placement.ValidPlays(this));
+                returnList.AddRange(placement.ValidPlays());
             }
 
             return returnList;
@@ -410,7 +410,7 @@ namespace Scrabble
                 Space newSpace = new Space(rdm.Next(0, 15), rdm.Next(0, 15));
                 spaces.Add(newSpace);
             }
-            Placement testPlacement = new Placement(spaces);
+            Placement testPlacement = new Placement(spaces, this);
 
 
             Console.WriteLine("Placement Before Sorting: ");

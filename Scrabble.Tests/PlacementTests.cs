@@ -9,638 +9,7 @@ namespace Scrabble.Tests
     [TestFixture]
     public class PlacementTests
     {
-        #region //Equals
-        [Test]
-        [Category("Equals Override")]
-        public void Equals_BothEmpty()
-        {
-            Placement placement1 = new Placement(new Space(7,7));
-            Placement placement2 = new Placement(new Space(7, 7));
-
-            Assert.That(placement1.Equals(placement2), Is.True);
-            Assert.That(placement1.GetHashCode(), Is.EqualTo(placement2.GetHashCode()));
-               
-        }
-
-        [Test]
-        [Category("Equals Override")]
-        public void Equals_SingleSpace_True()
-        {
-            Placement placement1 = new Placement(new Space(7,7));
-            Placement placement2 = new Placement(new Space(7,7));
-
-            Assert.That(placement1.Equals(placement2), Is.True);
-            Assert.That(placement1.GetHashCode(), Is.EqualTo(placement2.GetHashCode()));
-
-        }
-        [Test]
-        [Category("Equals Override")]
-        public void Equals_DifferentConstuctors()
-        {
-            Placement placement1 = new Placement(new Space(7, 7));
-            Placement placement2 = new Placement(new List<Space>{ new Space(7, 7) });
-
-            Assert.That(placement1.Equals(placement2), Is.True);
-            Assert.That(placement1.GetHashCode(), Is.EqualTo(placement2.GetHashCode()));
-
-        }
-
-        [Test]
-        [Category("Equals Override")]
-        public void Equals_NotAffectedByLetters()
-        {
-            Placement placement1 = new Placement(new Space(7, 7, 'A'));
-            Placement placement2 = new Placement(new Space(7, 7, 'B'));
-
-            Assert.That(placement1.Equals(placement2), Is.True);
-            Assert.That(placement1.GetHashCode(), Is.EqualTo(placement2.GetHashCode()));
-
-        }
-
-        [Test]
-        [Category("Equals Override")]
-        public void Equals_LongPlacement()
-        {
-            List<Space> spaceList = new List<Space>();
-
-            spaceList.Add(new Space(7, 7));
-            spaceList.Add(new Space(7, 8));
-            spaceList.Add(new Space(7, 9));
-            spaceList.Add(new Space(7, 10));
-            spaceList.Add(new Space(7, 12));
-            spaceList.Add(new Space(7, 13));
-            spaceList.Add(new Space(7, 14));
-
-
-
-            Placement placement1 = new Placement(spaceList);
-            Placement placement2 = new Placement(spaceList);
-
-            Assert.That(placement1.Equals(placement2), Is.True);
-            Assert.That(placement1.GetHashCode(), Is.EqualTo(placement2.GetHashCode()));
-
-        }
-
-        [Test]
-        [Category("Equals Override")]
-        public void Equals_OneInvalidPlacement()
-        {
-            List<Space> spaceList1 = new List<Space>();
-
-            spaceList1.Add(new Space(7, 7));
-            spaceList1.Add(new Space(7, 8));
-            spaceList1.Add(new Space(7, 9));
-            spaceList1.Add(new Space(7, 10));
-            spaceList1.Add(new Space(7, 12));
-            spaceList1.Add(new Space(7, 13));
-            spaceList1.Add(new Space(7, 14));
-
-            List<Space> spaceList2 = new List<Space>();
-
-            spaceList2.Add(new Space(8, 7));
-            spaceList2.Add(new Space(6, 8));
-            spaceList2.Add(new Space(13, 9));
-
-
-            Placement placement1 = new Placement(spaceList1);
-            Placement placement2 = new Placement(spaceList2);
-
-            Assert.That(placement1.Equals(placement2), Is.False);
-        }
-
-        [Test]
-        [Category("Equals Override")]
-        public void Equals_TwoSameInvalidPlacement()
-        {
-            List<Space> spaceList1 = new List<Space>();
-
-            spaceList1.Add(new Space(8, 7));
-            spaceList1.Add(new Space(6, 8));
-            spaceList1.Add(new Space(13, 9));
-
-            List<Space> spaceList2 = new List<Space>();
-
-            spaceList2.Add(new Space(8, 7));
-            spaceList2.Add(new Space(6, 8));
-            spaceList2.Add(new Space(13, 9));
-
-
-            Placement placement1 = new Placement(spaceList1);
-            Placement placement2 = new Placement(spaceList2);
-
-            Assert.That(placement1.Equals(placement2), Is.True);
-            Assert.That(placement1.GetHashCode(), Is.EqualTo(placement2.GetHashCode()));
-        }
-
-        [Test]
-        [Category("Equals Override")]
-        public void Equals_ResetPlacement()
-        {
-            List<Space> spaceList1 = new List<Space>();
-
-            spaceList1.Add(new Space(7, 8));
-            spaceList1.Add(new Space(7, 7));
-            spaceList1.Add(new Space(7, 9));
-
-            List<Space> spaceList2 = new List<Space>();
-
-            spaceList2.Add(new Space(8, 7));
-            spaceList2.Add(new Space(6, 8));
-            spaceList2.Add(new Space(13, 9));
-
-
-            Placement placement1 = new Placement(spaceList1);
-            Placement placement2 = new Placement(spaceList2);
-
-            placement2.SetSpaceList(spaceList1);
-
-            Assert.That(placement1.Equals(placement2), Is.True);
-            Assert.That(placement1.GetHashCode(), Is.EqualTo(placement2.GetHashCode()));
-        }
-
-        [Test]
-        [Category("Equals Override")]
-        public void Equals_DifferentOrder()
-        {
-            List<Space> spaceList1 = new List<Space>();
-
-            spaceList1.Add(new Space(7, 7));
-            spaceList1.Add(new Space(7, 8));
-            spaceList1.Add(new Space(7, 9));
-            spaceList1.Add(new Space(7, 2));
-            spaceList1.Add(new Space(7, 3));
-            spaceList1.Add(new Space(7, 4));
-            spaceList1.Add(new Space(7, 0));
-
-            List<Space> spaceList2 = new List<Space>();
-
-            spaceList2.Add(new Space(7, 0));
-            spaceList2.Add(new Space(7, 2));
-            spaceList2.Add(new Space(7, 3));
-            spaceList2.Add(new Space(7, 4));
-            spaceList2.Add(new Space(7, 9));
-            spaceList2.Add(new Space(7, 8));
-            spaceList2.Add(new Space(7, 7));
-
-
-
-            Placement placement1 = new Placement(spaceList1);
-            Placement placement2 = new Placement(spaceList2);
-
-            Assert.That(placement1.Equals(placement2), Is.True);
-            Assert.That(placement1.GetHashCode(), Is.EqualTo(placement2.GetHashCode()));
-
-        }
-        #region //IsOnBoard
-
-        [Test]
-        [Category("IsOnBoard")]
-        public void IsOnBoard_SingleSpaceInMiddle()
-        {
-            Placement sut;
-            bool result = false;
-
-            //Arrange
-            Space newSpace = new Space(7, 7);
-            List<Space> newList = new List<Space> { newSpace };
-
-            sut = new Placement(newList);
-            Game newGame = new Game();
-            //Act
-            result = sut.IsOnBoard(newGame);
-
-            //Assert
-            Assert.That(result, Is.True);
-
-        }
-
-        [Test]
-        [Category("IsOnBoard")]
-        public void IsOnBoard_NegativeXValue()
-        {
-            Placement sut;
-            bool result = true;
-
-            //Arrange
-            Space newSpace = new Space(-1, 7);
-            List<Space> newList = new List<Space> { newSpace };
-
-            sut = new Placement(newList);
-            Game newGame = new Game();
-            //Act
-            result = sut.IsOnBoard(newGame);
-
-            //Assert
-            Assert.That(result, Is.False);
-
-        }
-
-        [Test]
-        [Category("IsOnBoard")]
-        public void IsOnBoard_NegativeYValue()
-        {
-            Placement sut;
-            bool result = true;
-
-            //Arrange
-            Space newSpace = new Space(7, -1);
-            List<Space> newList = new List<Space> { newSpace };
-
-            sut = new Placement(newList);
-            Game newGame = new Game();
-            //Act
-            result = sut.IsOnBoard(newGame);
-
-            //Assert
-            Assert.That(result, Is.False);
-
-        }
-
-        [Test]
-        [Category("IsOnBoard")]
-        public void IsOnBoard_SingleSpaceBothNegativeValues()
-        {
-            Placement sut;
-            bool result = true;
-
-            //Arrange
-            Space newSpace = new Space(-7, -7);
-            List<Space> newList = new List<Space> { newSpace };
-
-            sut = new Placement(newList);
-            Game newGame = new Game();
-            //Act
-            result = sut.IsOnBoard(newGame);
-
-            //Assert
-            Assert.That(result, Is.False);
-
-        }
-
-        [Test]
-        [Category("IsOnBoard")]
-        public void IsOnBoard_TwoSpacesOnBoard()
-        {
-            Placement sut;
-            bool result = false;
-
-            //Arrange
-            Space spaceOne = new Space(7, 7);
-            Space spaceTwo = new Space(7, 8);
-            List<Space> newList = new List<Space> { spaceOne, spaceTwo };
-
-            sut = new Placement(newList);
-            Game newGame = new Game();
-            //Act
-            result = sut.IsOnBoard(newGame);
-
-            //Assert
-            Assert.That(result, Is.True);
-
-        }
-
-        [Test]
-        [Category("IsOnBoard")]
-        public void IsOnBoard_OneOnOneOff()
-        {
-            Placement sut;
-            bool result = true;
-
-            //Arrange
-            Space spaceOne = new Space(7, 7);
-            Space spaceTwo = new Space(7, 20);
-            List<Space> newList = new List<Space> { spaceOne, spaceTwo };
-
-            sut = new Placement(newList);
-            Game newGame = new Game();
-            //Act
-            result = sut.IsOnBoard(newGame);
-
-            //Assert
-            Assert.That(result, Is.False);
-        }
-
-        [Test]
-        [Category("IsOnBoard")]
-        public void IsOnBoard_OnEdges()
-        {
-            Placement sut;
-            bool result = false;
-
-            //Arrange
-            Space spaceOne = new Space(0, 0);
-            Space spaceTwo = new Space(0, 14);
-            Space spaceThree = new Space(14, 0);
-            Space spaceFour = new Space(14, 14);
-            List<Space> newList = new List<Space> { spaceOne, spaceTwo, spaceThree, spaceFour };
-
-            sut = new Placement(newList);
-            Game newGame = new Game();
-            //Act
-            result = sut.IsOnBoard(newGame);
-
-            //Assert
-            Assert.That(result, Is.True);
-        }
-
-        [Test]
-        [Category("IsOnBoard")]
-        public void IsOnBoard_OffEdges()
-        {
-            Placement sut1;
-            Placement sut2;
-            bool result1 = true;
-            bool result2 = true;
-
-            //Arrange
-            Space spaceOne = new Space(15, 7);
-            Space spaceTwo = new Space(7, 15);
-
-            sut1 = new Placement(spaceOne);
-            sut2 = new Placement(spaceTwo);
-            Game newGame = new Game();
-            //Act
-            result1 = sut1.IsOnBoard(newGame);
-            result2 = sut2.IsOnBoard(newGame);
-
-            //Assert
-            Assert.That(result1, Is.False);
-            Assert.That(result2, Is.False);
-        }
-
-        [Test]
-        [Category("IsOnBoard")]
-        public void IsOnBoard_7On()
-        {
-            Placement sut;
-            bool result = false;
-
-            //Arrange
-            Space spaceOne = new Space(7, 7);
-            Space spaceTwo = new Space(7, 8);
-            Space spaceThree = new Space(7, 9);
-            Space spaceFour = new Space(7, 10);
-            Space spaceFive = new Space(7, 11);
-            Space spaceSix = new Space(7, 12);
-            Space spaceSeven = new Space(7, 13);
-
-            List<Space> newList = new List<Space> { spaceOne, spaceTwo, spaceThree, spaceFour, spaceFive, spaceSix, spaceSeven };
-            sut = new Placement(newList);
-            Game newGame = new Game();
-
-            //Act
-            result = sut.IsOnBoard(newGame);
-
-            //Assert
-            Assert.That(result, Is.True);
-        }
-
-        [Test]
-        [Category("IsOnBoard")]
-        public void IsOnBoard_6On1Off()
-        {
-            Placement sut;
-            bool result = true;
-
-            //Arrange
-            Space spaceOne = new Space(7, 7);
-            Space spaceTwo = new Space(7, 8);
-            Space spaceThree = new Space(7, 9);
-            Space spaceFour = new Space(7, 10);
-            Space spaceFive = new Space(7, 11);
-            Space spaceSix = new Space(7, 12);
-            Space spaceSeven = new Space(7, 15);
-
-            List<Space> newList = new List<Space> { spaceOne, spaceTwo, spaceThree, spaceFour, spaceFive, spaceSix, spaceSeven };
-            sut = new Placement(newList);
-            Game newGame = new Game();
-
-            //Act
-            result = sut.IsOnBoard(newGame);
-
-            //Assert
-            Assert.That(result, Is.False);
-        }
-
-
-        #endregion
-        #region //IsAvailable
-
-        [Test]
-        [Category("IsAvailable")]
-        public void IsAvailable_EmtpyBoard()
-        {
-            Placement sut;
-            bool result = false;
-
-            //Arrange          
-            Game newGame = new Game();
-            sut = new Placement(new Space(7, 7));
-
-            //Act
-            result = sut.IsAvailable(newGame);
-
-            //Assert
-            Assert.That(result, Is.True);
-        }
-
-        [Test]
-        [Category("IsAvailable")]
-        public void IsAvailable_SingleOccupiedSpace()
-        {
-            Placement sut;
-            bool result = true;
-
-            //Arrange
-            List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>();
-            Tuple<Space, Tile> newTuple = Tuple.Create(new Space(7, 7), new Tile('A'));
-            tupleList.Add(newTuple);
-
-            Game newGame = new Game();
-            newGame.SetBoard(tupleList);
-            sut = new Placement(new Space(7, 7));
-
-            //Act
-            result = sut.IsAvailable(newGame);
-
-            //Assert
-            Assert.That(result, Is.False);
-        }
-
-        [Test]
-        [Category("IsAvailable")]
-        public void IsAvailable_TwoOccupiedSpace()
-        {
-            Placement sut;
-            bool result = true;
-
-            //Arrange
-            List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>();
-            tupleList.Add(Tuple.Create(new Space(7, 7), new Tile('A')));
-            tupleList.Add(Tuple.Create(new Space(7, 8), new Tile('B')));
-
-            Game newGame = new Game();
-            newGame.SetBoard(tupleList);
-
-            List<Space> spaceList = new List<Space>();
-            spaceList.Add(new Space(7, 7));
-            spaceList.Add(new Space(7, 8));
-
-            sut = new Placement(spaceList);
-
-            //Act
-            result = sut.IsAvailable(newGame);
-
-            //Assert
-            Assert.That(result, Is.False);
-        }
-
-        [Test]
-        [Category("IsAvailable")]
-        public void IsAvailable_OneOccupiedMultipleNot()
-        {
-            Placement sut;
-            bool result = true;
-
-            //Arrange
-            List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>();
-            tupleList.Add(Tuple.Create(new Space(7, 7), new Tile('A')));
-            tupleList.Add(Tuple.Create(new Space(7, 8), new Tile('B')));
-            tupleList.Add(Tuple.Create(new Space(7, 9), new Tile('C')));
-            tupleList.Add(Tuple.Create(new Space(7, 10), new Tile('D')));
-            tupleList.Add(Tuple.Create(new Space(7, 11), new Tile('E')));
-            tupleList.Add(Tuple.Create(new Space(7, 12), new Tile('F')));
-            tupleList.Add(Tuple.Create(new Space(7, 13), new Tile('G')));
-
-            Game newGame = new Game();
-            newGame.SetBoard(tupleList);
-
-            List<Space> spaceList = new List<Space>();
-            spaceList.Add(new Space(7, 7));
-            spaceList.Add(new Space(6, 7));
-            spaceList.Add(new Space(5, 7));
-            spaceList.Add(new Space(3, 7));
-            spaceList.Add(new Space(1, 7));
-
-            sut = new Placement(spaceList);
-
-            //Act
-            result = sut.IsAvailable(newGame);
-
-            //Assert
-            Assert.That(result, Is.False);
-        }
-
-        [Test]
-        [Category("IsAvailable")]
-        public void IsAvailable_MultipleOccupiedMultipleNot()
-        {
-            Placement sut;
-            bool result = true;
-
-            //Arrange
-            List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>();
-            tupleList.Add(Tuple.Create(new Space(7, 7), new Tile('A')));
-            tupleList.Add(Tuple.Create(new Space(7, 8), new Tile('B')));
-            tupleList.Add(Tuple.Create(new Space(7, 9), new Tile('C')));
-            tupleList.Add(Tuple.Create(new Space(7, 10), new Tile('D')));
-            tupleList.Add(Tuple.Create(new Space(7, 11), new Tile('E')));
-            tupleList.Add(Tuple.Create(new Space(7, 12), new Tile('F')));
-            tupleList.Add(Tuple.Create(new Space(7, 13), new Tile('G')));
-
-            Game newGame = new Game();
-            newGame.SetBoard(tupleList);
-
-            List<Space> spaceList = new List<Space>();
-            spaceList.Add(new Space(7, 7));
-            spaceList.Add(new Space(7, 8));
-            spaceList.Add(new Space(7, 9));
-            spaceList.Add(new Space(7, 6));
-            spaceList.Add(new Space(7, 5));
-
-            sut = new Placement(spaceList);
-
-            //Act
-            result = sut.IsAvailable(newGame);
-
-            //Assert
-            Assert.That(result, Is.False);
-        }
-
-        [Test]
-        [Category("IsAvailable")]
-        public void IsAvailable_MultipleClear()
-        {
-            Placement sut;
-            bool result = false;
-
-            //Arrange
-            List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>();
-            tupleList.Add(Tuple.Create(new Space(7, 7), new Tile('A')));
-            tupleList.Add(Tuple.Create(new Space(7, 8), new Tile('B')));
-            tupleList.Add(Tuple.Create(new Space(7, 9), new Tile('C')));
-            tupleList.Add(Tuple.Create(new Space(7, 10), new Tile('D')));
-            tupleList.Add(Tuple.Create(new Space(7, 11), new Tile('E')));
-            tupleList.Add(Tuple.Create(new Space(7, 12), new Tile('F')));
-            tupleList.Add(Tuple.Create(new Space(7, 13), new Tile('G')));
-
-            Game newGame = new Game();
-            newGame.SetBoard(tupleList);
-
-            List<Space> spaceList = new List<Space>();
-            spaceList.Add(new Space(5, 1));
-            spaceList.Add(new Space(5, 2));
-            spaceList.Add(new Space(5, 3));
-            spaceList.Add(new Space(5, 4));
-            spaceList.Add(new Space(5, 5));
-
-            sut = new Placement(spaceList);
-
-            //Act
-            result = sut.IsAvailable(newGame);
-
-            //Assert
-            Assert.That(result, Is.True);
-        }
-
-        [Test]
-        [Category("IsAvailable")]
-        public void IsAvailable_MultipleAdjacent()
-        {
-            Placement sut;
-            bool result = false;
-
-            //Arrange
-            List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>>();
-            tupleList.Add(Tuple.Create(new Space(7, 7), new Tile('A')));
-            tupleList.Add(Tuple.Create(new Space(7, 8), new Tile('B')));
-            tupleList.Add(Tuple.Create(new Space(7, 9), new Tile('C')));
-            tupleList.Add(Tuple.Create(new Space(7, 10), new Tile('D')));
-            tupleList.Add(Tuple.Create(new Space(7, 11), new Tile('E')));
-            tupleList.Add(Tuple.Create(new Space(7, 12), new Tile('F')));
-            tupleList.Add(Tuple.Create(new Space(7, 13), new Tile('G')));
-
-            Game newGame = new Game();
-            newGame.SetBoard(tupleList);
-
-            List<Space> spaceList = new List<Space>();
-            spaceList.Add(new Space(6, 7));
-            spaceList.Add(new Space(6, 8));
-            spaceList.Add(new Space(6, 6));
-            spaceList.Add(new Space(6, 5));
-            spaceList.Add(new Space(6, 4));
-
-            sut = new Placement(spaceList);
-
-            //Act
-            result = sut.IsAvailable(newGame);
-
-            //Assert
-            Assert.That(result, Is.True);
-        }
-
-        #endregion
-        #endregion
+        Game game = new Game();   
         #region//HasNoDuplicates
 
         [Test]
@@ -652,7 +21,7 @@ namespace Scrabble.Tests
 
             //Arrang
 
-            sut = new Placement(new Space(7,7));
+            sut = new Placement(new Space(7,7), game);
             //Act
             result = sut.HasNoDuplicates();
 
@@ -671,7 +40,7 @@ namespace Scrabble.Tests
             //Arrange
 
             List<Space> spaceList = new List<Space>() { new Space(7, 7), new Space(7, 7) };
-            sut = new Placement(spaceList);
+            sut = new Placement(spaceList, game);
             //Act
             result = sut.HasNoDuplicates();
 
@@ -690,7 +59,7 @@ namespace Scrabble.Tests
             //Arrange
 
             List<Space> spaceList = new List<Space>() { new Space(7, 7), new Space(7, 8) };
-            sut = new Placement(spaceList);
+            sut = new Placement(spaceList, game);
             //Act
             result = sut.HasNoDuplicates();
 
@@ -717,7 +86,7 @@ namespace Scrabble.Tests
                 new Space(7, 7),
                 new Space(7, 7)
             };
-            sut = new Placement(spaceList);
+            sut = new Placement(spaceList, game);
             //Act
             result = sut.HasNoDuplicates();
 
@@ -744,7 +113,7 @@ namespace Scrabble.Tests
                 new Space(7, 7),
                 new Space(7, 9)
             };
-            sut = new Placement(spaceList);
+            sut = new Placement(spaceList, game);
             //Act
             result = sut.HasNoDuplicates();
 
@@ -765,10 +134,10 @@ namespace Scrabble.Tests
 
             //Arrange          
             Game newGame = new Game();
-            sut = new Placement(new Space(7, 7));
+            sut = new Placement(new Space(7, 7), game);
 
             //Act
-            result = sut.IsFirstMove(newGame);
+            result = sut.IsFirstMove();
 
             //Assert
             Assert.That(result, Is.True);
@@ -783,10 +152,10 @@ namespace Scrabble.Tests
 
             //Arrange          
             Game newGame = new Game();
-            sut = new Placement(new List<Space>() { new Space(7, 7), new Space(7, 8), new Space(7, 9), new Space(7, 6)} );
+            sut = new Placement(new List<Space>() { new Space(7, 7), new Space(7, 8), new Space(7, 9), new Space(7, 6)}, game);
 
             //Act
-            result = sut.IsFirstMove(newGame);
+            result = sut.IsFirstMove();
 
             //Assert
             Assert.That(result, Is.True);
@@ -807,10 +176,10 @@ namespace Scrabble.Tests
             Game newGame = new Game();
             newGame.SetBoard(tupleList);
 
-            sut = new Placement(new Space(7, 7));
+            sut = new Placement(new Space(7, 7), newGame);
 
             //Act
-            result = sut.IsFirstMove(newGame);
+            result = sut.IsFirstMove();
 
             //Assert
             Assert.That(result, Is.False);
@@ -825,10 +194,10 @@ namespace Scrabble.Tests
 
             //Arrange          
             Game newGame = new Game();
-            sut = new Placement(new List<Space>() { new Space(8, 7), new Space(8, 8), new Space(8, 9), new Space(7, 8) });
+            sut = new Placement(new List<Space>() { new Space(8, 7), new Space(8, 8), new Space(8, 9), new Space(7, 8) }, newGame);
 
             //Act
-            result = sut.IsFirstMove(newGame);
+            result = sut.IsFirstMove();
 
             //Assert
             Assert.That(result, Is.False);
@@ -859,10 +228,10 @@ namespace Scrabble.Tests
 
             List<Space> spaceList = new List<Space>();
             spaceList.Add(new Space(7, 6));
-            sut = new Placement(spaceList);
+            sut = new Placement(spaceList, newGame);
 
             //Act
-            result = sut.IsAdjacent(newGame);
+            result = sut.IsAdjacent();
 
             //Assert
             Assert.That(result, Is.True);
@@ -890,10 +259,10 @@ namespace Scrabble.Tests
 
             List<Space> spaceList = new List<Space>();
             spaceList.Add(new Space(7, 14));
-            sut = new Placement(spaceList);
+            sut = new Placement(spaceList, newGame);
 
             //Act
-            result = sut.IsAdjacent(newGame);
+            result = sut.IsAdjacent();
 
             //Assert
             Assert.That(result, Is.True);
@@ -921,10 +290,10 @@ namespace Scrabble.Tests
 
             List<Space> spaceList = new List<Space>();
             spaceList.Add(new Space(6, 10));
-            sut = new Placement(spaceList);
+            sut = new Placement(spaceList, newGame);
 
             //Act
-            result = sut.IsAdjacent(newGame);
+            result = sut.IsAdjacent();
 
             //Assert
             Assert.That(result, Is.True);
@@ -953,10 +322,10 @@ namespace Scrabble.Tests
 
             List<Space> spaceList = new List<Space>();
             spaceList.Add(new Space(8, 10));
-            sut = new Placement(spaceList);
+            sut = new Placement(spaceList, newGame);
 
             //Act
-            result = sut.IsAdjacent(newGame);
+            result = sut.IsAdjacent();
 
             //Assert
             Assert.That(result, Is.True);
@@ -989,10 +358,10 @@ namespace Scrabble.Tests
             spaceList.Add(new Space(8, 13));
             spaceList.Add(new Space(8, 14));
 
-            sut = new Placement(spaceList);
+            sut = new Placement(spaceList, newGame);
 
             //Act
-            result = sut.IsAdjacent(newGame);
+            result = sut.IsAdjacent();
 
             //Assert
             Assert.That(result, Is.True);
@@ -1025,10 +394,10 @@ namespace Scrabble.Tests
             spaceList.Add(new Space(6, 6));
             spaceList.Add(new Space(8, 6));
 
-            sut = new Placement(spaceList);
+            sut = new Placement(spaceList, newGame);
 
             //Act
-            result = sut.IsAdjacent(newGame);
+            result = sut.IsAdjacent();
 
             //Assert
             Assert.That(result, Is.True);
@@ -1057,10 +426,10 @@ namespace Scrabble.Tests
             List<Space> spaceList = new List<Space>();
             spaceList.Add(new Space(10, 12));
 
-            sut = new Placement(spaceList);
+            sut = new Placement(spaceList, newGame);
 
             //Act
-            result = sut.IsAdjacent(newGame);
+            result = sut.IsAdjacent();
 
             //Assert
             Assert.That(result, Is.False);
@@ -1093,10 +462,10 @@ namespace Scrabble.Tests
             spaceList.Add(new Space(2, 3));
             spaceList.Add(new Space(2, 2));
 
-            sut = new Placement(spaceList);
+            sut = new Placement(spaceList, newGame);
 
             //Act
-            result = sut.IsAdjacent(newGame);
+            result = sut.IsAdjacent();
 
             //Assert
             Assert.That(result, Is.False);
@@ -1123,16 +492,16 @@ namespace Scrabble.Tests
             Game newGame = new Game();
             newGame.SetBoard(tupleList);
 
-            Placement sut1 = new Placement(new Space(0, 0));
-            Placement sut2 = new Placement(new Space(0, 14));
-            Placement sut3 = new Placement(new Space(14, 0));
-            Placement sut4 = new Placement(new Space(0, 14));
+            Placement sut1 = new Placement(new Space(0, 0), newGame);
+            Placement sut2 = new Placement(new Space(0, 14), newGame);
+            Placement sut3 = new Placement(new Space(14, 0), newGame);
+            Placement sut4 = new Placement(new Space(0, 14), newGame);
 
             //Act
-            result1 = sut1.IsAdjacent(newGame);
-            result2 = sut2.IsAdjacent(newGame);
-            result3 = sut3.IsAdjacent(newGame);
-            result4 = sut4.IsAdjacent(newGame);
+            result1 = sut1.IsAdjacent();
+            result2 = sut2.IsAdjacent();
+            result3 = sut3.IsAdjacent();
+            result4 = sut4.IsAdjacent();
 
             //Assert
             Assert.That(result1, Is.False);
@@ -1155,7 +524,7 @@ namespace Scrabble.Tests
 
             Space space = new Space(7, 7);
 
-            sut = new Placement(space);
+            sut = new Placement(space, game);
             //Act
             result = sut.IsSingle();
 
@@ -1175,7 +544,7 @@ namespace Scrabble.Tests
             Space space1 = new Space(7, 7);
             Space space2 = new Space(7, 8);
 
-            sut = new Placement(new List<Space>() { space1, space2 });
+            sut = new Placement(new List<Space>() { space1, space2 }, game);
             //Act
             result = sut.IsSingle();
 
@@ -1202,7 +571,7 @@ namespace Scrabble.Tests
             spaceList.Add(new Space(5, 7));
             spaceList.Add(new Space(14, 7));
 
-            sut = new Placement(spaceList);
+            sut = new Placement(spaceList, game);
 
             //Act
             result = sut.IsHorizontal();
@@ -1227,7 +596,7 @@ namespace Scrabble.Tests
             spaceList.Add(new Space(5, 7));
             spaceList.Add(new Space(14, 6));
 
-            sut = new Placement(spaceList);
+            sut = new Placement(spaceList, game);
 
             //Act
             result = sut.IsHorizontal();
@@ -1252,7 +621,7 @@ namespace Scrabble.Tests
             spaceList.Add(new Space(5, 7));
             spaceList.Add(new Space(14, 6));
 
-            sut = new Placement(spaceList);
+            sut = new Placement(spaceList, game);
 
             //Act
             result = sut.IsHorizontal();
@@ -1272,7 +641,7 @@ namespace Scrabble.Tests
 
             Space space = new Space(7, 7);
 
-            sut = new Placement(space);
+            sut = new Placement(space, game);
             //Act
             result = sut.IsHorizontal();
 
@@ -1296,7 +665,7 @@ namespace Scrabble.Tests
             spaceList.Add(new Space(6, 7));
             spaceList.Add(new Space(6, 6));
 
-            sut = new Placement(spaceList);
+            sut = new Placement(spaceList, game);
 
             //Act
             result = sut.IsHorizontal();
@@ -1325,7 +694,7 @@ namespace Scrabble.Tests
             spaceList.Add(new Space(6, 4));
             spaceList.Add(new Space(6, 15));
 
-            sut = new Placement(spaceList);
+            sut = new Placement(spaceList, game);
 
             //Act
             result = sut.IsVertical();
@@ -1351,7 +720,7 @@ namespace Scrabble.Tests
             spaceList.Add(new Space(6, 10));
             spaceList.Add(new Space(7, 11));
 
-            sut = new Placement(spaceList);
+            sut = new Placement(spaceList, game);
 
             //Act
             result = sut.IsVertical();
@@ -1377,7 +746,7 @@ namespace Scrabble.Tests
             spaceList.Add(new Space(5, 7));
             spaceList.Add(new Space(14, 6));
 
-            sut = new Placement(spaceList);
+            sut = new Placement(spaceList, game);
 
             //Act
             result = sut.IsVertical();
@@ -1398,7 +767,7 @@ namespace Scrabble.Tests
 
             Space space = new Space(7, 7);
 
-            sut = new Placement(space);
+            sut = new Placement(space, game);
             //Act
             result = sut.IsVertical();
 
@@ -1423,7 +792,7 @@ namespace Scrabble.Tests
             spaceList.Add(new Space(4, 9));
             spaceList.Add(new Space(10, 9));
 
-            sut = new Placement(spaceList);
+            sut = new Placement(spaceList, game);
 
             //Act
             result = sut.IsVertical();
@@ -1452,9 +821,9 @@ namespace Scrabble.Tests
             spaceList.Add(new Space(6, 4));
             spaceList.Add(new Space(6, 3));
 
-            sut = new Placement(spaceList);
+            sut = new Placement(spaceList, game);
             //Act
-            result = sut.IsContiguous(new Game());
+            result = sut.IsContiguous();
 
             //Assert
             Assert.That(result, Is.True);
@@ -1476,9 +845,9 @@ namespace Scrabble.Tests
             spaceList.Add(new Space(4, 7));
             spaceList.Add(new Space(5, 7));
 
-            sut = new Placement(spaceList);
+            sut = new Placement(spaceList, game);
             //Act
-            result = sut.IsContiguous(new Game());
+            result = sut.IsContiguous();
 
             //Assert
             Assert.That(result, Is.True);
@@ -1500,9 +869,9 @@ namespace Scrabble.Tests
             spaceList.Add(new Space(6, 12));
             spaceList.Add(new Space(6, 3));
 
-            sut = new Placement(spaceList);
+            sut = new Placement(spaceList, game);
             //Act
-            result = sut.IsContiguous(new Game());
+            result = sut.IsContiguous();
 
             //Assert
             Assert.That(result, Is.False);
@@ -1524,9 +893,9 @@ namespace Scrabble.Tests
             spaceList.Add(new Space(4, 7));
             spaceList.Add(new Space(12, 7));
 
-            sut = new Placement(spaceList);
+            sut = new Placement(spaceList, game);
             //Act
-            result = sut.IsContiguous(new Game());
+            result = sut.IsContiguous();
 
             //Assert
             Assert.That(result, Is.False);
@@ -1559,9 +928,9 @@ namespace Scrabble.Tests
             spaceList.Add(new Space(9, 7));
             spaceList.Add(new Space(10, 7));
 
-            sut = new Placement(spaceList);
+            sut = new Placement(spaceList, newGame);
             //Act
-            result = sut.IsContiguous(newGame);
+            result = sut.IsContiguous();
 
             //Assert
             Assert.That(result, Is.True);
@@ -1594,9 +963,9 @@ namespace Scrabble.Tests
             spaceList.Add(new Space(8, 8));
             spaceList.Add(new Space(8, 11));
 
-            sut = new Placement(spaceList);
+            sut = new Placement(spaceList, newGame);
             //Act
-            result = sut.IsContiguous(newGame);
+            result = sut.IsContiguous();
 
             //Assert
             Assert.That(result, Is.True);
@@ -1624,9 +993,9 @@ namespace Scrabble.Tests
             spaceList.Add(new Space(7, 10));
             spaceList.Add(new Space(7, 11));
 
-            sut = new Placement(spaceList);
+            sut = new Placement(spaceList, newGame);
             //Act
-            result = sut.IsContiguous(newGame);
+            result = sut.IsContiguous();
 
             //Assert
             Assert.That(result, Is.True);
@@ -1654,9 +1023,9 @@ namespace Scrabble.Tests
             spaceList.Add(new Space(10, 7));
             spaceList.Add(new Space(11, 7));
 
-            sut = new Placement(spaceList);
+            sut = new Placement(spaceList, newGame);
             //Act
-            result = sut.IsContiguous(newGame);
+            result = sut.IsContiguous();
 
             //Assert
             Assert.That(result, Is.True);
@@ -1684,9 +1053,9 @@ namespace Scrabble.Tests
             spaceList.Add(new Space(7, 8));
             spaceList.Add(new Space(7, 11));
 
-            sut = new Placement(spaceList);
+            sut = new Placement(spaceList, newGame);
             //Act
-            result = sut.IsContiguous(newGame);
+            result = sut.IsContiguous();
 
             //Assert
             Assert.That(result, Is.True);
@@ -1714,9 +1083,9 @@ namespace Scrabble.Tests
             spaceList.Add(new Space(8, 7));
             spaceList.Add(new Space(11, 7));
 
-            sut = new Placement(spaceList);
+            sut = new Placement(spaceList, newGame);
             //Act
-            result = sut.IsContiguous(newGame);
+            result = sut.IsContiguous();
 
             //Assert
             Assert.That(result, Is.True);
@@ -1745,9 +1114,9 @@ namespace Scrabble.Tests
             spaceList.Add(new Space(7, 12));
             spaceList.Add(new Space(7, 11));
 
-            sut = new Placement(spaceList);
+            sut = new Placement(spaceList, newGame);
             //Act
-            result = sut.IsContiguous(newGame);
+            result = sut.IsContiguous();
 
             //Assert
             Assert.That(result, Is.True);
@@ -1776,9 +1145,9 @@ namespace Scrabble.Tests
             spaceList.Add(new Space(4, 7));
             spaceList.Add(new Space(11, 7));
 
-            sut = new Placement(spaceList);
+            sut = new Placement(spaceList, newGame);
             //Act
-            result = sut.IsContiguous(newGame);
+            result = sut.IsContiguous();
 
             //Assert
             Assert.That(result, Is.True);
@@ -1811,9 +1180,9 @@ namespace Scrabble.Tests
             spaceList.Add(new Space(5, 7));
             spaceList.Add(new Space(6, 7));
 
-            sut = new Placement(spaceList);
+            sut = new Placement(spaceList, newGame);
             //Act
-            result = sut.IsContiguous(newGame);
+            result = sut.IsContiguous();
 
             //Assert
             Assert.That(result, Is.False);
@@ -1846,9 +1215,9 @@ namespace Scrabble.Tests
             spaceList.Add(new Space(7, 5));
             spaceList.Add(new Space(7, 6));
 
-            sut = new Placement(spaceList);
+            sut = new Placement(spaceList, newGame);
             //Act
-            result = sut.IsContiguous(newGame);
+            result = sut.IsContiguous();
 
             //Assert
             Assert.That(result, Is.False);
@@ -1875,9 +1244,9 @@ namespace Scrabble.Tests
             spaceList.Add(new Space(7, 10));
             spaceList.Add(new Space(7, 11));
 
-            sut = new Placement(spaceList);
+            sut = new Placement(spaceList, newGame);
             //Act
-            result = sut.IsContiguous(newGame);
+            result = sut.IsContiguous();
 
             //Assert
             Assert.That(result, Is.False);
@@ -1904,9 +1273,9 @@ namespace Scrabble.Tests
             spaceList.Add(new Space(10, 7));
             spaceList.Add(new Space(11, 7));
 
-            sut = new Placement(spaceList);
+            sut = new Placement(spaceList, newGame);
             //Act
-            result = sut.IsContiguous(newGame);
+            result = sut.IsContiguous();
 
             //Assert
             Assert.That(result, Is.False);
@@ -1933,9 +1302,9 @@ namespace Scrabble.Tests
             spaceList.Add(new Space(7, 8));
             spaceList.Add(new Space(7, 11));
 
-            sut = new Placement(spaceList);
+            sut = new Placement(spaceList, newGame);
             //Act
-            result = sut.IsContiguous(newGame);
+            result = sut.IsContiguous();
 
             //Assert
             Assert.That(result, Is.False);
@@ -1962,9 +1331,9 @@ namespace Scrabble.Tests
             spaceList.Add(new Space(8, 7));
             spaceList.Add(new Space(11, 7));
 
-            sut = new Placement(spaceList);
+            sut = new Placement(spaceList, newGame);
             //Act
-            result = sut.IsContiguous(newGame);
+            result = sut.IsContiguous();
 
             //Assert
             Assert.That(result, Is.False);
@@ -1993,9 +1362,9 @@ namespace Scrabble.Tests
             spaceList.Add(new Space(7, 12));
             spaceList.Add(new Space(7, 11));
 
-            sut = new Placement(spaceList);
+            sut = new Placement(spaceList, newGame);
             //Act
-            result = sut.IsContiguous(newGame);
+            result = sut.IsContiguous();
 
             //Assert
             Assert.That(result, Is.False);
@@ -2023,9 +1392,9 @@ namespace Scrabble.Tests
             spaceList.Add(new Space(7, 12));
             spaceList.Add(new Space(7, 11));
 
-            sut = new Placement(spaceList);
+            sut = new Placement(spaceList, newGame);
             //Act
-            result = sut.IsContiguous(newGame);
+            result = sut.IsContiguous();
 
             //Assert
             Assert.That(result, Is.False);
@@ -2053,9 +1422,9 @@ namespace Scrabble.Tests
             spaceList.Add(new Space(4, 7));
             spaceList.Add(new Space(11, 7));
 
-            sut = new Placement(spaceList);
+            sut = new Placement(spaceList, newGame);
             //Act
-            result = sut.IsContiguous(newGame);
+            result = sut.IsContiguous();
 
             //Assert
             Assert.That(result, Is.False);
@@ -2083,9 +1452,9 @@ namespace Scrabble.Tests
             spaceList.Add(new Space(4, 7));
             spaceList.Add(new Space(11, 7));
 
-            sut = new Placement(spaceList);
+            sut = new Placement(spaceList, newGame);
             //Act
-            result = sut.IsContiguous(newGame);
+            result = sut.IsContiguous();
 
             //Assert
             Assert.That(result, Is.False);
@@ -2113,9 +1482,9 @@ namespace Scrabble.Tests
             spaceList.Add(new Space(2, 7));
             spaceList.Add(new Space(11, 7));
 
-            sut = new Placement(spaceList);
+            sut = new Placement(spaceList, newGame);
             //Act
-            result = sut.IsContiguous(newGame);
+            result = sut.IsContiguous();
 
             //Assert
             Assert.That(result, Is.False);
@@ -2144,9 +1513,9 @@ namespace Scrabble.Tests
             spaceList.Add(new Space(4, 7));
             spaceList.Add(new Space(11, 7));
 
-            sut = new Placement(spaceList);
+            sut = new Placement(spaceList, newGame);
             //Act
-            result = sut.IsContiguous(newGame);
+            result = sut.IsContiguous();
 
             //Assert
             Assert.That(result, Is.False);
@@ -2176,9 +1545,9 @@ namespace Scrabble.Tests
             spaceList.Add(new Space(9, 7));
             spaceList.Add(new Space(11, 7));
 
-            sut = new Placement(spaceList);
+            sut = new Placement(spaceList, newGame);
             //Act
-            result = sut.IsContiguous(newGame);
+            result = sut.IsContiguous();
 
             //Assert
             Assert.That(result, Is.False);
@@ -2206,9 +1575,9 @@ namespace Scrabble.Tests
             spaceList.Add(new Space(7, 2));
             spaceList.Add(new Space(7, 11));
 
-            sut = new Placement(spaceList);
+            sut = new Placement(spaceList, newGame);
             //Act
-            result = sut.IsContiguous(newGame);
+            result = sut.IsContiguous();
 
             //Assert
             Assert.That(result, Is.False);
@@ -2237,9 +1606,9 @@ namespace Scrabble.Tests
             spaceList.Add(new Space(7, 4));
             spaceList.Add(new Space(7, 11));
 
-            sut = new Placement(spaceList);
+            sut = new Placement(spaceList, newGame);
             //Act
-            result = sut.IsContiguous(newGame);
+            result = sut.IsContiguous();
 
             //Assert
             Assert.That(result, Is.False);
@@ -2269,9 +1638,9 @@ namespace Scrabble.Tests
             spaceList.Add(new Space(7, 9));
             spaceList.Add(new Space(7, 11));
 
-            sut = new Placement(spaceList);
+            sut = new Placement(spaceList, newGame);
             //Act
-            result = sut.IsContiguous(newGame);
+            result = sut.IsContiguous();
 
             //Assert
             Assert.That(result, Is.False);
@@ -2300,12 +1669,12 @@ namespace Scrabble.Tests
             spaceList.Add(new Space(7, 10));
             spaceList.Add(new Space(7, 11));
 
-            sut = new Placement(spaceList);
+            sut = new Placement(spaceList, newGame);
 
             var expected = new List<Space>{ new Space(7, 8, 'B'), new Space(7, 7, 'A') };
             
             //Act
-            result = sut.GetAnchors(newGame);
+            result = sut.GetAnchors();
 
             //Assert
             
@@ -2334,11 +1703,11 @@ namespace Scrabble.Tests
             spaceList.Add(new Space(10, 7));
             spaceList.Add(new Space(11, 7));
 
-            sut = new Placement(spaceList);
+            sut = new Placement(spaceList, newGame);
 
             var expected = new List<Space> { new Space(7, 7, 'A'), new Space(8, 7, 'B') };
             //Act
-            result = sut.GetAnchors(newGame);
+            result = sut.GetAnchors();
 
             //Assert            
             Assert.That(result.Except(expected, SpaceTileEqualityComparer.Instance).Count(), Is.EqualTo(0));
@@ -2366,11 +1735,11 @@ namespace Scrabble.Tests
             spaceList.Add(new Space(7, 10));
             spaceList.Add(new Space(7, 11));
 
-            sut = new Placement(spaceList);
+            sut = new Placement(spaceList, newGame);
 
             var expected = new List<Space> { new Space(7, 7, 'P'), new Space(7, 8, 'Q') };
             //Act
-            result = sut.GetAnchors(newGame);
+            result = sut.GetAnchors();
 
             //Assert            
             Assert.That(result.Except(expected, SpaceTileEqualityComparer.Instance).Count(), Is.EqualTo(2));
@@ -2398,11 +1767,11 @@ namespace Scrabble.Tests
             spaceList.Add(new Space(8, 7));
             spaceList.Add(new Space(11, 7));
 
-            sut = new Placement(spaceList);
+            sut = new Placement(spaceList, newGame);
             List<Space> expected = new List<Space> { new Space(7, 7, 'A'), new Space(10, 7, 'B') };
             
             //Act
-            result = sut.GetAnchors(newGame);            
+            result = sut.GetAnchors();            
 
             //Assert            
             Assert.That(result.Except(expected, SpaceTileEqualityComparer.Instance).Count(), Is.EqualTo(0));
@@ -2429,11 +1798,11 @@ namespace Scrabble.Tests
             spaceList.Add(new Space(7, 8));
             spaceList.Add(new Space(7, 11));
 
-            sut = new Placement(spaceList);
+            sut = new Placement(spaceList, newGame);
             List<Space> expected = new List<Space> { new Space(7, 7, 'A'), new Space(7, 10, 'B') };
 
             //Act
-            result = sut.GetAnchors(newGame);
+            result = sut.GetAnchors();
 
             //Assert            
             Assert.That(result.Except(expected, SpaceTileEqualityComparer.Instance).Count(), Is.EqualTo(0));
@@ -2467,7 +1836,7 @@ namespace Scrabble.Tests
             spaceList.Add(new Space(2, 9));
             spaceList.Add(new Space(2, 10));
 
-            sut = new Placement(spaceList);
+            sut = new Placement(spaceList, newGame);
             List<Space> expected = new List<Space> {
                 new Space(2, 1, 'A'),
                 new Space(2, 4, 'B'),
@@ -2480,7 +1849,7 @@ namespace Scrabble.Tests
             };
 
             //Act
-            result = sut.GetAnchors(newGame);
+            result = sut.GetAnchors();
 
             //Assert            
             Assert.That(result.Except(expected, SpaceTileEqualityComparer.Instance).Count(), Is.EqualTo(0));
@@ -2513,7 +1882,7 @@ namespace Scrabble.Tests
             spaceList.Add(new Space(9, 14));
             spaceList.Add(new Space(10, 14));
 
-            sut = new Placement(spaceList);
+            sut = new Placement(spaceList, newGame);
             List<Space> expected = new List<Space> {
                 new Space(1, 14, 'A'),
                 new Space(4, 14, 'B'),
@@ -2526,7 +1895,7 @@ namespace Scrabble.Tests
             };
 
             //Act
-            result = sut.GetAnchors(newGame);
+            result = sut.GetAnchors();
 
             //Assert            
             Assert.That(result.Except(expected, SpaceTileEqualityComparer.Instance).Count(), Is.EqualTo(0));
@@ -2554,7 +1923,7 @@ namespace Scrabble.Tests
             spaceList.Add(new Space(4, 0));
             spaceList.Add(new Space(5, 0));
 
-            sut = new Placement(spaceList);
+            sut = new Placement(spaceList, newGame);
             List<Space> expected = new List<Space> {
                 new Space(0, 0, 'A'),
                 new Space(2, 0, 'B'),
@@ -2564,7 +1933,7 @@ namespace Scrabble.Tests
             };
 
             //Act
-            result = sut.GetAnchors(newGame);
+            result = sut.GetAnchors();
 
             //Assert            
             Assert.That(result.Except(expected, SpaceTileEqualityComparer.Instance).Count(), Is.EqualTo(0));
@@ -2588,13 +1957,13 @@ namespace Scrabble.Tests
             spaceList.Add(new Space(13, 0));
             spaceList.Add(new Space(12, 0));
 
-            sut = new Placement(spaceList);
+            sut = new Placement(spaceList, newGame);
             List<Space> expected = new List<Space> {
                 new Space(11, 0, 'A')
             };
 
             //Act
-            result = sut.GetAnchors(newGame);
+            result = sut.GetAnchors();
 
             //Assert           
             Assert.That(result.Except(expected, SpaceTileEqualityComparer.Instance).Count(), Is.EqualTo(0));
@@ -2620,7 +1989,7 @@ namespace Scrabble.Tests
             spaceList.Add(new Space(14, 13));
             spaceList.Add(new Space(14, 11));
           
-            sut = new Placement(spaceList);
+            sut = new Placement(spaceList, newGame);
             List<Space> expected = new List<Space> {
                 new Space(14, 14, 'A'),
                 new Space(14, 12, 'B'),
@@ -2630,7 +1999,7 @@ namespace Scrabble.Tests
             };
 
             //Act
-            result = sut.GetAnchors(newGame);
+            result = sut.GetAnchors();
 
             //Assert            
             Assert.That(result.Except(expected, SpaceTileEqualityComparer.Instance).Count(), Is.EqualTo(0));
@@ -2658,7 +2027,7 @@ namespace Scrabble.Tests
             spaceList.Add(new Space(0, 9));
             spaceList.Add(new Space(0, 7));
 
-            sut = new Placement(spaceList);
+            sut = new Placement(spaceList, newGame);
             List<Space> expected = new List<Space> {
                 new Space(0, 14, 'A'),
                 new Space(0, 13, 'B'),
@@ -2668,7 +2037,7 @@ namespace Scrabble.Tests
             };
 
             //Act
-            result = sut.GetAnchors(newGame);
+            result = sut.GetAnchors();
 
             //Assert            
             Assert.That(result.Except(expected, SpaceTileEqualityComparer.Instance).Count(), Is.EqualTo(0));
@@ -2690,11 +2059,11 @@ namespace Scrabble.Tests
             spaceList.Add(new Space(7, 9));
             spaceList.Add(new Space(7, 10));
 
-            sut = new Placement(spaceList);
+            sut = new Placement(spaceList, newGame);
 
 
             //Act
-            result = sut.GetAnchors(newGame);
+            result = sut.GetAnchors();
 
             //Assert
             Assert.That(result.Count(), Is.EqualTo(0));
@@ -2722,11 +2091,11 @@ namespace Scrabble.Tests
             spaceList.Add(new Space(6, 9));
             spaceList.Add(new Space(6, 6));
 
-            sut = new Placement(spaceList);
+            sut = new Placement(spaceList, newGame);
 
 
             //Act
-            result = sut.GetAnchors(newGame);
+            result = sut.GetAnchors();
 
             //Assert
             Assert.That(result.Count(), Is.EqualTo(0));
@@ -2755,11 +2124,11 @@ namespace Scrabble.Tests
             spaceList.Add(new Space(8, 8));
             spaceList.Add(new Space(9, 8));
 
-            sut = new Placement(spaceList);
+            sut = new Placement(spaceList, newGame);
 
 
             //Act
-            result = sut.GetAnchors(newGame);
+            result = sut.GetAnchors();
 
             //Assert
             Assert.That(result.Count(), Is.EqualTo(0));
@@ -2787,29 +2156,29 @@ namespace Scrabble.Tests
             spaceList1.Add(new Space(6, 7));
 
 
-            var placement1 = new Placement(spaceList1);
+            var placement1 = new Placement(spaceList1, newGame);
 
             //play2 expect 2 plays, "aa" and "za"
 
             List<Space> spaceList2 = new List<Space>();
             spaceList2.Add(new Space(7, 6));
 
-            var placement2 = new Placement(spaceList2);
+            var placement2 = new Placement(spaceList2, newGame);
 
             //play3 expect 1 plays, "ab"
 
             List<Space> spaceList3 = new List<Space>();
             spaceList3.Add(new Space(8, 6));
 
-            var placement3 = new Placement(spaceList3);
+            var placement3 = new Placement(spaceList3, newGame);
 
 
 
 
             //Act
-            var plays1 = placement1.ValidPlays(newGame);
-            var plays2 = placement2.ValidPlays(newGame);
-            var plays3 = placement3.ValidPlays(newGame);
+            var plays1 = placement1.ValidPlays();
+            var plays2 = placement2.ValidPlays();
+            var plays3 = placement3.ValidPlays();
 
             //Assert
             Assert.That(plays1.Count, Is.EqualTo(0));
@@ -2840,11 +2209,11 @@ namespace Scrabble.Tests
             spaceList1.Add(new Space(4, 7));
             spaceList1.Add(new Space(3, 7));
 
-            var placement1 = new Placement(spaceList1);
+            var placement1 = new Placement(spaceList1, newGame);
 
             
             //Act
-            var plays1 = placement1.ValidPlays(newGame);
+            var plays1 = placement1.ValidPlays();
 
             //Assert
 
@@ -2874,11 +2243,11 @@ namespace Scrabble.Tests
             spaceList1.Add(new Space(4, 7));
 
 
-            var placement1 = new Placement(spaceList1);
+            var placement1 = new Placement(spaceList1, newGame);
 
 
             //Act
-            var plays1 = placement1.ValidPlays(newGame);
+            var plays1 = placement1.ValidPlays();
 
             //Assert
 
@@ -2908,7 +2277,7 @@ namespace Scrabble.Tests
             spaceList1.Add(new Space(4, 8));
             spaceList1.Add(new Space(3, 8));
 
-            var placement1 = new Placement(spaceList1);
+            var placement1 = new Placement(spaceList1, newGame);
 
             //play2 expect 5 plays, "AE", "ZA", "AD", "ED", "DE"
 
@@ -2917,7 +2286,7 @@ namespace Scrabble.Tests
             spaceList2.Add(new Space(5, 8));
 
 
-            var placement2 = new Placement(spaceList2);
+            var placement2 = new Placement(spaceList2, newGame);
 
             //play3 expect 0 plays
 
@@ -2925,7 +2294,7 @@ namespace Scrabble.Tests
             spaceList3.Add(new Space(5, 7));
 
 
-            var placement3 = new Placement(spaceList3);
+            var placement3 = new Placement(spaceList3, newGame);
 
             //play4 expect 1 play, "AB"
 
@@ -2933,14 +2302,14 @@ namespace Scrabble.Tests
             spaceList4.Add(new Space(7, 6));
 
 
-            var placement4 = new Placement(spaceList4);
+            var placement4 = new Placement(spaceList4, newGame);
 
 
             //Act
-            var plays1 = placement1.ValidPlays(newGame);
-            var plays2 = placement2.ValidPlays(newGame);
-            var plays3 = placement3.ValidPlays(newGame);
-            var plays4 = placement4.ValidPlays(newGame);
+            var plays1 = placement1.ValidPlays();
+            var plays2 = placement2.ValidPlays();
+            var plays3 = placement3.ValidPlays();
+            var plays4 = placement4.ValidPlays();
 
             //Assert
 
@@ -2961,8 +2330,8 @@ namespace Scrabble.Tests
             tupleList.Add(Tuple.Create(new Space(9, 7), new Tile('D')));
 
 
-            Game game1 = new Game("LAY??");
-            game1.SetBoard(tupleList);
+            Game newGame = new Game("LAY??");
+            newGame.SetBoard(tupleList);
 
             List<Space> spaceList = new List<Space>();
             spaceList.Add(new Space(7, 6));
@@ -2970,11 +2339,11 @@ namespace Scrabble.Tests
             
 
 
-            var placement1 = new Placement(spaceList);
+            var placement1 = new Placement(spaceList, newGame);
 
 
             //Act
-            var plays1 = placement1.ValidPlays(game1);
+            var plays1 = placement1.ValidPlays();
 
             //Assert
 
