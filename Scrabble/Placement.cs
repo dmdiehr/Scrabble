@@ -11,14 +11,11 @@ namespace Scrabble
     {
         //FIELDS
         private List<Space> _spaceList;
+        public bool Valid;
 
         //CONSTRUCTOR
-        public Placement(List<Space> spaceList = null)
+        public Placement(List<Space> spaceList)
         {
-            if (spaceList == null)
-            {
-                spaceList = new List<Space>();
-            }
             _spaceList = spaceList;
         }
 
@@ -54,6 +51,7 @@ namespace Scrabble
         {
             _spaceList = spaceList;
         }
+
         public void SetSpaceList(Space space)
         {
             _spaceList = new List<Space>() { space };

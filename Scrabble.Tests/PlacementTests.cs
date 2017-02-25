@@ -14,8 +14,8 @@ namespace Scrabble.Tests
         [Category("Equals Override")]
         public void Equals_BothEmpty()
         {
-            Placement placement1 = new Placement();
-            Placement placement2 = new Placement();
+            Placement placement1 = new Placement(new Space(7,7));
+            Placement placement2 = new Placement(new Space(7, 7));
 
             Assert.That(placement1.Equals(placement2), Is.True);
             Assert.That(placement1.GetHashCode(), Is.EqualTo(placement2.GetHashCode()));
@@ -663,24 +663,6 @@ namespace Scrabble.Tests
 
         [Test]
         [Category("HasNoDuplicates")]
-        public void HasNoDuplicates_Empty()
-        {
-            Placement sut;
-            var result = false;
-
-            //Arrang
-
-            sut = new Placement();
-            //Act
-            result = sut.HasNoDuplicates();
-
-            //Assert
-            Assert.That(result, Is.True);
-
-        }
-
-        [Test]
-        [Category("HasNoDuplicates")]
         public void HasNoDuplicates_TwoTheSame()
         {
             Placement sut;
@@ -1201,23 +1183,6 @@ namespace Scrabble.Tests
             Assert.That(result, Is.False);
         }
 
-        [Test]
-        [Category("IsSingle")]
-        public void IsSingle_NoSpace()
-        {
-            Placement sut;
-            var result = true;
-
-            //Arrange
-            sut = new Placement();
-
-            //Act
-            result = sut.IsSingle();
-
-            //Assert
-            Assert.That(result, Is.False);
-        }
-
         #endregion
         #region//IsHorizontal
 
@@ -1313,25 +1278,6 @@ namespace Scrabble.Tests
 
             //Assert
             Assert.That(result, Is.False);
-        }
-
-        [Test]
-        [Category("IsHorizontal")]
-        public void IsHorizontal_Empty()
-        {
-            Placement sut;
-            var result = true;
-
-            //Arrange         
-
-            sut = new Placement();
-            
-            //Act
-            result = sut.IsHorizontal();
-
-            //Assert
-            Assert.That(result, Is.False);
-
         }
 
         [Test]
@@ -1453,25 +1399,6 @@ namespace Scrabble.Tests
             Space space = new Space(7, 7);
 
             sut = new Placement(space);
-            //Act
-            result = sut.IsVertical();
-
-            //Assert
-            Assert.That(result, Is.False);
-
-        }
-
-        [Test]
-        [Category("IsVertical")]
-        public void IsVertical_Empty()
-        {
-            Placement sut;
-            var result = true;
-
-            //Arrange         
-
-            sut = new Placement();
-
             //Act
             result = sut.IsVertical();
 
