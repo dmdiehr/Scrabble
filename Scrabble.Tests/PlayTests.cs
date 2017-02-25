@@ -190,5 +190,54 @@ namespace Scrabble.Tests
             Assert.That(play.AreWordsValid, Is.True);
         }
 
+        [Test]
+        [Category("Score")]
+        public void Score_Multiple()
+        {
+            //Arrange
+            Game game = new Game("ABCDE??");
+
+            List<Space> boardList = new List<Space>
+            {
+                new Space(3, 3, 'V'),
+                new Space(4, 3, 'O'),
+                new Space(5, 3, 'X'),
+                
+                new Space(1, 7, 'P'),
+                new Space(2, 7, 'I'),
+                new Space(3, 7, 'S'),
+                new Space(4, 7, 'H'),
+                new Space(5, 7, 'O'),
+                new Space(6, 7, 'G'),
+                new Space(6, 7, 'E'),
+
+
+                new Space(7, 8, 'F'),
+                new Space(8, 8, 'A'),
+                new Space(9, 8, 'Z'),
+                new Space(10, 8, 'E'),
+
+                new Space(4, 2, 'D'),
+                new Space(4, 4, 'V'),
+                new Space(4, 5, 'I'),
+                new Space(4, 6, 'S'),
+
+            };
+            game.SetBoard(boardList);
+
+            List<Tuple<Space, Tile>> playList1 = new List<Tuple<Space, Tile>>
+            {
+                Tuple.Create(new Space(8, 9), new Tile('B')),
+                Tuple.Create(new Space(9, 9), new Tile('A')),
+            };
+
+            Play play1 = new Play(playList1, game);
+            //Act
+            int score1 = play1.GetScore();
+
+            //Assert
+            Assert.That(score1, Is.EqualTo(23));
+
+        }
     }
 }

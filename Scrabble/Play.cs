@@ -62,6 +62,18 @@ namespace Scrabble
             return _score;
         }
 
+        public string GetPlayString()
+        {
+            string returnString = "";
+
+            foreach (var item in _playList)
+            {
+                returnString += item.Item1.GetCoordsString() + ": " + item.Item2.GetLetter();
+            }
+
+            return returnString;
+        }
+
         //METHODS
 
         private SubWord[] SubWords()
@@ -194,16 +206,26 @@ namespace Scrabble
         public int CalculateScore()
         {
             int score = 0;
-
-            try
+            if (_playList.Count == 7)
             {
-                foreach (SubWord word in _subWords)
-                {
-                    score += word.SubWordScore();
-                }
-
+                score = 50;
             }
-            catch { }
+
+            //I removed this try catch because I was trying to figure out what kind of exception I was catching
+            //and now the thing isn't breaking so I can't figure it out. I'd guess it was some kind of null reference
+            //but I don't like having a catch all, so I'm leaving it like this until it breaks and I can remember why
+            //I put it here in the first place.
+
+            //try
+            //{
+            foreach (SubWord word in _subWords)
+            {
+                score += word.SubWordScore();
+            }
+
+            //}
+            //catch { }
+
 
             return score;
         }
