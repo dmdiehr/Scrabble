@@ -12,13 +12,16 @@ namespace Scrabble
         //FIELDS
         private List<Space> _spaceList;
         private Game _game;
-        public bool Valid;
+        public bool IsValid { get; }
+        public List<Space> Anchors { get; }
 
         //CONSTRUCTOR
         public Placement(List<Space> spaceList, Game game)
         {
             _spaceList = spaceList;
             _game = game;
+            IsValid = IsContiguous() && IsOnBoard() && (IsAdjacent() || IsFirstMove());
+            Anchors = GetAnchors();
         }
 
         //CONSTRUCTOR OVERLOADS
@@ -29,6 +32,8 @@ namespace Scrabble
 
             _spaceList = spaceList;
             _game = game;
+            IsValid = IsContiguous() && IsOnBoard() && (IsAdjacent() || IsFirstMove());
+            Anchors = GetAnchors();
         }
 
         //ACCESSORS
@@ -126,6 +131,7 @@ namespace Scrabble
         {
             foreach (var item in _spaceList)
             {
+
                 if (_game.GetSpace(item).IsOccupied())
                     return false;
             }
@@ -288,20 +294,21 @@ namespace Scrabble
             return true;
         }
 
-        public bool IsValid()
-        {
-            return IsContiguous() && IsOnBoard() && (IsAdjacent() || IsFirstMove());
-        }
+        //public bool IsValid()
+        //{
+        //    return IsContiguous() && IsOnBoard() && (IsAdjacent() || IsFirstMove());
+        //}
 
         public void PlacementSort()
         {
             _spaceList.Sort(SpaceComparer.Instance);
         }
 
-        public List<Space> GetAnchors()
+        private List<Space> GetAnchors()
         {
-            if (!IsValid())
-                throw new Exception("GetAnchors method cannot be run on an invalid Placement instance");
+            if (!IsValid)
+                //throw new Exception("GetAnchors method cannot be run on an invalid Placement instance");
+                return null;
 
             List<Space> anchors = new List<Space> { };
             PlacementSort();

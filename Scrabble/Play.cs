@@ -26,7 +26,7 @@ namespace Scrabble
             _subWords = SubWords();
             _score = CalculateScore();
 
-            if (!GetPlacement().IsValid())
+            if (!GetPlacement().IsValid)
             {
                 throw new Exception("This play consists of an invalid placement ");
             }
@@ -118,7 +118,7 @@ namespace Scrabble
 
             List<Tuple<Space, Tile>> mainWord = _playList.ToList();          
             Placement thisPlacement = GetPlacement();
-            List<Space> anchors = thisPlacement.GetAnchors();
+            List<Space> anchors = thisPlacement.Anchors;
 
             foreach (Space anchor in anchors)
             {

@@ -692,7 +692,7 @@ namespace Scrabble.Tests
             spaceList.Add(new Space(6, 2));
             spaceList.Add(new Space(6, 0));
             spaceList.Add(new Space(6, 4));
-            spaceList.Add(new Space(6, 15));
+            spaceList.Add(new Space(6, 14));
 
             sut = new Placement(spaceList, game);
 
@@ -1674,7 +1674,7 @@ namespace Scrabble.Tests
             var expected = new List<Space>{ new Space(7, 8, 'B'), new Space(7, 7, 'A') };
             
             //Act
-            result = sut.GetAnchors();
+            result = sut.Anchors;
 
             //Assert
             
@@ -1707,7 +1707,7 @@ namespace Scrabble.Tests
 
             var expected = new List<Space> { new Space(7, 7, 'A'), new Space(8, 7, 'B') };
             //Act
-            result = sut.GetAnchors();
+            result = sut.Anchors;
 
             //Assert            
             Assert.That(result.Except(expected, SpaceTileEqualityComparer.Instance).Count(), Is.EqualTo(0));
@@ -1739,7 +1739,7 @@ namespace Scrabble.Tests
 
             var expected = new List<Space> { new Space(7, 7, 'P'), new Space(7, 8, 'Q') };
             //Act
-            result = sut.GetAnchors();
+            result = sut.Anchors;
 
             //Assert            
             Assert.That(result.Except(expected, SpaceTileEqualityComparer.Instance).Count(), Is.EqualTo(2));
@@ -1771,7 +1771,7 @@ namespace Scrabble.Tests
             List<Space> expected = new List<Space> { new Space(7, 7, 'A'), new Space(10, 7, 'B') };
             
             //Act
-            result = sut.GetAnchors();            
+            result = sut.Anchors;            
 
             //Assert            
             Assert.That(result.Except(expected, SpaceTileEqualityComparer.Instance).Count(), Is.EqualTo(0));
@@ -1802,7 +1802,7 @@ namespace Scrabble.Tests
             List<Space> expected = new List<Space> { new Space(7, 7, 'A'), new Space(7, 10, 'B') };
 
             //Act
-            result = sut.GetAnchors();
+            result = sut.Anchors;
 
             //Assert            
             Assert.That(result.Except(expected, SpaceTileEqualityComparer.Instance).Count(), Is.EqualTo(0));
@@ -1849,7 +1849,7 @@ namespace Scrabble.Tests
             };
 
             //Act
-            result = sut.GetAnchors();
+            result = sut.Anchors;
 
             //Assert            
             Assert.That(result.Except(expected, SpaceTileEqualityComparer.Instance).Count(), Is.EqualTo(0));
@@ -1895,7 +1895,7 @@ namespace Scrabble.Tests
             };
 
             //Act
-            result = sut.GetAnchors();
+            result = sut.Anchors;
 
             //Assert            
             Assert.That(result.Except(expected, SpaceTileEqualityComparer.Instance).Count(), Is.EqualTo(0));
@@ -1933,7 +1933,7 @@ namespace Scrabble.Tests
             };
 
             //Act
-            result = sut.GetAnchors();
+            result = sut.Anchors;
 
             //Assert            
             Assert.That(result.Except(expected, SpaceTileEqualityComparer.Instance).Count(), Is.EqualTo(0));
@@ -1963,7 +1963,7 @@ namespace Scrabble.Tests
             };
 
             //Act
-            result = sut.GetAnchors();
+            result = sut.Anchors;
 
             //Assert           
             Assert.That(result.Except(expected, SpaceTileEqualityComparer.Instance).Count(), Is.EqualTo(0));
@@ -1999,7 +1999,7 @@ namespace Scrabble.Tests
             };
 
             //Act
-            result = sut.GetAnchors();
+            result = sut.Anchors;
 
             //Assert            
             Assert.That(result.Except(expected, SpaceTileEqualityComparer.Instance).Count(), Is.EqualTo(0));
@@ -2037,7 +2037,7 @@ namespace Scrabble.Tests
             };
 
             //Act
-            result = sut.GetAnchors();
+            result = sut.Anchors;
 
             //Assert            
             Assert.That(result.Except(expected, SpaceTileEqualityComparer.Instance).Count(), Is.EqualTo(0));
@@ -2063,7 +2063,7 @@ namespace Scrabble.Tests
 
 
             //Act
-            result = sut.GetAnchors();
+            result = sut.Anchors;
 
             //Assert
             Assert.That(result.Count(), Is.EqualTo(0));
@@ -2095,7 +2095,7 @@ namespace Scrabble.Tests
 
 
             //Act
-            result = sut.GetAnchors();
+            result = sut.Anchors;
 
             //Assert
             Assert.That(result.Count(), Is.EqualTo(0));
@@ -2128,7 +2128,7 @@ namespace Scrabble.Tests
 
 
             //Act
-            result = sut.GetAnchors();
+            result = sut.Anchors;
 
             //Assert
             Assert.That(result.Count(), Is.EqualTo(0));

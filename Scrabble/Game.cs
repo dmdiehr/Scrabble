@@ -298,7 +298,7 @@ namespace Scrabble
             //Adds all valid single space placements
             foreach (Space space in _board)
             {
-                if (new Placement(space, this).IsValid())
+                if (new Placement(space, this).IsValid)
                     returnHash.Add(new Placement(space, this));
             }
 
@@ -323,7 +323,7 @@ namespace Scrabble
                             newSpaceList.Add(newSpace);
                             Placement potentialPlacement = new Placement(newSpaceList, this);
 
-                            if (potentialPlacement.IsValid())
+                            if (potentialPlacement.IsValid)
                             {
                                 returnHash.Add(potentialPlacement);
                             }
@@ -342,7 +342,7 @@ namespace Scrabble
                             newSpaceList.Add(newSpace);
                             Placement potentialPlacement = new Placement(newSpaceList, this);
 
-                            if (potentialPlacement.IsValid())
+                            if (potentialPlacement.IsValid)
                             {
                                 returnHash.Add(potentialPlacement);
                             }

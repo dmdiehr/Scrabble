@@ -170,7 +170,7 @@ namespace Scrabble.Tests
 
         [Test]
         [Category("Lots of Results")]
-        [Ignore("Takes 15 secons")]
+        [Ignore("Takes 20 seconds")]
         public void LotsOfResults()
         {
             //Arrange
