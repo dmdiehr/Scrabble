@@ -233,7 +233,7 @@ namespace Scrabble.Tests
 
             Play play1 = new Play(playList1, game);
             //Act
-            int score1 = play1.GetScore();
+            int score1 = play1.CalculateScore();
 
             //Assert
             Assert.That(score1, Is.EqualTo(23));
