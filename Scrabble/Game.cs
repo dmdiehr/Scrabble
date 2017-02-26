@@ -400,27 +400,6 @@ namespace Scrabble
                 Console.WriteLine();
             }
         }
-        public void SortTest()
-        {            
-            List<Space> spaces = new List<Space>();
-            Random rdm = new Random();
-
-            for (int i = 0; i < 10; i++)
-            {
-                Space newSpace = new Space(rdm.Next(0, 15), rdm.Next(0, 15));
-                spaces.Add(newSpace);
-            }
-            Placement testPlacement = new Placement(spaces, this);
-
-
-            Console.WriteLine("Placement Before Sorting: ");
-            Console.WriteLine(testPlacement.GetSpaceListString());
-            
-            testPlacement.PlacementSort();
-            Console.WriteLine("Placement After Sorting: ");
-            Console.WriteLine(testPlacement.GetSpaceListString());
-
-        }
         public void RandomBoard()
         {
 

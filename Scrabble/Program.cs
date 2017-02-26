@@ -30,11 +30,6 @@ namespace Scrabble
                     newGame.DisplayBoard();
                 }
 
-                if (input.ToLower()  == "test")
-                {
-                    newGame.SortTest();
-                }
-
                 if (input.ToLower() == "random")
                 {
                     newGame.RandomBoard();

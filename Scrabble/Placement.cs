@@ -19,11 +19,11 @@ namespace Scrabble
         public Placement(List<Space> spaceList, Game game)
         {
             _spaceList = spaceList;
+            _spaceList.Sort(SpaceComparer.Instance);
             _game = game;
             IsValid = IsContiguous() && IsOnBoard() && (IsAdjacent() || IsFirstMove());
             Anchors = GetAnchors();
         }
-
         //CONSTRUCTOR OVERLOADS
         public Placement(Space space, Game game)
         {
@@ -35,7 +35,6 @@ namespace Scrabble
             IsValid = IsContiguous() && IsOnBoard() && (IsAdjacent() || IsFirstMove());
             Anchors = GetAnchors();
         }
-
         //ACCESSORS
 
         public List<Space> GetSpaceList()
@@ -55,17 +54,6 @@ namespace Scrabble
             return returnString;
         }
 
-        public void SetSpaceList(List<Space> spaceList)
-        {
-            _spaceList = spaceList;
-        }
-
-        public void SetSpaceList(Space space)
-        {
-            _spaceList = new List<Space>() { space };
-        }
-
-
         //METHODS
 
         public override bool Equals(object obj)
@@ -81,9 +69,6 @@ namespace Scrabble
 
             if (this._spaceList.Count != rhs._spaceList.Count)
                 return false;
-
-            this.PlacementSort();
-            rhs.PlacementSort();
 
             for (int i = 0; i < this._spaceList.Count; i++)
             {
@@ -244,8 +229,6 @@ namespace Scrabble
                 return false;
             if (IsSingle())
                 return true;
-
-            PlacementSort();
             if (IsVertical())
             {
                 int firstY = _spaceList[0].GetY();
@@ -294,25 +277,12 @@ namespace Scrabble
             return true;
         }
 
-        //public bool IsValid()
-        //{
-        //    return IsContiguous() && IsOnBoard() && (IsAdjacent() || IsFirstMove());
-        //}
-
-        public void PlacementSort()
-        {
-            _spaceList.Sort(SpaceComparer.Instance);
-        }
-
         private List<Space> GetAnchors()
         {
-            if (!IsValid)
-                //throw new Exception("GetAnchors method cannot be run on an invalid Placement instance");
+            if (!IsValid)                
                 return null;
 
             List<Space> anchors = new List<Space> { };
-            PlacementSort();
-
             //make sure to test what happens to this when you run up against the edge of the board
 
             if (IsHorizontal())
@@ -452,7 +422,7 @@ namespace Scrabble
 
             foreach (string word in possiblePrimaryWords)
             {
-                this.PlacementSort();
+                //this.PlacementSort();
                 if (word.Length != _spaceList.Count)
                     throw new Exception("You done messed up! You're Play ain't the same size as your Placement.");
                 
@@ -469,15 +439,9 @@ namespace Scrabble
                         newPlayList.Add(Tuple.Create(_spaceList[i], thisTile));
                        
                     }
-
-                    plays.Add(new Play(newPlayList, _game));
-                    
-
+                    plays.Add(new Play(newPlayList, _game));                    
                 }
             }
-
-
-
             //At this point Plays should be populated with a list of Plays that have valid primary subwords
             //Now we vet that list by checking secondary subwords
 

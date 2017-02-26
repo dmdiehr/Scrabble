@@ -121,6 +121,48 @@ namespace Scrabble.Tests
             Assert.That(result.Count, Is.EqualTo(0));
 
         }
+
+        [Test]
+        [Category("Lots of Results")]       
+        public void LotsOfPlacements()
+        {
+            //Arrange
+            Game game = new Game("ABCDEFG");
+
+            List<Space> boardList = new List<Space>
+            {
+                new Space(3, 3, 'V'),
+                new Space(4, 3, 'O'),
+                new Space(5, 3, 'X'),
+
+                new Space(1, 7, 'P'),
+                new Space(2, 7, 'I'),
+                new Space(3, 7, 'S'),
+                new Space(4, 7, 'H'),
+                new Space(5, 7, 'O'),
+                new Space(6, 7, 'G'),
+                new Space(7, 7, 'E'),
+
+
+                new Space(7, 8, 'F'),
+                new Space(8, 8, 'A'),
+                new Space(9, 8, 'Z'),
+                new Space(10, 8, 'E'),
+
+                new Space(4, 2, 'D'),
+                new Space(4, 4, 'V'),
+                new Space(4, 5, 'I'),
+                new Space(4, 6, 'S'),
+
+            };
+            game.SetBoard(boardList);
+
+            //Act
+            List<Placement> allPlacements = game.PossiblePlacements();
+
+            //Assert
+            Assert.That(allPlacements.Count, Is.EqualTo(708));
+        }
         #endregion
 
         #region //FindAllPlays
@@ -171,7 +213,7 @@ namespace Scrabble.Tests
         [Test]
         [Category("Lots of Results")]
         [Ignore("Takes 20 seconds")]
-        public void LotsOfResults()
+        public void LotsOfPlays()
         {
             //Arrange
             Game game = new Game("ABCDEFG");
