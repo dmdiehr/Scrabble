@@ -367,13 +367,37 @@ namespace Scrabble
 
             if (IsSingle())
             {
-                foreach (Tile tile in _game.GetTray().Tiles)
+                bool blankExists = false;
+                int blankIndex = -1;
+                List<Tile> tiles = _game.GetTray().Tiles;
+                for (int i = 0; i <tiles.Count; i++)
                 {
-                    Play thisPlay = new Play(new List<Tuple<Space, Tile>> { Tuple.Create(_spaceList[0], tile) }, _game);
-
+                    if(tiles[i].GetLetter() == '?')
+                    {
+                        blankExists = true;
+                        blankIndex = i;
+                        continue;
+                    }
+                    Play thisPlay = new Play(new List<Tuple<Space, Tile>> { Tuple.Create(_spaceList[0], tiles[i]) }, _game);
                     if (thisPlay.AreWordsValid())
                     {
                         plays.Add(thisPlay);
+                    }
+                }
+                if (blankExists)
+                {
+                    for (int i = 0; i < 26; i++)
+                    {
+                        char tempChar = (char)('A' + i);
+                        Tile blankTile = new Tile('?');
+                        blankTile.SetBlank(tempChar);
+
+                        Play thisPlay = new Play(new List<Tuple<Space, Tile>> { Tuple.Create(_spaceList[0], blankTile) }, _game);
+                        if (thisPlay.AreWordsValid())
+                        {
+                            plays.Add(thisPlay);
+                        }
+                        
                     }
                 }
                 return plays;

@@ -212,12 +212,11 @@ namespace Scrabble.Tests
 
         [Test]
         [Category("Lots of Results")]
-        [Ignore("Takes 20 seconds")]
+        //[Ignore("Takes forever")]
         public void LotsOfPlays()
         {
             //Arrange
             Game game = new Game("ABCDEFG");
-
             List<Space> boardList = new List<Space>
             {
                 new Space(3, 3, 'V'),
@@ -247,10 +246,44 @@ namespace Scrabble.Tests
             game.SetBoard(boardList);
 
             //Act
-            List<Play> allPlays = game.FindAllPlays();
+            List<Play> plays1 = game.FindAllPlays();
+
+            game.SetTray("ABCDEF?");
+            List<Play> plays2 = game.FindAllPlays();
+
+            game.SetTray("AE??");
+            List<Play> plays3 = game.FindAllPlays();
+            
+            //Assert
+            Assert.That(plays1.Count, Is.EqualTo(384));
+            Assert.That(plays2.Count, Is.EqualTo(4723));
+            Assert.That(plays3.Count, Is.EqualTo(7562));
+        }
+
+        [Test]
+        [Category("Lots of Results")]
+        [Ignore("Redundant")]
+        public void TwoBlanks()
+        {
+            //Arrange
+            Game game = new Game("??");
+            List<Space> boardList = new List<Space>
+            {
+
+                new Space(7, 7, 'Z'),
+                new Space(8, 7, 'A')
+
+
+            };
+            game.SetBoard(boardList);
+
+            //Act
+            //int placements = 
+            List<Play> plays1 = game.FindAllPlays();
 
             //Assert
-            Assert.That(allPlays.Count, Is.EqualTo(384));
+            Assert.That(plays1.Count, Is.EqualTo(33));
+
         }
     }
 }

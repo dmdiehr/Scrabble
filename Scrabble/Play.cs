@@ -64,7 +64,7 @@ namespace Scrabble
             //Single tile placements are a special case
             //Essentially, single tile placements have no primary SubWord
             //And instead have two secondary words. Or at least that's how I'll approach them.
-            if (GetPlacement().IsSingle())
+            if (_placement.IsSingle())
             {
                 //Get Horizontal SubWord
                 SubWord horizontal = SingleSubWord(_playList[0], "horizontal");
@@ -97,20 +97,18 @@ namespace Scrabble
                 return subwords.Where(x => x.ExtractWord().Length > 1).ToList();
             }
             List<Tuple<Space, Tile>> mainWord = _playList.ToList();          
-            Placement thisPlacement = GetPlacement();
-            List<Space> anchors = thisPlacement.Anchors;
+            List<Space> anchors = _placement.Anchors;
 
             foreach (Space anchor in anchors)
             {
                 mainWord.Add(Tuple.Create(anchor, anchor.GetTile()));
             }                    
-
             SubWord primaryWord = new SubWord(mainWord, _game);
             subwords[0] = primaryWord;
 
-            List<Space> playSpaces = thisPlacement.GetSpaceList();
+            List<Space> playSpaces = _placement.GetSpaceList();
             
-            if (GetPlacement().IsHorizontal())
+            if (_placement.IsHorizontal())
             {
                 //Build a vertical subword for each space in the Play
                 for (int i = 1; i < subwords.Length; i++)
@@ -119,7 +117,7 @@ namespace Scrabble
                 }
 
             }
-            if (GetPlacement().IsVertical())
+            if (_placement.IsVertical())
             {
                 //Build a horizontal subword for each space in the Play
                 for (int i = 1; i < subwords.Length; i++)
