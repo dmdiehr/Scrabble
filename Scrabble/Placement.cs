@@ -361,8 +361,6 @@ namespace Scrabble
 
         public List<Play> ValidPlays()
         {
-
-            //Will need to be turned into a hashset or be vetted for duplicates in someway... eventually
             List<Play> plays = new List<Play>();
 
             if (IsSingle())
@@ -403,7 +401,7 @@ namespace Scrabble
                 return plays;
             }
             
-            string tray = _game.GetTray().GetTilesString();
+            string tray = _game.GetTrayString();
 
             //first find legal primary subwords by getting the tray and anchors and running them through wordfind
             //Find relative position and letters of anchors                        
@@ -422,8 +420,40 @@ namespace Scrabble
                     anchors.Add(Tuple.Create(i, primaryWordSpaces[i].GetTile().GetLetter()));
                 }
             }
+            
+            // Create exclusion tuples 
+            // Should this be coupled with creating the anchor tuples?
+            // That would be faster, but less granular
 
-            List<string> possiblePrimaryWords = _game.GetDictionary().WordFind(tray, primaryWordSpaces.Count, anchors);
+            List<Tuple<int, char>> exclusions = new List<Tuple<int, char>>();
+            string subWordDirection = "";
+            if (IsHorizontal())
+                subWordDirection = "vertical";
+            else if (IsVertical())
+                subWordDirection = "horizontal";  
+            for(int i = 0; i< primaryWordSpaces.Count; i++)
+            {
+                //check to see if this letter is an anchor, if so skip
+                if (primaryWordSpaces[i].GetTile() != null)
+                    continue;
+
+                foreach (char letter in tray)
+                {
+                    //this will need to get fixed at some point
+                    if (letter == '?')
+                        continue;
+                    ////////////////////////////////////////////
+
+                    string word = _game.SingleSubWord(Tuple.Create(primaryWordSpaces[i], new Tile(letter)), subWordDirection).Word;
+                    if (!_game.GetDictionary().Contains(word))
+                    {
+                        exclusions.Add(Tuple.Create(i, letter));
+                    }
+
+                }
+            } 
+
+            List<string> possiblePrimaryWords = _game.GetDictionary().WordFind(tray, primaryWordSpaces.Count, anchors, exclusions);
 
             //Now remove the anchors so the remaining letters can be matched up to the spaces in the Placement
             List<Tuple<int, char>> sortedAnchors = anchors.OrderBy(x => x.Item1).ToList();

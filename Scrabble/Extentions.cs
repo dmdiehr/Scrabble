@@ -85,10 +85,10 @@ namespace ExtentionMethods
                 available[index] += 1;
             }
 
-            foreach (string item in stringArray)
+            foreach (string word in stringArray)
             {
                 //vet for length
-                if ((0 < wordSize) && (item.Length != wordSize))
+                if ((0 < wordSize) && (word.Length != wordSize))
                     continue;
 
                 //vet for anchors
@@ -97,7 +97,7 @@ namespace ExtentionMethods
                     bool possible = true;
                     foreach (var pair in anchorTuples)
                     {
-                        if (item[pair.Item1] != pair.Item2)
+                        if (word[pair.Item1] != pair.Item2)
                         {
                             possible = false;
                             break;
@@ -106,7 +106,24 @@ namespace ExtentionMethods
                     if (!possible)
                         continue;
                 }
-                //vet exclusions yet to be implemented
+                //vet exclusions
+                if (exclusionTuples != null)
+                {
+                    bool possible = true;
+                    foreach (var pair in exclusionTuples)
+                    {
+                        if (word[pair.Item1] == pair.Item2)
+                        {
+                            possible = false;
+                            break;
+                        }
+                    }
+                    if (!possible)
+                        continue;
+                }
+
+
+                //done vetting, proceed with normal search
 
                 int[] tempAvailable = new int[26];
                 Array.Copy(available, tempAvailable, 26);
@@ -114,7 +131,7 @@ namespace ExtentionMethods
                 int wildcardsLeft = numberOfBlanks;
                 int[] count = new int[26];
                 bool ok = true;
-                foreach (char c in item.ToCharArray())
+                foreach (char c in word.ToCharArray())
                 {
                     int index = c - 'A';
                     count[index] += 1;
@@ -131,7 +148,7 @@ namespace ExtentionMethods
                 }
                 if (ok)
                 {
-                    resultHashSet.Add(item);
+                    resultHashSet.Add(word);
                 }
             }
             return resultHashSet.ToList();
