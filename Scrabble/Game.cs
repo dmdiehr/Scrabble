@@ -367,8 +367,56 @@ namespace Scrabble
             return returnList;
         }
 
+        public SubWord SingleSubWord(Tuple<Space, Tile> tuple, string direction)
+        {
+            #region //Custom Exceptions for Parameter Checking
+            if (direction != "vertical" && direction != "horizontal")
+                throw new Exception("The direction parameter must be \"vertical\" or \"horizontal\"");
+            if (tuple.Item2 == null)
+                throw new Exception("The space parameter must have a space whose tile is not null");
+            #endregion
 
-            
+            List<Tuple<Space, Tile>> tupleList = new List<Tuple<Space, Tile>> { tuple };
+            Space currentSpace = tuple.Item1;
+
+            if (direction == "horizontal")
+            {
+                while (GetSpace(currentSpace.GetAdjacentWest()) != null && GetSpace(currentSpace.GetAdjacentWest()).GetTile() != null)
+                {
+                    currentSpace = currentSpace.GetAdjacentWest();
+                    tupleList.Add(Tuple.Create(GetSpace(currentSpace), currentSpace.GetTile()));
+                }
+
+                currentSpace = tuple.Item1;
+
+                while (GetSpace(currentSpace.GetAdjacentEast()) != null && GetSpace(currentSpace.GetAdjacentEast()).GetTile() != null)
+                {
+                    currentSpace = currentSpace.GetAdjacentEast();
+                    tupleList.Add(Tuple.Create(GetSpace(currentSpace), currentSpace.GetTile()));
+                }
+            }
+
+            if (direction == "vertical")
+            {
+                while (GetSpace(currentSpace.GetAdjacentNorth()) != null && GetSpace(currentSpace.GetAdjacentNorth()).GetTile() != null)
+                {
+                    currentSpace = currentSpace.GetAdjacentNorth();
+                    tupleList.Add(Tuple.Create(GetSpace(currentSpace), currentSpace.GetTile()));
+                }
+
+                currentSpace = tuple.Item1;
+
+                while (GetSpace(currentSpace.GetAdjacentSouth()) != null && GetSpace(currentSpace.GetAdjacentSouth()).GetTile() != null)
+                {
+                    currentSpace = currentSpace.GetAdjacentSouth();
+                    tupleList.Add(Tuple.Create(GetSpace(currentSpace), currentSpace.GetTile()));
+                }
+            }
+
+            return new SubWord(tupleList, this);
+
+        }
+
 
         #endregion
         /// <summary>

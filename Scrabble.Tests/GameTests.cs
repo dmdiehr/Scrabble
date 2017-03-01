@@ -10,6 +10,29 @@ namespace Scrabble.Tests
     [TestFixture]
     public class GameTests
     {
+        [Test]
+        [Category("SingleSubWord")]
+        public void SingleSubWord_Simple()
+        {
+            //Arrange
+            List<Space> spaceList = new List<Space> {
+                new Space(9,7,'S'),
+                new Space(8,7,'E'),
+                new Space(7,7,'T'),
+                new Space(10,7,'T')
+            };
+            Game game = new Game();
+            game.SetBoard(spaceList);
+   
+            //Act
+            var result = game.SingleSubWord(Tuple.Create(new Space(7, 6), new Tile('E')), "vertical");
+            var resultWord = result.Word;
+            var resultScore = result.Score;
+
+            //Assert
+            Assert.That(resultWord, Is.EqualTo("ET"));
+        }
+
         #region //PossiblePlacements
         [Test]
         [Category("PossiblePlacements")]
@@ -212,7 +235,7 @@ namespace Scrabble.Tests
 
         [Test]
         [Category("Lots of Results")]
-        //[Ignore("Takes forever")]
+        [Ignore("Takes forever")]
         public void LotsOfPlays()
         {
             //Arrange
@@ -246,33 +269,32 @@ namespace Scrabble.Tests
             game.SetBoard(boardList);
 
             //Act
-            List<Play> plays1 = game.FindAllPlays();
+            //List<Play> plays1 = game.FindAllPlays();
 
             game.SetTray("ABCDEF?");
-            List<Play> plays2 = game.FindAllPlays();
+            //List<Play> plays2 = game.FindAllPlays();
 
             game.SetTray("AE??");
             List<Play> plays3 = game.FindAllPlays();
             
             //Assert
-            Assert.That(plays1.Count, Is.EqualTo(384));
-            Assert.That(plays2.Count, Is.EqualTo(4723));
+            //Assert.That(plays1.Count, Is.EqualTo(384));
+            //Assert.That(plays2.Count, Is.EqualTo(4723));
             Assert.That(plays3.Count, Is.EqualTo(7562));
         }
 
         [Test]
         [Category("Lots of Results")]
-        [Ignore("Redundant")]
+        //[Ignore("Redundant")]
         public void TwoBlanks()
         {
             //Arrange
-            Game game = new Game("??");
+            Game game = new Game("?");
             List<Space> boardList = new List<Space>
             {
 
                 new Space(7, 7, 'Z'),
                 new Space(8, 7, 'A')
-
 
             };
             game.SetBoard(boardList);

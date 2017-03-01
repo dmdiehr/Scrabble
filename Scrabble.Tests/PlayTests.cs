@@ -11,31 +11,7 @@ namespace Scrabble.Tests
     class PlayTests
     {
 
-        [Test]
-        [Category("SingleSubWord")]
-        public void SingleSubWord_Simple()
-        {            
-            //Arrange
-            List<Space> spaceList = new List<Space> {
-                new Space(9,7,'S'),
-                new Space(8,7,'E'),
-                new Space(7,7,'T'),
-                new Space(10,7,'T')
-            };
-            Game game = new Game();
-            game.SetBoard(spaceList);
-            Play sut = new Play(new List<Tuple<Space,Tile>>{ Tuple.Create(new Space(7, 6), new Tile('E')) }, game);
-
-
-
-            //Act
-            var result = sut.SingleSubWord(Tuple.Create(new Space(7, 6), new Tile('E')), "vertical");
-            var resultWord = result.Word;
-            var resultScore = result.Score;
-
-            //Assert
-            Assert.That(resultWord, Is.EqualTo("ET"));
-        }
+       
 
         [Test]
         [Category("GetSubWords")]
