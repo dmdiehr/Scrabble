@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Scrabble
 {
-    class PlacementMatrix
+    public class PlacementMatrix
     {
         //FIELDS
         private Placement _placement;
         private string _tray;
-        private Game _game;
+        public Game Game { get; }
         private bool[,] _exclusionArray;
         public List<Space> PrimaryWordSpaces { get; }
 
@@ -24,7 +25,7 @@ namespace Scrabble
                 throw new ArgumentException("An PlacementMatrix is not appropriate for single tile placements");
 
             _placement = placement;
-            _game = game;
+            Game = game;
             char[] temp = game.GetTrayString().ToCharArray();
             Array.Sort(temp);
             _tray = new string(temp);
@@ -92,8 +93,9 @@ namespace Scrabble
                         for (int c = 0; c < 26; c++)
                         {
                             char newChar = (char)('A' + c);
-                            string word = _game.SingleSubWord(Tuple.Create(PrimaryWordSpaces[i], new Tile(newChar)), subWordDirection).Word;
-                            if (!_game.GetDictionary().Contains(word))
+                            string word = Game.SingleSubWord(Tuple.Create(PrimaryWordSpaces[i], new Tile(newChar)), subWordDirection).Word;
+
+                            if (!Game.GetDictionary().Contains(word))
                             {
                                 returnList.Add(Tuple.Create(i, newChar));
                             }
@@ -101,8 +103,8 @@ namespace Scrabble
                     }                        
                     else
                     {
-                        string word = _game.SingleSubWord(Tuple.Create(PrimaryWordSpaces[i], new Tile(letter)), subWordDirection).Word;
-                        if (!_game.GetDictionary().Contains(word))
+                        string word = Game.SingleSubWord(Tuple.Create(PrimaryWordSpaces[i], new Tile(letter)), subWordDirection).Word;
+                        if (!Game.GetDictionary().Contains(word))
                         {
                             returnList.Add(Tuple.Create(i, letter));
                         }

@@ -28,7 +28,7 @@ namespace Scrabble.Tests
             sut = new SubWord(pairs, game);
             //Act
             resultWord = sut.Word;
-            resultScore = sut.Score;
+            resultScore = sut.SubWordScore();
 
             //Assert
             Assert.That(resultWord, Is.EqualTo("TEST"));           
@@ -56,7 +56,7 @@ namespace Scrabble.Tests
             sut = new SubWord(pairs, game);
             //Act
             resultWord = sut.Word;
-            resultScore = sut.Score;
+            resultScore = sut.SubWordScore();
 
             //Assert
             Assert.That(resultWord, Is.EqualTo("TEST"));           

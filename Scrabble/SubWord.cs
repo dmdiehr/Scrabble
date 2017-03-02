@@ -11,12 +11,9 @@ namespace Scrabble
         //FIELDS
         private List<Tuple<Space, Tile>> _pairs;
         private Game _game;
-
         private string _word;
         public string Word { get { return _word; } }
 
-        private int _score;
-        public int Score { get { return _score; } }
 
         //CONSTURCTORS
         public SubWord(List<Tuple<Space, Tile>> pairs, Game game)
@@ -25,7 +22,7 @@ namespace Scrabble
             _pairs = pairs.OrderBy(x => x.Item1, SpaceComparer.Instance).ToList();
             _game = game;
             _word = ExtractWord();
-            _score = SubWordScore();           
+         
         }
 
         //METHODS

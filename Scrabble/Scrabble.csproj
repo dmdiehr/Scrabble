@@ -43,10 +43,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ExclusionMatrix.cs" />
     <Compile Include="Extentions.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Placement.cs" />
+    <Compile Include="PlacementMatrix.cs" />
     <Compile Include="Play.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
