@@ -2345,6 +2345,12 @@ namespace Scrabble.Tests
             //Act
             var plays1 = placement1.ValidPlays();
 
+            foreach (var item in plays1)
+            {
+                Debug.WriteLine("Are Words Valid: " + item.AreWordsValid() + " Play: " + item.GetPlayString() + " Word: " + item.GetSubWords()[0].Word);
+            }
+
+
             //Assert
 
             Assert.That(plays1.Count, Is.EqualTo(60));

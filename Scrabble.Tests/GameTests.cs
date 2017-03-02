@@ -235,7 +235,7 @@ namespace Scrabble.Tests
 
         [Test]
         [Category("Lots of Results")]
-        //[Ignore("Takes forever")]
+        //[Ignore("Takes 2.5 minutes (down from 10!!)")]
         public void LotsOfPlays()
         {
             //Arrange
@@ -276,16 +276,20 @@ namespace Scrabble.Tests
 
             game.SetTray("AE??");
             List<Play> plays3 = game.FindAllPlays();
-            
+
+            game.SetTray("ABCDE??");
+            List<Play> plays4 = game.FindAllPlays();
+
             //Assert
             Assert.That(plays1.Count, Is.EqualTo(384));
             Assert.That(plays2.Count, Is.EqualTo(4723));
             Assert.That(plays3.Count, Is.EqualTo(7562));
+            Assert.That(plays4.Count, Is.EqualTo(26734));
         }
 
         [Test]
         [Category("Lots of Results")]
-        //[Ignore("Redundant")]
+        [Ignore("Redundant")]
         public void TwoBlanks()
         {
             //Arrange

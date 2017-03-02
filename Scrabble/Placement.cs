@@ -363,6 +363,8 @@ namespace Scrabble
         {
             List<Play> plays = new List<Play>();
 
+
+            #region //Implementation for IsSingle cases
             if (IsSingle())
             {
                 bool blankExists = false;
@@ -400,63 +402,18 @@ namespace Scrabble
                 }
                 return plays;
             }
-            
+            #endregion
+
+
+            #region //Implementation for multi-Space Placements
             string tray = _game.GetTrayString();
 
-            //first find legal primary subwords by getting the tray and anchors and running them through wordfind
-            //Find relative position and letters of anchors                        
+            PlacementMatrix placementMatrix = new PlacementMatrix(this, _game);
 
-            List<Space> primaryWordSpaces = new List<Space>();
-            primaryWordSpaces.AddRange(GetAnchors());
-            primaryWordSpaces.AddRange(_spaceList);
-            primaryWordSpaces.Sort(SpaceComparer.Instance);   
+            List<string> possiblePrimaryWords = _game.GetDictionary().WordFind(tray, placementMatrix.PrimaryWordSpaces.Count, placementMatrix.AnchorTuples(), placementMatrix.ExclusionTuples());
 
-            List<Tuple<int, char>> anchors = new List<Tuple<int, char>>();
-
-            for (int i = 0; i < primaryWordSpaces.Count; i++)
-            {
-                if(primaryWordSpaces[i].GetTile() != null)
-                {
-                    anchors.Add(Tuple.Create(i, primaryWordSpaces[i].GetTile().GetLetter()));
-                }
-            }
-            
-            // Create exclusion tuples 
-            // Should this be coupled with creating the anchor tuples?
-            // That would be faster, but less granular
-
-            List<Tuple<int, char>> exclusions = new List<Tuple<int, char>>();
-            string subWordDirection = "";
-            if (IsHorizontal())
-                subWordDirection = "vertical";
-            else if (IsVertical())
-                subWordDirection = "horizontal";  
-            for(int i = 0; i< primaryWordSpaces.Count; i++)
-            {
-                //check to see if this letter is an anchor, if so skip
-                if (primaryWordSpaces[i].GetTile() != null)
-                    continue;
-
-                foreach (char letter in tray)
-                {
-                    //this will need to get fixed at some point
-                    if (letter == '?')
-                        continue;
-                    ////////////////////////////////////////////
-
-                    string word = _game.SingleSubWord(Tuple.Create(primaryWordSpaces[i], new Tile(letter)), subWordDirection).Word;
-                    if (!_game.GetDictionary().Contains(word))
-                    {
-                        exclusions.Add(Tuple.Create(i, letter));
-                    }
-
-                }
-            } 
-
-            List<string> possiblePrimaryWords = _game.GetDictionary().WordFind(tray, primaryWordSpaces.Count, anchors, exclusions);
-
-            //Now remove the anchors so the remaining letters can be matched up to the spaces in the Placement
-            List<Tuple<int, char>> sortedAnchors = anchors.OrderBy(x => x.Item1).ToList();
+            //Now remove the anchors so the remaining letters can be matched up to the spaces in the Placement to form Play instances
+            List<Tuple<int, char>> sortedAnchors = placementMatrix.AnchorTuples().OrderBy(x => x.Item1).ToList();
 
             for(int i = 0; i < possiblePrimaryWords.Count; i++)
             {               
@@ -476,11 +433,10 @@ namespace Scrabble
 
             foreach (string word in possiblePrimaryWords)
             {
-                //this.PlacementSort();
                 if (word.Length != _spaceList.Count)
                     throw new Exception("You done messed up! You're Play ain't the same size as your Placement.");
                 
-                List<string> possibleCombinations = word.WildCardCombinations(_game.GetTrayString());
+                List<string> possibleCombinations = word.WildCardCombinations(tray);
                 foreach (string combo in possibleCombinations)
                 {
                     List<Tuple<Space, Tile>> newPlayList = new List<Tuple<Space, Tile>>();
@@ -496,11 +452,9 @@ namespace Scrabble
                     plays.Add(new Play(newPlayList, _game));                    
                 }
             }
-            //At this point Plays should be populated with a list of Plays that have valid primary subwords
-            //Now we vet that list by checking secondary subwords
 
-            plays.RemoveAll(p => !p.AreWordsValid());
             return plays;
+            #endregion
         }
 
     }

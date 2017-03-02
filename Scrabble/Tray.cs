@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Scrabble
 {
@@ -23,6 +24,11 @@ namespace Scrabble
             Tiles = newTileList;
         }
 
+        public Tray(ICollection<Tile> tiles)
+        {
+            Tiles = tiles.ToList();
+        }
+
         //FIELDS
         public List<Tile> Tiles { get; set; }
 
@@ -36,6 +42,11 @@ namespace Scrabble
                 returnString += tile.GetLetter();
             }
             return returnString;
+        }
+
+        public void Sort()
+        {
+            Tiles.OrderBy(t => t.GetLetter()).ToList();
         }
 
     }
