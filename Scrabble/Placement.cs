@@ -359,6 +359,107 @@ namespace Scrabble
             return anchors;
         }
 
+        private List<string> WordFind()
+        {
+            PlacementMatrix placementMatrix = new PlacementMatrix(this, _game);
+            string tray = _game.GetTrayString();
+            string[] dictionary = _game.GetDictionary();
+            List<Tuple<int, char>> anchorTuples = placementMatrix.AnchorTuples();
+            List<Tuple<int, char>> exclusionTuples = placementMatrix.ExclusionTuples();
+            int wordSize = placementMatrix.PrimaryWordSpaces.Count;
+
+            HashSet<string> resultHashSet = new HashSet<string> { };
+
+            string letters = tray.Replace("?", "");
+            int numberOfBlanks = tray.Length - letters.Length;
+
+            //Adding anchor letters to the letters string
+            if (anchorTuples != null)
+            {
+                foreach (var anchor in anchorTuples)
+                {
+                    letters += anchor.Item2;
+                }
+            }
+
+            letters = letters.ToUpper();
+
+            int[] available = new int[26];
+            foreach (char c in letters)
+            {
+                int index = c - 'A';
+                available[index] += 1;
+            }
+
+            foreach (string word in dictionary)
+            {
+                //vet for length
+                if (word.Length != wordSize)
+                    continue;
+
+                //vet for anchors
+                if (anchorTuples != null)
+                {
+                    bool possible = true;
+                    foreach (var pair in anchorTuples)
+                    {
+                        if (word[pair.Item1] != pair.Item2)
+                        {
+                            possible = false;
+                            break;
+                        }
+                    }
+                    if (!possible)
+                        continue;
+                }
+                //vet exclusions
+                if (exclusionTuples != null)
+                {
+                    bool possible = true;
+                    foreach (var pair in exclusionTuples)
+                    {
+                        if (word[pair.Item1] == pair.Item2)
+                        {
+                            possible = false;
+                            break;
+                        }
+                    }
+                    if (!possible)
+                        continue;
+                }
+
+
+                //done vetting, proceed with normal search
+
+                int[] tempAvailable = new int[26];
+                Array.Copy(available, tempAvailable, 26);
+
+                int wildcardsLeft = numberOfBlanks;
+                int[] count = new int[26];
+                bool ok = true;
+                foreach (char c in word.ToCharArray())
+                {
+                    int index = c - 'A';
+                    count[index] += 1;
+                    if (count[index] - tempAvailable[index] > wildcardsLeft)
+                    {
+                        ok = false;
+                        break;
+                    }
+                    else if (count[index] > tempAvailable[index])
+                    {
+                        wildcardsLeft--;
+                        tempAvailable[index]++;
+                    }
+                }
+                if (ok)
+                {
+                    resultHashSet.Add(word);
+                }
+            }
+            return resultHashSet.ToList();
+        }
+
         public List<Play> ValidPlays()
         {
             List<Play> plays = new List<Play>();
@@ -410,7 +511,9 @@ namespace Scrabble
 
             PlacementMatrix placementMatrix = new PlacementMatrix(this, _game);
 
-            List<string> possiblePrimaryWords = _game.GetDictionary().WordFind(tray, placementMatrix.PrimaryWordSpaces.Count, placementMatrix.AnchorTuples(), placementMatrix.ExclusionTuples());
+            //List<string> possiblePrimaryWords = _game.GetDictionary().WordFind(tray, placementMatrix.PrimaryWordSpaces.Count, placementMatrix.AnchorTuples(), placementMatrix.ExclusionTuples());
+
+            List<string> possiblePrimaryWords = WordFind();
 
             //Now remove the anchors so the remaining letters can be matched up to the spaces in the Placement to form Play instances
             List<Tuple<int, char>> sortedAnchors = placementMatrix.AnchorTuples().OrderBy(x => x.Item1).ToList();
