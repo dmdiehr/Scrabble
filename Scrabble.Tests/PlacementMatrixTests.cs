@@ -325,53 +325,40 @@ namespace ProjectName.Tests
         }
         #endregion
 
-        //#region //Exclusions
-        //[Test]
-        //[Category("PlacementMatrix Array Construction")]
-        //public void DoesExclude_NotEnoughTiles()
-        //{
-        //    //Arrange
+        #region //Exclusions
+        [Test]
+        [Category("PlacementMatrix Excludes")]
+        public void DoesExclude_NotEnoughTiles()
+        {
+            //Arrange
 
-        //    Game game = new Game("???");
+            Game game = new Game("???");
 
-        //    List<Space> boardList = new List<Space>();
-        //    boardList.Add(new Space(7, 7, 't'));
-        //    boardList.Add(new Space(7, 8, 'e'));
-        //    boardList.Add(new Space(7, 9, 's'));
-        //    boardList.Add(new Space(7, 10, 't'));
+            List<Space> boardList = new List<Space>();
+            boardList.Add(new Space(7, 7, 't'));
+            boardList.Add(new Space(7, 8, 'e'));
+            boardList.Add(new Space(7, 9, 's'));
+            boardList.Add(new Space(7, 10, 't'));
 
-        //    game.SetBoard(boardList);
+            game.SetBoard(boardList);
 
-        //    List<Space> placementList = new List<Space>();
-        //    placementList.Add(new Space(6, 7));
-        //    placementList.Add(new Space(6, 8));
-        //    placementList.Add(new Space(6, 9));
-        //    placementList.Add(new Space(6, 10));
+            List<Space> placementList = new List<Space>();
+            placementList.Add(new Space(6, 7));
+            placementList.Add(new Space(6, 8));
+            placementList.Add(new Space(6, 9));
+            placementList.Add(new Space(6, 10));
 
-        //    Placement placement = new Placement(placementList, game);
+            Placement placement = new Placement(placementList, game);
 
-        //    PlacementMatrix sut = new PlacementMatrix(placement);
-        //    bool[,] sutArray = sut.ExclusionArray;
+            PlacementMatrix sut = new PlacementMatrix(placement);
 
-        //    //Act
-        //    int falseCount = 0;
-        //    foreach (bool item in sutArray)
-        //    {
-        //        if (!item)
-        //            falseCount++;
-        //    }
+            //Act
 
-        //    int xLength = sutArray.GetLength(0);
-        //    int yLength = sutArray.GetLength(1);
+            bool excludes = sut.DoesExclude();
 
-        //    //Assert
-        //    Assert.That(falseCount, Is.EqualTo(16));
-        //    Assert.That(xLength, Is.EqualTo(4));
-        //    Assert.That(yLength, Is.EqualTo(4));
-
-
-        //    #endregion
-
-
+            //Assert
+            Assert.That(excludes, Is.True);
+        }
+        #endregion
     }
 }

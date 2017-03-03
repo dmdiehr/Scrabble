@@ -78,7 +78,6 @@ namespace Scrabble
                         {
                             returnArray[x, y] = true;
                         }
-
                     }
                     else if (ExclusionTuples.Contains(Tuple.Create(primaryWordIndex, _tray[y])))
                     {
@@ -88,12 +87,9 @@ namespace Scrabble
                     {
                         returnArray[x, y] = true;
                     }
-
                 }
                 primaryWordIndex++;
             }
-
-
             return returnArray;
         }
 
@@ -160,11 +156,32 @@ namespace Scrabble
             return returnList;
         }
 
-        public bool DoesExclude()
+        public bool DoesExclude(bool[,] boolArray = null)
         {
+            if (boolArray == null)
+                boolArray = ExclusionArray;
+
             bool returnBool = false;
 
+            int spaceCount = boolArray.GetLength(0);
+            int letterCount = boolArray.GetLength(1);
 
+            //check if you have enough letters
+            if (letterCount < spaceCount)
+                return true;
+
+            //check if any spaces can't be filled
+
+            //group columns identical colums
+            //check if any group's column count is greater than their T count
+
+            //check if any group's column count is equal to their T count
+            //if so, remove the columns and rows that are T
+            //rebuild the array and recurse with the new array
+
+            //if there are no such columns, return true (???)
+            //I don't know if this is completely valid 
+            //I just don't know any other ways to find more exclusions
 
             return returnBool;
         }
