@@ -235,7 +235,7 @@ namespace Scrabble.Tests
 
         [Test]
         [Category("Lots of Results")]
-        [Ignore("Takes 15sec for assert 1; 3:48 for full test")]
+        //[Ignore("Takes 15sec for assert 1; 3:48 for full test")]
         public void LotsOfPlays()
         {
             //Arrange

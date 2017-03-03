@@ -43,11 +43,5 @@ namespace Scrabble
             }
             return returnString;
         }
-
-        public void Sort()
-        {
-            Tiles.OrderBy(t => t.GetLetter()).ToList();
-        }
-
     }
 }

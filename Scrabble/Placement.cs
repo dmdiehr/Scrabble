@@ -11,7 +11,7 @@ namespace Scrabble
     {
         //FIELDS
         private List<Space> _spaceList;
-        private Game _game;
+        public Game Game { get; }
         public bool IsValid { get; }
         public List<Space> Anchors { get; }
 
@@ -20,7 +20,7 @@ namespace Scrabble
         {
             _spaceList = spaceList;
             _spaceList.Sort(SpaceComparer.Instance);
-            _game = game;
+            Game = game;
             IsValid = IsContiguous() && IsOnBoard() && (IsAdjacent() || IsFirstMove());
             Anchors = GetAnchors();
         }
@@ -31,7 +31,7 @@ namespace Scrabble
             spaceList.Add(space);
 
             _spaceList = spaceList;
-            _game = game;
+            Game = game;
             IsValid = IsContiguous() && IsOnBoard() && (IsAdjacent() || IsFirstMove());
             Anchors = GetAnchors();
         }
@@ -93,7 +93,7 @@ namespace Scrabble
 
         public bool IsOnBoard()
         {
-            Space[,] board = _game.GetBoard();
+            Space[,] board = Game.GetBoard();
             foreach (Space placementSpace in _spaceList)
             {
                 bool onBoard = false;
@@ -117,7 +117,7 @@ namespace Scrabble
             foreach (var item in _spaceList)
             {
 
-                if (_game.GetSpace(item).IsOccupied())
+                if (Game.GetSpace(item).IsOccupied())
                     return false;
             }
             return true;
@@ -170,7 +170,7 @@ namespace Scrabble
 
         public bool IsFirstMove()
         {
-            foreach (Space space in _game.GetBoard())
+            foreach (Space space in Game.GetBoard())
             {
                 if (space.GetTile() != null)
                     return false;
@@ -191,22 +191,14 @@ namespace Scrabble
             {
                 try
                 {
-                    if (_game.GetSpace(space.GetAdjacentNorth()).IsOccupied())
+                    if (Game.GetSpace(space.GetAdjacentNorth()).IsOccupied())
                         return true;
                 }
                 catch (IndexOutOfRangeException) { }
                 catch (NullReferenceException) { }
                 try
                 {
-                    if (_game.GetSpace(space.GetAdjacentSouth()).IsOccupied())
-                        return true;
-                }
-                catch (IndexOutOfRangeException) { }
-                catch (NullReferenceException) { }
-
-                try
-                {
-                    if (_game.GetSpace(space.GetAdjacentEast()).IsOccupied())
+                    if (Game.GetSpace(space.GetAdjacentSouth()).IsOccupied())
                         return true;
                 }
                 catch (IndexOutOfRangeException) { }
@@ -214,7 +206,15 @@ namespace Scrabble
 
                 try
                 {
-                    if (_game.GetSpace(space.GetAdjacentWest()).IsOccupied())
+                    if (Game.GetSpace(space.GetAdjacentEast()).IsOccupied())
+                        return true;
+                }
+                catch (IndexOutOfRangeException) { }
+                catch (NullReferenceException) { }
+
+                try
+                {
+                    if (Game.GetSpace(space.GetAdjacentWest()).IsOccupied())
                         return true;
                 }
                 catch (IndexOutOfRangeException) { }
@@ -247,7 +247,7 @@ namespace Scrabble
                             break;
                         }
                     }
-                    if (!listContains && (_game.GetSpace(xValue, y).GetTile() == null))
+                    if (!listContains && (Game.GetSpace(xValue, y).GetTile() == null))
                         return false;
                 }
             }
@@ -269,7 +269,7 @@ namespace Scrabble
                             break;
                         }
                     }
-                    if (!listContains && (_game.GetSpace(x, yValue).GetTile() == null))
+                    if (!listContains && (Game.GetSpace(x, yValue).GetTile() == null))
                         return false;
                 }
             }
@@ -290,9 +290,9 @@ namespace Scrabble
 
                 // Anchors before placement
                 Space currentSpace = _spaceList[0];
-                while (_game.GetSpace(currentSpace.GetAdjacentWest()) != null && _game.GetSpace(currentSpace.GetAdjacentWest()).GetTile() != null)
+                while (Game.GetSpace(currentSpace.GetAdjacentWest()) != null && Game.GetSpace(currentSpace.GetAdjacentWest()).GetTile() != null)
                 {
-                    anchors.Add(_game.GetSpace(currentSpace.GetAdjacentWest()));
+                    anchors.Add(Game.GetSpace(currentSpace.GetAdjacentWest()));
                     currentSpace = currentSpace.GetAdjacentWest();
 
                 }
@@ -305,17 +305,17 @@ namespace Scrabble
 
                 for (int x = _spaceList[0].GetX(); x < _spaceList.Last().GetX(); x++)
                 {
-                    if (_game.GetSpace(x,yValue).GetTile() != null)
+                    if (Game.GetSpace(x,yValue).GetTile() != null)
                     {
-                        anchors.Add(_game.GetSpace(x, yValue));
+                        anchors.Add(Game.GetSpace(x, yValue));
                     }
                 }
 
                 // Anchors after placement
                 currentSpace = _spaceList.Last();
-                while (_game.GetSpace(currentSpace.GetAdjacentEast()) != null && _game.GetSpace(currentSpace.GetAdjacentEast()).GetTile() != null)
+                while (Game.GetSpace(currentSpace.GetAdjacentEast()) != null && Game.GetSpace(currentSpace.GetAdjacentEast()).GetTile() != null)
                 {
-                    anchors.Add(_game.GetSpace(currentSpace.GetAdjacentEast()));
+                    anchors.Add(Game.GetSpace(currentSpace.GetAdjacentEast()));
                     currentSpace = currentSpace.GetAdjacentEast();
 
                 }
@@ -325,9 +325,9 @@ namespace Scrabble
 
                 // Anchors before placement
                 Space currentSpace = _spaceList[0];
-                while (_game.GetSpace(currentSpace.GetAdjacentNorth()) != null && _game.GetSpace(currentSpace.GetAdjacentNorth()).GetTile() != null)
+                while (Game.GetSpace(currentSpace.GetAdjacentNorth()) != null && Game.GetSpace(currentSpace.GetAdjacentNorth()).GetTile() != null)
                 {                  
-                    anchors.Add(_game.GetSpace(currentSpace.GetAdjacentNorth()));
+                    anchors.Add(Game.GetSpace(currentSpace.GetAdjacentNorth()));
                     currentSpace = currentSpace.GetAdjacentNorth();
 
                 }
@@ -340,17 +340,17 @@ namespace Scrabble
 
                 for (int y = _spaceList[0].GetY(); y < _spaceList.Last().GetY(); y++)
                 {
-                    if (_game.GetSpace(xValue, y).GetTile() != null)
+                    if (Game.GetSpace(xValue, y).GetTile() != null)
                     {
-                        anchors.Add(_game.GetSpace(xValue, y));
+                        anchors.Add(Game.GetSpace(xValue, y));
                     }
                 }
 
                 // Anchors after placement
                 currentSpace = _spaceList.Last();
-                while (_game.GetSpace(currentSpace.GetAdjacentSouth()) != null && _game.GetSpace(currentSpace.GetAdjacentSouth()).GetTile() != null)
+                while (Game.GetSpace(currentSpace.GetAdjacentSouth()) != null && Game.GetSpace(currentSpace.GetAdjacentSouth()).GetTile() != null)
                 {
-                    anchors.Add(_game.GetSpace(currentSpace.GetAdjacentSouth()));
+                    anchors.Add(Game.GetSpace(currentSpace.GetAdjacentSouth()));
                     currentSpace = currentSpace.GetAdjacentSouth();
 
                 }
@@ -359,13 +359,12 @@ namespace Scrabble
             return anchors;
         }
 
-        private List<string> WordFind()
+        private List<string> WordFind(PlacementMatrix placementMatrix)
         {
-            PlacementMatrix placementMatrix = new PlacementMatrix(this, _game);
-            string tray = _game.GetTrayString();
-            string[] dictionary = _game.GetDictionary();
-            List<Tuple<int, char>> anchorTuples = placementMatrix.AnchorTuples();
-            List<Tuple<int, char>> exclusionTuples = placementMatrix.ExclusionTuples();
+            string tray = Game.GetTrayString();
+            string[] dictionary = Game.GetDictionary();
+            List<Tuple<int, char>> anchorTuples = placementMatrix.AnchorTuples;
+            List<Tuple<int, char>> exclusionTuples = placementMatrix.ExclusionTuples;
             int wordSize = placementMatrix.PrimaryWordSpaces.Count;
 
             HashSet<string> resultHashSet = new HashSet<string> { };
@@ -470,7 +469,7 @@ namespace Scrabble
             {
                 bool blankExists = false;
                 int blankIndex = -1;
-                List<Tile> tiles = _game.GetTray().Tiles;
+                List<Tile> tiles = Game.GetTray().Tiles;
                 for (int i = 0; i <tiles.Count; i++)
                 {
                     if(tiles[i].GetLetter() == '?')
@@ -479,7 +478,7 @@ namespace Scrabble
                         blankIndex = i;
                         continue;
                     }
-                    Play thisPlay = new Play(new List<Tuple<Space, Tile>> { Tuple.Create(_spaceList[0], tiles[i]) }, _game);
+                    Play thisPlay = new Play(new List<Tuple<Space, Tile>> { Tuple.Create(_spaceList[0], tiles[i]) }, Game);
                     if (thisPlay.AreWordsValid())
                     {
                         plays.Add(thisPlay);
@@ -493,7 +492,7 @@ namespace Scrabble
                         Tile blankTile = new Tile('?');
                         blankTile.SetBlank(tempChar);
 
-                        Play thisPlay = new Play(new List<Tuple<Space, Tile>> { Tuple.Create(_spaceList[0], blankTile) }, _game);
+                        Play thisPlay = new Play(new List<Tuple<Space, Tile>> { Tuple.Create(_spaceList[0], blankTile) }, Game);
                         if (thisPlay.AreWordsValid())
                         {
                             plays.Add(thisPlay);
@@ -507,16 +506,15 @@ namespace Scrabble
 
 
             #region //Implementation for multi-Space Placements
-            string tray = _game.GetTrayString();
+            string tray = Game.GetTrayString();
 
-            PlacementMatrix placementMatrix = new PlacementMatrix(this, _game);
+            PlacementMatrix placementMatrix = new PlacementMatrix(this);
 
-            //List<string> possiblePrimaryWords = _game.GetDictionary().WordFind(tray, placementMatrix.PrimaryWordSpaces.Count, placementMatrix.AnchorTuples(), placementMatrix.ExclusionTuples());
 
-            List<string> possiblePrimaryWords = WordFind();
+            List<string> possiblePrimaryWords = WordFind(placementMatrix);
 
             //Now remove the anchors so the remaining letters can be matched up to the spaces in the Placement to form Play instances
-            List<Tuple<int, char>> sortedAnchors = placementMatrix.AnchorTuples().OrderBy(x => x.Item1).ToList();
+            List<Tuple<int, char>> sortedAnchors = placementMatrix.AnchorTuples.OrderBy(x => x.Item1).ToList();
 
             for(int i = 0; i < possiblePrimaryWords.Count; i++)
             {               
@@ -552,7 +550,7 @@ namespace Scrabble
                         newPlayList.Add(Tuple.Create(_spaceList[i], thisTile));
                        
                     }
-                    plays.Add(new Play(newPlayList, _game));                    
+                    plays.Add(new Play(newPlayList, Game));                    
                 }
             }
 

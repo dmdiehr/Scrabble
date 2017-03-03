@@ -13,29 +13,32 @@ namespace Scrabble
         private Placement _placement;
         private string _tray;
         public Game Game { get; }
-        private bool[,] _exclusionArray;
+        public bool[,] ExclusionArray { get; }
         public List<Space> PrimaryWordSpaces { get; }
-
-
+        public List<Tuple<int, char>> AnchorTuples { get; }
+        public List<Tuple<int, char>> ExclusionTuples { get; }
+        
         //CONSTRUCTOR
 
-        public PlacementMatrix (Placement placement, Game game)
+        public PlacementMatrix (Placement placement)
         {
             if (placement.IsSingle())
                 throw new ArgumentException("An PlacementMatrix is not appropriate for single tile placements");
 
             _placement = placement;
-            Game = game;
-            char[] temp = game.GetTrayString().ToCharArray();
-            Array.Sort(temp);
-            _tray = new string(temp);
-            _exclusionArray = makeArray();
+            Game = _placement.Game;
+            _tray = Game.GetTrayString();
+            
 
-           PrimaryWordSpaces = new List<Space>();
-           PrimaryWordSpaces.AddRange(_placement.Anchors);
-           PrimaryWordSpaces.AddRange(_placement.GetSpaceList());
-           PrimaryWordSpaces.Sort(SpaceComparer.Instance);
 
+            PrimaryWordSpaces = new List<Space>();
+            PrimaryWordSpaces.AddRange(_placement.Anchors);
+            PrimaryWordSpaces.AddRange(_placement.GetSpaceList());
+            PrimaryWordSpaces.Sort(SpaceComparer.Instance);
+           
+            AnchorTuples = GetAnchorTuples();
+            ExclusionTuples = GetExclusionTuples();
+            ExclusionArray = makeArray();
 
         }
 
@@ -43,17 +46,41 @@ namespace Scrabble
 
         private bool[,] makeArray()
         {
-            bool[,] returnArray = new bool[_placement.GetSpaceList().Count(), _tray.Length];
+            int columnCount = _placement.GetSpaceList().Count;
+            int rowCount = _tray.Length; 
+            bool[,] returnArray = new bool[columnCount, rowCount];
 
+            int primaryWordIndex = 0;
+            for (int x = 0; x < columnCount; x++)
+            {
+                //check skip over anchors
+                while (PrimaryWordSpaces[primaryWordIndex].IsOccupied())
+                {
+                    primaryWordIndex++;
+                    if (PrimaryWordSpaces.Count == primaryWordIndex)
+                        break;
+                }
+                    
+                for (int y = 0; y < rowCount; y++)
+                {
+                    if (ExclusionTuples.Contains(Tuple.Create(primaryWordIndex, _tray[y])))
+                    {
+                        returnArray[x, y] = false;
+                    }
+                    else
+                    {
+                        returnArray[x, y] = true;
+                    }
 
-
-
+                }
+                primaryWordIndex++;
+            }
 
 
             return returnArray;
         }
 
-        public List<Tuple<int, char>> AnchorTuples()
+        public List<Tuple<int, char>> GetAnchorTuples()
         {
             List<Tuple<int, char>> returnList = new List<Tuple<int, char>>();
 
@@ -68,7 +95,7 @@ namespace Scrabble
             return returnList;
         }
 
-        public List<Tuple<int, char>> ExclusionTuples()
+        public List<Tuple<int, char>> GetExclusionTuples()
         {
             List<Tuple<int, char>> returnList = new List<Tuple<int, char>>();
 
@@ -81,7 +108,7 @@ namespace Scrabble
             for (int i = 0; i <PrimaryWordSpaces.Count; i++)
             {
                 //check to see if this letter is an anchor, if so skip
-                if (PrimaryWordSpaces[i].GetTile() != null)
+                if (PrimaryWordSpaces[i].IsOccupied())
                     continue;
 
                 foreach (char letter in _tray)
