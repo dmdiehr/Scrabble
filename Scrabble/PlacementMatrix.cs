@@ -63,7 +63,24 @@ namespace Scrabble
                     
                 for (int y = 0; y < rowCount; y++)
                 {
-                    if (ExclusionTuples.Contains(Tuple.Create(primaryWordIndex, _tray[y])))
+                    if(_tray[y] == '?')
+                    {
+                        var tempList =
+                            from t in ExclusionTuples
+                            where t.Item1 == primaryWordIndex
+                            select t;
+                 
+                        if (tempList.Distinct().Count() > 25)
+                        {
+                            returnArray[x, y] = false;
+                        }
+                        else
+                        {
+                            returnArray[x, y] = true;
+                        }
+
+                    }
+                    else if (ExclusionTuples.Contains(Tuple.Create(primaryWordIndex, _tray[y])))
                     {
                         returnArray[x, y] = false;
                     }
