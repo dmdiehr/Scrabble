@@ -271,20 +271,20 @@ namespace Scrabble.Tests
             //Act
             List<Play> plays1 = game.FindAllPlays();
 
-            //game.SetTray("ABCDEF?");
-            //List<Play> plays2 = game.FindAllPlays();
+            game.SetTray("ABCDEF?");
+            List<Play> plays2 = game.FindAllPlays();
 
-            //game.SetTray("AE??");
-            //List<Play> plays3 = game.FindAllPlays();
+            game.SetTray("AE??");
+            List<Play> plays3 = game.FindAllPlays();
 
-            //game.SetTray("ABCDE??");
-            //List<Play> plays4 = game.FindAllPlays();
+            game.SetTray("ABCDE??");
+            List<Play> plays4 = game.FindAllPlays();
 
             //Assert
             Assert.That(plays1.Count, Is.EqualTo(384));
-            //Assert.That(plays2.Count, Is.EqualTo(4723));
-            //Assert.That(plays3.Count, Is.EqualTo(7562));
-            //Assert.That(plays4.Count, Is.EqualTo(26734));
+            Assert.That(plays2.Count, Is.EqualTo(4723));
+            Assert.That(plays3.Count, Is.EqualTo(7562));
+            Assert.That(plays4.Count, Is.EqualTo(26734));
         }
 
         [Test]

@@ -166,20 +166,164 @@ namespace Scrabble
             int spaceCount = boolArray.GetLength(0);
             int letterCount = boolArray.GetLength(1);
 
-            //check if you have enough letters
-            if (letterCount < spaceCount)
-                return true;
+            ////check if you have enough letters
+            //if (letterCount < spaceCount)
+            //    return true;
 
-            //check if any spaces can't be filled
+            ////check if any spaces can't be filled
+            //for (int i = 0; i < spaceCount; i++)
+            //{
+            //    bool possible = false;
+            //    for (int j = 0; j < letterCount; j++)
+            //    {
+            //        if (boolArray[i, j] == true)
+            //        {
+            //            possible = true;
+            //            break;
+            //        }
+            //    }
+            //    if (!possible)
+            //        return true;
+            //}
 
-            //group columns identical colums
+
+            //group identical columns
+
+            List<List<Column>> columnGroups = new List<List<Column>>();
+
+            for (int i = 0; i < spaceCount; i++)
+            {
+                Column newColumn = new Column();
+                newColumn.SpaceIndex = i;
+
+                for (int j = 0; j < letterCount; j++)
+                {
+                    newColumn.BoolList.Add(boolArray[i, j]);
+                    if (boolArray[i, j] == true)
+                        newColumn.TruthCount++;
+                }
+
+                bool newColumnMatches = false;
+                for (int k = 0; k < columnGroups.Count; k++)
+                {
+                    if (newColumn.Equals(columnGroups[k].First()))
+                    {
+                        newColumnMatches = true;
+                        columnGroups[k].Add(newColumn);
+                        break;
+                    }
+                }
+                if (!newColumnMatches)
+                {
+                    List<Column> newColumnGroup = new List<Column>();
+                    newColumnGroup.Add(newColumn);
+                    columnGroups.Add(newColumnGroup);
+                }
+            }
+
+
             //check if any group's column count is greater than their T count
+            foreach (var group in columnGroups)
+            {
+                int groupCount = group.Count;
+                int trueCount = group.First().TruthCount;
 
-            //check if any group's column count is equal to their T count
-            //if so, remove the columns and rows that are T
-            //rebuild the array and recurse with the new array
+                if (trueCount < groupCount)
+                    return true;
+            }
 
-            //if there are no such columns, return true (???)
+            ////check if any group's column count is equal to their T count
+            ////if so, remove the columns and rows that are T
+            ////rebuild the array and recurse with the new array
+            bool[,] newArray;
+            foreach (var group in columnGroups)
+            {
+                int groupCount = group.Count;
+                int trueCount = group.First().TruthCount;
+
+                if (trueCount == groupCount)
+                {
+                    List<int> columnIndexes = new List<int>();
+                    foreach (Column column in group)
+                    {
+                        columnIndexes.Add(column.SpaceIndex);
+                    }
+
+                    List<int> rowIndexes = new List<int>();
+                    for (int i = 0; i < group.First().BoolList.Count; i++)
+                    {
+                        if (group.First().BoolList[i] == true)
+                            rowIndexes.Add(i);
+                    }
+
+                    Debug.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                    Debug.WriteLine("Column Indexes");
+                    foreach (var item in columnIndexes)
+                    {
+                        Debug.Write(" " + item);
+                    }
+                    Debug.WriteLine("");
+                    Debug.WriteLine("Row Indexes");
+                    foreach (var item in rowIndexes)
+                    {
+                        Debug.Write(" " + item);
+                    }
+                    Debug.WriteLine("");
+                    Debug.WriteLine("Inhereted Array");
+                    for (int i = 0; i < letterCount; i++)
+                    {
+                        Debug.Write(_tray[i] + " = ");
+                        for (int j = 0; j < spaceCount; j++)
+                        {
+                            Debug.Write(" "+boolArray[j, i]);
+                        }
+                        Debug.WriteLine("");
+                    }
+                    Debug.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
+        
+
+                    
+
+                    int newSpaceCount = spaceCount - columnIndexes.Count;
+                    int newLetterCount = letterCount - rowIndexes.Count;
+                    newArray = new bool[newSpaceCount, newLetterCount];
+
+                    int newSpaceIndex = 0;
+                    for (int i = 0; i < spaceCount; i++)
+                    {
+                        if (columnIndexes.Contains(i))
+                            continue;
+
+                        int newLetterIndex = 0;
+                        for (int j = 0; j < letterCount; j++)
+                        {
+                            if (rowIndexes.Contains(j))
+                                continue;
+
+                            newArray[newSpaceIndex, newLetterIndex] = boolArray[i, j];
+
+                            newLetterIndex++;
+                        }
+                        newSpaceIndex++;
+                    }
+
+                    Debug.WriteLine("New Array");
+                    for (int i = 0; i < newLetterCount; i++)
+                    {                        
+                        for (int j = 0; j < newSpaceCount; j++)
+                        {
+                            Debug.Write(" " + newArray[j, i]);
+                        }
+                        Debug.WriteLine("");
+                    }
+                    return DoesExclude(newArray);
+                }
+            }
+
+
+
+            //if there are no such columns, return false (???)
             //I don't know if this is completely valid 
             //I just don't know any other ways to find more exclusions
 

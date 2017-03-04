@@ -463,7 +463,6 @@ namespace Scrabble
         {
             List<Play> plays = new List<Play>();
 
-
             #region //Implementation for IsSingle cases
             if (IsSingle())
             {
@@ -504,14 +503,16 @@ namespace Scrabble
             }
             #endregion
 
-
             #region //Implementation for multi-Space Placements
             string tray = Game.GetTrayString();
 
             PlacementMatrix placementMatrix = new PlacementMatrix(this);
 
-
-            List<string> possiblePrimaryWords = WordFind(placementMatrix);
+            List<string> possiblePrimaryWords = new List<string>();
+            if (!placementMatrix.DoesExclude())
+            {
+                possiblePrimaryWords = WordFind(placementMatrix);
+            }           
 
             //Now remove the anchors so the remaining letters can be matched up to the spaces in the Placement to form Play instances
             List<Tuple<int, char>> sortedAnchors = placementMatrix.AnchorTuples.OrderBy(x => x.Item1).ToList();
@@ -553,7 +554,6 @@ namespace Scrabble
                     plays.Add(new Play(newPlayList, Game));                    
                 }
             }
-
             return plays;
             #endregion
         }
